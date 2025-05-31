@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!-- Authors: David Ouyang, Bryan He 2019 -->
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>ERDES-3D</title>
+      <meta name="description" content="ERDES-3D: a Large New Eye Retinal Detachment Ultrasound Sequence for Medical Machine Learning.">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="lagunita/css/bootstrap.min.css" type="text/css">
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" type="text/css">
+      <link rel="stylesheet" href="lagunita/css/base.min.css?v=0.1" type="text/css">
+      <link rel="stylesheet" href="lagunita/css/custom.css?v=0.1" type="text/css">
+      <link rel="icon" type="image/ico" href="favicon.ico">
+   </head>
+   <body class="site-slogan">
+      <div id="top">
+         <div class="container">
+            <div id="skip">
+               <a href="#content" onclick="$('#content').focus()">Skip to content</a>
+            </div>
+         </div>
+      </div>
+      <div id="brandbar">
+         <div class="container">
+            <a href="https://u.osu.edu/pcvlab/">
+            <img src="lagunita/images/lab_text.png" alt="PCVLab" width="100" height="23">
+            </a>
+         </div>
+      </div>
+      <div id="header" class="clearfix" role="banner">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-8">
+                  <div id="signature">
+                     <div id="site-name">
+                        <a href="https://echonet.github.io/dynamic/index.html"><span id="site-name-1">ERDES-3D</span></a>
+                     </div>
+                     <div id="site-slogan">
+                        <a href="https://echonet.github.io/dynamic/index.html">
+                        <span id="site_slogan">a Large New Eye Retinal Detachment Ultrasound Sequence for Medical Machine Learning</span>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Navigation Menu -->
+      <div id="mainmenu" class="clearfix" role="navigation">
+         <div class="container">
+            <div class="navbar navbar-default">
+               <button type="button" class="navbar-toggle btn-navbar" data-toggle="collapse" data-target=".navbar-collapse">
+               <span class="menu-text">Menu</span>
+               </button>
+               <div class="navbar-collapse collapse">
+                  <div role="navigation">
+                     <div id="primary-nav">
+                        <ul class="nav navbar-nav" aria-label="primary navigation">
+                           <li id="nav-1"><a href="index.html">Home</a></li>
+                           <li id="nav-2"><a href="index.html#intro">Introduction</a></li>
+                           <li id="nav-3"><a href="index.html#motivation">Motivation</a></li>
+                           <li id="nav-4"><a href="index.html#dataset">Dataset</a></li>
+                           <li id="nav-5"><a href="index.html#access_dataset">Access Dataset</a></li>
+                           <li id="nav-6"><a href="index.html#code">Code</a></li>
+                           <li id="nav-7"><a href="index.html#paper">Paper</a></li>
+                           <li id="nav-8"><a href="index.html#citation">Citation</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /Navigation Menu -->
+      <div id="intro" class="container" role="introduction" tabindex="0">
+         <h2>Introduction</h2>
+         <p>
+            Ocular ultrasonography, or B-scan ultrasound, is a fast, accessible, and non-invasive imaging tool widely utilized to assess the posterior segment of the eye, especially in the presence of media opacities like cataracts or vitreous hemorrhage.
+            It plays a pivotal role in diagnosing and guiding the treatment of various retinal conditions, including retinal and macular detachment. To enable further exploration and development of computer vision techniques in this critical domain,
+            we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment Ultra<strong>S</strong>ound, <em>ERDES-3D</em>, a comprehensive video dataset of ocular ultrasound scans. ERDES-3D includes [NUMBER] labeled 3D ultrasound video clips,
+            each annotated by human experts for the presence of retinal and macular detachments, providing a rich resource for robust analysis of detachment patterns and classification tasks.
+         </p>
+         <video class="center" width="480" height="480" autoplay loop muted>
+            <source src="media/output.mp4" type="video/mp4">
+         </video>
+         <h2 id="motivation">Motivation</h2>
+         <p>
+            Despite significant advances in machine learning for medical images, video-based analysis in the biomedical domain remains under-explored due to the limited availability of well-annotated medical video datasets.
+            Medical videos, such as ocular ultrasound scans, are an integral part of clinical practice, yet their potential for AI-driven diagnostics and classification remains largely untapped.
+            Open-access datasets have been instrumental in advancing computer vision for images; extending this collaborative environment to videos promises to accelerate progress and create robust, clinically relevant models.
+            ERDES-3D addresses this gap by offering an openly available, expertly annotated dataset of ocular ultrasound videos. We also provide baseline performance benchmarks using a 3D convolutional neural network architecture
+            to detect and classify retinal and macular detachment, setting the stage for further development and collaboration in this field.
+         </p>
+		 <br>
+		 <br>
+         <h2 id="dataset">Dataset</h2>
+         <p><img class="center" loading="lazy" width="640" src="media/labeling_rd.png"></p>
+         <p><b>Ocular Videos:</b> The dataset comprises [NUMBER] B-scan ultrasound videos, each capturing real-time cross-sectional views of the eye’s posterior segment. These videos were collected between [START_YEAR] and [END_YEAR]
+            as part of routine clinical care at [HOSPITAL NAME / INSTITUTION]. To protect patient privacy and standardize the data, each video was cropped to remove identifying overlays and uniformly downsampled to a resolution of [RESOLUTION, e.g., 112×112] pixels.
+            The dataset spans a range of typical imaging scenarios, including both normal and pathological findings, to ensure comprehensive coverage of clinical variability.
+         </p>
+         <p><img class="center" loading="lazy" width="400" src="media/MetaDataVariables.PNG"></p>
+         <p><b>Annotations:</b> Each video clip is accompanied by expert-labeled annotations indicating the presence or absence of retinal detachment and macular involvement.
+            These labels were determined by experienced ophthalmologists following a standardized clinical workflow. Annotations serve as a foundation for supervised learning and enable benchmarking of new computer vision approaches for video-based classification in ophthalmology.
+         </p>
+		 <br>
+		 <br>
+         <h2 id="access_dataset">Access Dataset</h2>
+         <p>You can download the dataset using the provided Google Drive link.</p>
+         <div class="well" id="access" tabindex="0">
+            <a href="">Access the ERDES-3D dataset through this link.</a><br>
+         </div>
+		 <br>
+		 <br>
+         <h2 id="code">Code</h2>
+         <p>Our code is made publically available under PCVLab's github repository <a href="https://github.com/OSUPCVLab/ERDES-3D">here</a>. Please consider starring the repo.</p> 
+		 <br>
+		 <br>
+		 <h2 id="paper">Paper</h2>
+         <p><a href="">A Benchmark Dataset for Retinal Detachment Classification in 3D Ocular Ultrasound.</a><br>
+            Pouyan Navard, Yasemin Ozkut, Srikar Adhikari, Alper Yilmaz. <b>Nature Scientific Data</b> (2025)
+         </p>
+		 <br>
+		 <br>
+         <h2 id="citation">Citation</h2>
+         <p>Note: If you intend to use ERDES-3D dataset in your research please cite our work using this bibliography</p>
+         <pre style="background-color: #f5f5f5; border: 1px solid #ccc; padding: 10px; font-family: monospace;">
+@inproceedings{perera2024segformer3d,
+  title={SegFormer3D: an Efficient Transformer for 3D Medical Image Segmentation},
+  author={Perera, Shehan and Navard, Pouyan and Yilmaz, Alper},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={4981--4988},
+  year={2024}
+}
+    </pre>
+		 <br>
+		 <br>
+		<p style="text-align:center;font-size:small;">
+		  For inquiries, contact us at <a href="mailto:boreshnavard [dot] 1 [at] osu [dot] edu">boreshnavard [dot] 1 [at] osu [dot] edu</a>.<br>
+		  Design and source code of this website was taken <a href="https://github.com/echonet/dynamic" target="_bl">from here</a>.
+		</p>
+         
+      </div>
+      <!-- Scripts -->
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+      <script src="lagunita/js/modernizr.custom.17475.js"></script>
+      <script src="lagunita/js/bootstrap.min.js"></script>
+      <script src="lagunita/js/base.js?v=1.0"></script>
+      <script src="lagunita/js/custom.js"></script>
+   </body>
+</html>
