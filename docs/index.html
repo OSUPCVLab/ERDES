@@ -77,7 +77,7 @@
          <p>
             Ocular ultrasonography, or B-scan ultrasound, is a fast, accessible, and non-invasive imaging tool widely utilized to assess the posterior segment of the eye, especially in the presence of media opacities like cataracts or vitreous hemorrhage.
             It plays a pivotal role in diagnosing and guiding the treatment of various retinal conditions, including retinal and macular detachment. To enable further exploration and development of computer vision techniques in this critical domain,
-            we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment Ultra<strong>S</strong>ound, <em>ERDES-3D</em>, a comprehensive video dataset of ocular ultrasound scans. ERDES-3D includes [NUMBER] labeled 3D ultrasound video clips,
+            we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment Ultra<strong>S</strong>ound, <em>ERDES-3D</em>, a comprehensive video dataset of ocular ultrasound scans. ERDES-3D includes 5406 labeled 3D ultrasound video clips,
             each annotated by human experts for the presence of retinal and macular detachments, providing a rich resource for robust analysis of detachment patterns and classification tasks.
          </p>
          <video class="center" width="480" height="480" autoplay loop muted>
@@ -95,14 +95,50 @@
 		 <br>
          <h2 id="dataset">Dataset</h2>
          <p><img class="center" loading="lazy" width="640" src="media/labeling_rd.png"></p>
-         <p><b>Ocular Videos:</b> The dataset comprises [NUMBER] B-scan ultrasound videos, each capturing real-time cross-sectional views of the eye’s posterior segment. These videos were collected between [START_YEAR] and [END_YEAR]
-            as part of routine clinical care at [HOSPITAL NAME / INSTITUTION]. To protect patient privacy and standardize the data, each video was cropped to remove identifying overlays and uniformly downsampled to a resolution of [RESOLUTION, e.g., 112×112] pixels.
-            The dataset spans a range of typical imaging scenarios, including both normal and pathological findings, to ensure comprehensive coverage of clinical variability.
+         <p><b>Ocular Videos:</b> The ERDES-3D dataset comprises 5406 ocular B-scan ultrasound videos, each providing dynamic cross-sectional views of the eye's posterior segment. These videos were acquired during routine clinical care at University of Arizona between [START_YEAR] and [END_YEAR]. 
+		  To ensure patient privacy and data standardization, all videos were meticulously processed to remove any identifying overlays.
+  		  Capturing both normal and pathological findings, the dataset covers a wide range of typical imaging scenarios, thereby offering a comprehensive resource that reflects clinical variability and supports robust analysis of retinal and macular detachments.
          </p>
          <p><img class="center" loading="lazy" width="400" src="media/MetaDataVariables.PNG"></p>
          <p><b>Annotations:</b> Each video clip is accompanied by expert-labeled annotations indicating the presence or absence of retinal detachment and macular involvement.
             These labels were determined by experienced ophthalmologists following a standardized clinical workflow. Annotations serve as a foundation for supervised learning and enable benchmarking of new computer vision approaches for video-based classification in ophthalmology.
+		<p>
+		  The ocular ultrasound video clips are categorized into three principal groups: 
+		  <strong>Normal</strong>, 
+		  <strong>Retinal Detachment (RD)</strong>, 
+		  and <strong>Posterior Vitreous Detachment (PVD)</strong>. 
+		  Within the <strong>Retinal Detachment</strong> category, the clips are further subdivided based on the status of the macula—specifically, whether the macula is detached or remains intact.
+		</p>
+
+		<ul>
+		  <li>
+			In the <strong>macula-detached</strong> subset, two types of detachments are identified:
+			<ul>
+			  <li><strong>Bilateral detachment</strong>, where both the nasal and temporal regions are involved.</li>
+			  <li><strong>Temporal detachment (TD)</strong>, where the retinal detachment predominantly affects the temporal region of the retina.</li>
+			</ul>
+		  </li>
+		  <li>
+			In the <strong>macula-intact</strong> subset, the retinal detachment does not involve the macula, and the detachments are further divided into:
+			<ul>
+			  <li><strong>Nasal detachment (ND)</strong>, where the detachment involves the nasal region of the retina.</li>
+			  <li><strong>Temporal detachment (TD)</strong>, where the detachment is located in the temporal region.</li>
+			</ul>
+		  </li>
+		</ul>
+
+		<p>
+		  This structured classification helps in systematically analyzing and interpreting the retinal pathologies present in the ultrasound data. You can see the structure of dataset folders in the below figure which reflect the labeling protocole
+		  <p><img class="center" loading="lazy" width="200" src="media/folder_structure.PNG"></p>
+		</p>
+		 <br>
+		 <br>
+		  <p><b>Data Preprocessing:</b> We meticulously removed all patient health information and extraneous annotations present on the lateral sides of the ocular ultrasound clips. To achieve this, we employed a YOLO (You Only Look Once) object detection model trained specifically to identify and localize the globe of the eye within each video frame. 
+		  The model was trained using a small set of manually annotated example frames, where the bounding boxes encompassed only the globe region, excluding peripheral areas that do not contribute to the diagnosis of retinal or macular detachment. By leveraging YOLO’s fast and accurate detection capabilities, we ensured that the region of interest (ROI) — the globe — was consistently identified throughout the entire clip. 
+		  Subsequently, each frame in the video was cropped according to the detected bounding box, resulting in a refined dataset comprising only the relevant anatomical features for analysis.
+		  All video clips in the dataset are in mp4 format, optimized for further diagnostic tasks.
          </p>
+		 <p><img class="center" loading="lazy" width="840" src="media/data_stats.png"></p>
 		 <br>
 		 <br>
          <h2 id="access_dataset">Access Dataset</h2>
@@ -125,12 +161,12 @@
          <h2 id="citation">Citation</h2>
          <p>Note: If you intend to use ERDES-3D dataset in your research please cite our work using this bibliography</p>
          <pre style="background-color: #f5f5f5; border: 1px solid #ccc; padding: 10px; font-family: monospace;">
-@inproceedings{perera2024segformer3d,
+@inproceedings{navardocular,
   title={SegFormer3D: an Efficient Transformer for 3D Medical Image Segmentation},
-  author={Perera, Shehan and Navard, Pouyan and Yilmaz, Alper},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  author={Navard, Pouyan and Ozkut, Yasemin and Adhikari, Srikar and Yilmaz, Alper},
+  booktitle={Nature Scientific Data},
   pages={4981--4988},
-  year={2024}
+  year={2025}
 }
     </pre>
 		 <br>
