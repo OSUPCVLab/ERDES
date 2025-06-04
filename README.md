@@ -1,2 +1,2 @@
-# 3D Ocular Ultrasound Dataset for Retinal Detachment Diagnosis 
+# ERDES-3D: 3D Eye Retinal DEtachment UltraSound Dataset
 Retinal detachment
