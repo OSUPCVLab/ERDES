@@ -4,7 +4,7 @@
    <head>
       <meta charset="utf-8">
       <title>ERDES-3D</title>
-      <meta name="description" content="ERDES-3D: a Large New Eye Retinal Detachment Ultrasound Sequence for Medical Machine Learning.">
+      <meta name="description" content="ERDES-3D is a publicly available 3D ocular ultrasound dataset for medical AI research in retinal and macular detachment classification.">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="lagunita/css/bootstrap.min.css" type="text/css">
       <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" type="text/css">
@@ -21,10 +21,17 @@
          </div>
       </div>
       <div id="brandbar">
-         <div class="container">
-            <a href="https://u.osu.edu/pcvlab/">
-            <img src="lagunita/images/lab_text.png" alt="PCVLab" width="100" height="23">
-            </a>
+         <div class="container d-flex justify-content-between align-items-center" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+               <a href="https://u.osu.edu/pcvlab/" target="_blank" style="text-decoration: none; color: white;">
+                  <span style="font-weight: bold; font-size: 10px;">Photogrammetric Computer Vision Laboratory</span>
+               </a>
+            </div>
+            <div>
+               <a href="https://emergencymed.arizona.edu/" target="_blank" style="text-decoration: none; color: white;">
+                  <span style="font-weight: bold; font-size: 10px;">University of Arizona Department of Emergency Medicine</span>
+               </a>
+            </div>
          </div>
       </div>
       <div id="header" class="clearfix" role="banner">
@@ -33,10 +40,10 @@
                <div class="col-md-8">
                   <div id="signature">
                      <div id="site-name">
-                        <a href="https://echonet.github.io/dynamic/index.html"><span id="site-name-1">ERDES-3D</span></a>
+                        <a href="https://osupcvlab.github.io/ERDES-3D/"><span id="site-name-1">ERDES-3D</span></a>
                      </div>
                      <div id="site-slogan">
-                        <a href="https://echonet.github.io/dynamic/index.html">
+                        <a href="https://osupcvlab.github.io/ERDES-3D/">
                         <span id="site_slogan">a Large New Eye Retinal Detachment Ultrasound Sequence for Medical Machine Learning</span>
                         </a>
                      </div>
@@ -75,10 +82,10 @@
       <div id="intro" class="container" role="introduction" tabindex="0">
          <h2>Introduction</h2>
          <p>
-            Ocular ultrasonography, or B-scan ultrasound, is a fast, accessible, and non-invasive imaging tool widely utilized to assess the posterior segment of the eye, especially in the presence of media opacities like cataracts or vitreous hemorrhage.
+            Ocular ultrasonography is a fast, accessible, and non-invasive imaging tool widely utilized to assess the posterior segment of the eye, especially in the presence of media opacities like cataracts or vitreous hemorrhage.
             It plays a pivotal role in diagnosing and guiding the treatment of various retinal conditions, including retinal and macular detachment. To enable further exploration and development of computer vision techniques in this critical domain,
-            we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment Ultra<strong>S</strong>ound, <em>ERDES-3D</em>, a comprehensive video dataset of ocular ultrasound scans. ERDES-3D includes 5406 labeled 3D ultrasound video clips,
-            each annotated by human experts for the presence of retinal and macular detachments, providing a rich resource for robust analysis of detachment patterns and classification tasks.
+            we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment Ultra<strong>S</strong>ound, <em>ERDES-3D</em>, a comprehensive video dataset of ocular ultrasound scans. ERDES-3D includes 5406 labeled ultrasound video clips,
+            each annotated by human experts for the presence of retinal detachments (macula intact vs. detached), providing a rich resource for robust analysis of detachment patterns and classification tasks.
          </p>
          <video class="center" width="480" height="480" autoplay loop muted>
             <source src="media/output.mp4" type="video/mp4">
@@ -100,8 +107,8 @@
   		  Capturing both normal and pathological findings, the dataset covers a wide range of typical imaging scenarios, thereby offering a comprehensive resource that reflects clinical variability and supports robust analysis of retinal and macular detachments.
          </p>
          <p><img class="center" loading="lazy" width="400" src="media/MetaDataVariables.PNG"></p>
-         <p><b>Annotations:</b> Each video clip is accompanied by expert-labeled annotations indicating the presence or absence of retinal detachment and macular involvement.
-            These labels were determined by experienced ophthalmologists following a standardized clinical workflow. Annotations serve as a foundation for supervised learning and enable benchmarking of new computer vision approaches for video-based classification in ophthalmology.
+         <p><b>Annotations:</b> Each video clip is accompanied by expert-labeled annotations indicating the presence or absence of retinal detachment along with macular involvement.
+            These labels were determined by experienced sonologists following a standardized protocol. Annotations serve as a foundation for supervised learning and enable benchmarking of new computer vision approaches for video-based classification in ophthalmology.
 		<p>
 		  The ocular ultrasound video clips are categorized into three principal groups: 
 		  <strong>Normal</strong>, 
@@ -128,13 +135,13 @@
 		</ul>
 
 		<p>
-		  This structured classification helps in systematically analyzing and interpreting the retinal pathologies present in the ultrasound data. You can see the structure of dataset folders in the below figure which reflect the labeling protocole
+		  This structured classification helps in systematically analyzing and interpreting the retinal pathologies present in the ultrasound data. You can see the structure of dataset folders in the below figure which reflect the labeling protocol.
 		  <p><img class="center" loading="lazy" width="200" src="media/folder_structure.PNG"></p>
 		</p>
 		 <br>
 		 <br>
-		  <p><b>Data Preprocessing:</b> We meticulously removed all patient health information and extraneous annotations present on the lateral sides of the ocular ultrasound clips. To achieve this, we employed a YOLO (You Only Look Once) object detection model trained specifically to identify and localize the globe of the eye within each video frame. 
-		  The model was trained using a small set of manually annotated example frames, where the bounding boxes encompassed only the globe region, excluding peripheral areas that do not contribute to the diagnosis of retinal or macular detachment. By leveraging YOLO’s fast and accurate detection capabilities, we ensured that the region of interest (ROI) — the globe — was consistently identified throughout the entire clip. 
+		  <p><b>Data Preprocessing:</b> We meticulously removed all protected health information and extraneous annotations present on the lateral sides of the ocular ultrasound clips. To achieve this, we employed a YOLO (You Only Look Once) object detection model trained specifically to identify and localize the globe of the eye within each video frame. 
+		  The model was trained using a small set of manually annotated example frames, where the bounding boxes encompassed only the globe region, excluding peripheral areas that do not contribute to the diagnosis of retinal detachment. By leveraging YOLO’s fast and accurate detection capabilities, we ensured that the region of interest (ROI) — the globe — was consistently identified throughout the entire clip. 
 		  Subsequently, each frame in the video was cropped according to the detected bounding box, resulting in a refined dataset comprising only the relevant anatomical features for analysis.
 		  All video clips in the dataset are in mp4 format, optimized for further diagnostic tasks.
          </p>
@@ -149,11 +156,11 @@
 		 <br>
 		 <br>
          <h2 id="code">Code</h2>
-         <p>Our code is made publically available under PCVLab's github repository <a href="https://github.com/OSUPCVLab/ERDES-3D">here</a>. Please consider starring the repo.</p> 
+         <p>Our code is made publically available under PCVLab's github repository <a href="https://github.com/OSUPCVLab/ERDES-3D" target="_blank">here</a>. Please consider starring the repo.</p> 
 		 <br>
 		 <br>
 		 <h2 id="paper">Paper</h2>
-         <p><a href="">A Benchmark Dataset for Retinal Detachment Classification in 3D Ocular Ultrasound.</a><br>
+         <p><a href="" target="_blank">A Benchmark Dataset for Retinal Detachment Classification in 3D Ocular Ultrasound.</a><br>
             Pouyan Navard, Yasemin Ozkut, Srikar Adhikari, Alper Yilmaz. <b>Nature Scientific Data</b> (2025)
          </p>
 		 <br>
@@ -172,8 +179,8 @@
 		 <br>
 		 <br>
 		<p style="text-align:center;font-size:small;">
-		  For inquiries, contact us at <a href="mailto:boreshnavard [dot] 1 [at] osu [dot] edu">boreshnavard [dot] 1 [at] osu [dot] edu</a>.<br>
-		  Design and source code of this website was taken <a href="https://github.com/echonet/dynamic" target="_bl">from here</a>.
+		  For inquiries, contact us at <a href="mailto:boreshnavard [dot] 1 [at] osu [dot] edu" target="_blank">boreshnavard [dot] 1 [at] osu [dot] edu</a>.<br>
+		  Design and source code of this website was taken <a href="https://osupcvlab.github.io/ERDES-3D/" target="_bl">from here</a>.
 		</p>
          
       </div>
