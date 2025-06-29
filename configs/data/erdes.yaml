@@ -1,0 +1,7 @@
+train_csv: "put the path to train.csv here"
+val_csv: "put the path to validation.csv here"
+test_csv: "put the path to test.csv here"
+size: [128, 128, 128]
+batch_size: 4
+num_workers: 0
+pin_memory: True
