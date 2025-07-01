@@ -9,21 +9,16 @@ def get_file_list(root, label, rel_dir):
     return [(f, label) for f in files]
 
 def main():
-    root = 'data/Dataset'
+    root = 'src/data/Dataset'
     data = []
 
-    # Normal
-    data += get_file_list(root, 'Normal', 'Normal')
+    # Macula Detached
+    data += get_file_list(root, 'Macula_Detached', 'Macula_Detached/Bilateral')
+    data += get_file_list(root, 'Macula_Detached', 'Macula_Detached/TD')
 
-    # RD (all videos under these folders)
-    rd_dirs = [
-        'Macula_Detached/Bilateral',
-        'Macula_Detached/TD',
-        'Macula_Intact/ND',
-        'Macula_Intact/TD'
-    ]
-    for d in rd_dirs:
-        data += get_file_list(root, 'RD', d)
+    # Macula Intact
+    data += get_file_list(root, 'Macula_Intact', 'Macula_Intact/ND')
+    data += get_file_list(root, 'Macula_Intact', 'Macula_Intact/TD')
 
     # Create DataFrame
     df = pd.DataFrame(data, columns=['file_path', 'label'])
@@ -33,9 +28,9 @@ def main():
     val, test = train_test_split(temp, test_size=0.2, stratify=temp['label'], random_state=42)
 
     # Save
-    train.to_csv('data/normal_vs_rd_train.csv', index=False)
-    val.to_csv('data/normal_vs_rd_val.csv', index=False)
-    test.to_csv('data/normal_vs_rd_test.csv', index=False)
+    train.to_csv('src/data/macula_detached_vs_intact_train.csv', index=False)
+    val.to_csv('src/data/macula_detached_vs_intact_val.csv', index=False)
+    test.to_csv('src/data/macula_detached_vs_intact_test.csv', index=False)
 
 if __name__ == '__main__':
     main()
