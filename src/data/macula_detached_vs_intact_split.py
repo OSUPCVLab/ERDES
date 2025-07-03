@@ -9,7 +9,7 @@ def get_file_list(root, label, rel_dir):
     return [(f, label) for f in files]
 
 def main():
-    root = 'src/data/Dataset'
+    root = 'data/Dataset'
     data = []
 
     # Macula Detached
@@ -21,16 +21,16 @@ def main():
     data += get_file_list(root, 'Macula_Intact', 'Macula_Intact/TD')
 
     # Create DataFrame
-    df = pd.DataFrame(data, columns=['file_path', 'label'])
+    df = pd.DataFrame(data, columns=['path', 'label'])
 
     # Shuffle and split
     train, temp = train_test_split(df, test_size=0.28, stratify=df['label'], random_state=42)
     val, test = train_test_split(temp, test_size=0.2, stratify=temp['label'], random_state=42)
 
     # Save
-    train.to_csv('src/data/macula_detached_vs_intact_train.csv', index=False)
-    val.to_csv('src/data/macula_detached_vs_intact_val.csv', index=False)
-    test.to_csv('src/data/macula_detached_vs_intact_test.csv', index=False)
+    train.to_csv('data/macula_detached_vs_intact_train.csv', index=False)
+    val.to_csv('data/macula_detached_vs_intact_val.csv', index=False)
+    test.to_csv('data/macula_detached_vs_intact_test.csv', index=False)
 
 if __name__ == '__main__':
     main()

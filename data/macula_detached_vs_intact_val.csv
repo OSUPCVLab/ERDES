@@ -1,4 +1,4 @@
-file_path,label
+path,label
 data/Dataset/Macula_Detached/Bilateral/755384_00079.mp4,Macula_Detached
 data/Dataset/Macula_Detached/TD/405744_00037.mp4,Macula_Detached
 data/Dataset/Macula_Intact/TD/102769_00095.mp4,Macula_Intact
