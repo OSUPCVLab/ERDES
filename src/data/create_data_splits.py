@@ -52,12 +52,19 @@ def collect_files(root, rel_dirs, label):
 
 
 def split_and_save(df, out_prefix):
-    """Stratified split (72 / 22.4 / 5.6) and write three CSVs."""
-    train, temp = train_test_split(
-        df, test_size=0.28, stratify=df["label"], random_state=42
+    """Stratified split (72 / 8 / 20) and write three CSVs."""
+    train_val, test = train_test_split(
+    df,
+    test_size=0.20,    
+    stratify=df["label"],
+    random_state=42,
     )
-    val, test = train_test_split(
-        temp, test_size=0.20, stratify=temp["label"], random_state=42
+
+    train, val = train_test_split(
+        train_val,
+        test_size=0.10,
+        stratify=train_val["label"],
+        random_state=42,
     )
 
     train.to_csv("{}_train.csv".format(out_prefix), index=False)
