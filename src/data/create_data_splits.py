@@ -15,7 +15,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # ----------------------------------------------------------------------
-# 1.  Configure tasks here:  {task_name: {int_label: [relative dirs]}}
+# Configure tasks here:  {task_name: {int_label: [relative dirs]}}
 # ----------------------------------------------------------------------
 TASKS = {
     "normal_vs_rd": {
@@ -39,9 +39,6 @@ TASKS = {
     },
 }
 
-# ----------------------------------------------------------------------
-# 2.  Helpers
-# ----------------------------------------------------------------------
 def collect_files(root, rel_dirs, label):
     """Return list of (file_path, label) for all .mp4 files under rel_dirs."""
     rows = []
@@ -51,7 +48,7 @@ def collect_files(root, rel_dirs, label):
     return rows
 
 
-def split_and_save(df, out_prefix):
+def split_and_save(df, task_name):
     """Stratified split (72 / 8 / 20) and write three CSVs."""
     train_val, test = train_test_split(
     df,
@@ -67,17 +64,16 @@ def split_and_save(df, out_prefix):
         random_state=42,
     )
 
-    train.to_csv("{}_train.csv".format(out_prefix), index=False)
-    val.to_csv("{}_val.csv".format(out_prefix), index=False)
-    test.to_csv("{}_test.csv".format(out_prefix), index=False)
+    splits_dir = os.path.join("data", "splits")
+    out_dir = os.path.join(splits_dir, task_name)
+    os.makedirs(out_dir, exist_ok=True)
 
-    print("[✓] {}  →  {} train / {} val / {} test".format(
-        out_prefix, len(train), len(val), len(test))
-    )
+    train.to_csv(os.path.join(out_dir, "train.csv"), index=False)
+    val.to_csv(os.path.join(out_dir, "val.csv"), index=False)
+    test.to_csv(os.path.join(out_dir, "test.csv"), index=False)
 
-# ----------------------------------------------------------------------
-# 3.  Main
-# ----------------------------------------------------------------------
+    print(f"[✓] {task_name:25s} → {len(train):4d} train / {len(val):4d} val / {len(test):4d} test (saved to ERDES-3D/data/splits/{task_name})")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default="data/Dataset",
@@ -98,7 +94,7 @@ def main():
             continue
 
         df = pd.DataFrame(rows, columns=["path", "label"])
-        split_and_save(df, os.path.join("data", task))
+        split_and_save(df, task)
 
 
 if __name__ == "__main__":
