@@ -61,7 +61,7 @@ class ModelModule(LightningModule):
         self.net = net
 
         # loss function
-        self.criterion = torch.nn.binary_cross_entropy_with_logits()
+        self.criterion = torch.nn.BCEWithLogitsLoss() 
 
         # metric objects for calculating and averaging accuracy across batches
         self.train_acc = Accuracy(task="binary", threshold=0.5)
@@ -106,9 +106,10 @@ class ModelModule(LightningModule):
         """
         x, y = batch
         logits = self.forward(x)
-        x, y = self.prepare_for_bce_loss(x, y)
+        logits, y = self.prepare_for_bce_loss(logits, y)
         loss = self.criterion(logits, y)
-        preds = torch.argmax(logits, dim=1)
+        probs = torch.sigmoid(logits)
+        preds = (probs >= 0.5).int().view(-1)   # shape (B,)
         return loss, preds, y
 
     def training_step(
