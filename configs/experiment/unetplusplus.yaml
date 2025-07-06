@@ -8,6 +8,7 @@ defaults:
   - override /model: unetplusplus
   - override /callbacks: default
   - override /trainer: default
+  - override /logger: tensorboard
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
@@ -24,16 +25,11 @@ trainer:
 model:
   optimizer:
     lr: 0.002
-  net:
-    in_channel: null
   compile: false
 
 data:
-  batch_size: 64
+  batch_size: 48
 
 logger:
-  wandb:
-    tags: ${tags}
-    group: "unet++"
-  aim:
-    experiment: "unet++"
+  tensorboard:
+    prefix: "unet++"
