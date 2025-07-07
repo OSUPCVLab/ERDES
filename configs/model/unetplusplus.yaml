@@ -1,4 +1,4 @@
-_target_: src.models.unetplusplus_module.UnetPlusPlusLitModule
+_target_: src.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam

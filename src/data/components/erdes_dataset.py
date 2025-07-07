@@ -40,6 +40,10 @@ class VideoDataset(Dataset):
         video = video.float() / 255.0  # [T, H, W, C]
         video = video.permute(3, 0, 1, 2)  # [C, D, H, W]
 
+        # If video has 3 channels, convert to grayscale by averaging
+        if video.shape[0] == 3:
+            video = video.mean(dim=0, keepdim=True)  # [1, D, H, W]
+
         # Apply transforms
         video = self.resize_tf(video)
 

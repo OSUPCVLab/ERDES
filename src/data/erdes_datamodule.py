@@ -3,7 +3,9 @@ from typing import Any, Dict, Optional, Tuple
 import torch
 from lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
-from torchvision.transforms import transforms
+#from torchvision.transforms import transforms
+#from src.data.components.utils import resize
+from src.data.components.erdes_dataset import VideoDataset
 
 
 class ERDESDataModule(LightningDataModule):
@@ -24,7 +26,7 @@ class ERDESDataModule(LightningDataModule):
         self.train_csv = train_csv
         self.val_csv = val_csv
         self.test_csv = test_csv
-        self.transforms = data_augmentation(size)
+        #self.transforms = resize(size)
 
         self.data_train: Optional[Dataset] = None
         self.data_val: Optional[Dataset] = None
@@ -43,13 +45,13 @@ class ERDESDataModule(LightningDataModule):
             self.batch_size_per_device = self.hparams.batch_size // self.trainer.world_size
 
         if not self.data_train:
-            self.data_train = VideoDataset(csv_path=self.train_csv, size=self.size, transform=self.transforms)
+            self.data_train = VideoDataset(csv_path=self.train_csv, size=self.size)
 
         if not self.data_val:
-            self.data_val = VideoDataset(csv_path=self.val_csv, size=self.size, transform=self.transforms)
+            self.data_val = VideoDataset(csv_path=self.val_csv, size=self.size)
 
         if not self.data_test:
-            self.data_test = VideoDataset(csv_path=self.test_csv, size=self.size, transform=self.transforms)
+            self.data_test = VideoDataset(csv_path=self.test_csv, size=self.size)
 
     def train_dataloader(self) -> DataLoader[Any]:
         return DataLoader(
@@ -79,7 +81,7 @@ class ERDESDataModule(LightningDataModule):
         )
 
 if __name__ == "__main__":
-    datamodule = VideoDataModule(
+    datamodule = ERDESDataModule(
         train_csv="train.csv",
         val_csv="val.csv",
         test_csv="test.csv",
