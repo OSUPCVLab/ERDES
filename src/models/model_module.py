@@ -147,7 +147,12 @@ class ModelModule(LightningModule):
 
     def on_train_epoch_end(self) -> None:
         "Lightning hook that is called when a training epoch ends."
-        pass
+        print(
+            f"Train Loss: {self.train_loss.compute():.3f}, "
+            f"Train Acc: {self.train_acc.compute():.3f}, "
+            f"Train Precision: {self.train_precision.compute():.3f}, "
+            f"Train Recall: {self.train_recall.compute():.3f}"
+        )
 
     def validation_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single validation step on a batch of data from the validation set.
@@ -175,6 +180,12 @@ class ModelModule(LightningModule):
         # log `val_acc_best` as a value through `.compute()` method, instead of as a metric object
         # otherwise metric would be reset by lightning after each epoch
         self.log("val/acc_best", self.val_acc_best.compute(), sync_dist=True, prog_bar=True)
+        print(
+            f"Val Loss: {self.val_loss.compute():.3f}, "
+            f"Val Acc: {self.val_acc.compute():.3f}, "
+            f"Val Precision: {self.val_precision.compute():.3f}, "
+            f"Val Recall: {self.val_recall.compute():.3f}"
+        )
 
     def test_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single test step on a batch of data from the test set.
@@ -197,7 +208,12 @@ class ModelModule(LightningModule):
 
     def on_test_epoch_end(self) -> None:
         """Lightning hook that is called when a test epoch ends."""
-        pass
+        print(
+            f"Test Loss: {self.test_loss.compute():.3f}, "
+            f"Test Acc: {self.test_acc.compute():.3f}, "
+            f"Test Precision: {self.test_precision.compute():.3f}, "
+            f"Test Recall: {self.test_recall.compute():.3f}"
+        )
 
     def setup(self, stage: str) -> None:
         """Lightning hook that is called at the beginning of fit (train + validate), validate,
