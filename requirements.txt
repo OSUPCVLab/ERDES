@@ -27,3 +27,4 @@ scikit-learn    # data splitting
 pytorchvideo    
 monai
 tensorboard
+einops
