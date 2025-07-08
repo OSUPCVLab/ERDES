@@ -304,7 +304,7 @@ class ViTClassifier(nn.Module):
             pos_embed_type=pos_embed_type,
             dropout_rate=dropout_rate,
             spatial_dims=spatial_dims,
-            post_activation=post_activation,
+            #post_activation=post_activation,
             qkv_bias=qkv_bias,
             save_attn=save_attn,
         )
