@@ -4,7 +4,7 @@ import torch
 from lightning import LightningModule
 from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
-
+from torchmetrics.classification import Precision, Recall
 
 class ModelModule(LightningModule):
     """Example of a `LightningModule` for MNIST classification.
@@ -76,6 +76,14 @@ class ModelModule(LightningModule):
         # for tracking best so far validation accuracy
         self.val_acc_best = MaxMetric()
 
+        # for precision and recall metric
+        self.train_precision = Precision(task="binary", threshold=0.5)
+        self.train_recall = Recall(task="binary", threshold=0.5)
+        self.val_precision = Precision(task="binary", threshold=0.5)
+        self.val_recall = Recall(task="binary", threshold=0.5)
+        self.test_precision = Precision(task="binary", threshold=0.5)
+        self.test_recall = Recall(task="binary", threshold=0.5)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Perform a forward pass through the model `self.net`.
 
@@ -127,8 +135,12 @@ class ModelModule(LightningModule):
         # update and log metrics
         self.train_loss(loss)
         self.train_acc(preds, targets)
+        self.train_precision(preds, targets)
+        self.train_recall(preds, targets)
         self.log("train/loss", self.train_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("train/acc", self.train_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/precision", self.train_precision, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/recall", self.train_recall, on_step=False, on_epoch=True, prog_bar=True)
 
         # return loss or backpropagation will fail
         return loss
@@ -149,8 +161,12 @@ class ModelModule(LightningModule):
         # update and log metrics
         self.val_loss(loss)
         self.val_acc(preds, targets)
+        self.val_precision(preds, targets)
+        self.val_recall(preds, targets)
         self.log("val/loss", self.val_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("val/acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/precision", self.val_precision, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/recall", self.val_recall, on_step=False, on_epoch=True, prog_bar=True)
 
     def on_validation_epoch_end(self) -> None:
         "Lightning hook that is called when a validation epoch ends."
@@ -172,8 +188,12 @@ class ModelModule(LightningModule):
         # update and log metrics
         self.test_loss(loss)
         self.test_acc(preds, targets)
+        self.test_precision(preds, targets)
+        self.test_recall(preds, targets)
         self.log("test/loss", self.test_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("test/acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("test/precision", self.test_precision, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("test/recall", self.test_recall, on_step=False, on_epoch=True, prog_bar=True)
 
     def on_test_epoch_end(self) -> None:
         """Lightning hook that is called when a test epoch ends."""
