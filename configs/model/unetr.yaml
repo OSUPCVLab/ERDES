@@ -1,4 +1,4 @@
-_target_: src.models.unetr_module.UnetRLitModule
+_target_: src.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam

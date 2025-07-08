@@ -19,7 +19,7 @@ seed: 42
 
 trainer:
   min_epochs: 0
-  max_epochs: 50
+  max_epochs: 1
   gradient_clip_val: 0.5
 
 model:
@@ -29,6 +29,9 @@ model:
 
 data:
   batch_size: 48
+  train_csv: "data/splits/normal_vs_rd/train.csv"
+  val_csv: "data/splits/normal_vs_rd/val.csv"
+  test_csv: "data/splits/normal_vs_rd/test.csv"
 
 logger:
   tensorboard:
@@ -53,3 +56,7 @@ callbacks:
     verbose: True
   
   rich_progress_bar: null # Added this for tmux output printing
+
+hydra:
+  run:
+    dir: logs/train/runs/unetplusplus_normal_vs_rd/${now:%Y-%m-%d_%H-%M-%S}

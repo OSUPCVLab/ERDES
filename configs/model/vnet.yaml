@@ -1,4 +1,4 @@
-_target_: src.models.vnet_module.VNetLitModule
+_target_: src.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam
