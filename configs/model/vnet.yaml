@@ -15,7 +15,7 @@ scheduler:
 
 net:
   _target_: src.models.components.factory.build_3d_architecture
-  model_name: vent
+  model_name: vnet
 
 # compile model for faster training with pytorch 2.0
 compile: false
