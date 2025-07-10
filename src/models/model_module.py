@@ -154,7 +154,7 @@ class ModelModule(LightningModule):
 
     def on_train_epoch_end(self) -> None:
         "Lightning hook that is called when a training epoch ends."
-        print(
+        self.print(
             f"Epoch {self.current_epoch}: "
             f"Train Loss: {self.train_loss.compute():.3f}, "
             f"Train Acc: {self.train_acc.compute():.3f}, "
@@ -191,7 +191,7 @@ class ModelModule(LightningModule):
         # log `val_acc_best` as a value through `.compute()` method, instead of as a metric object
         # otherwise metric would be reset by lightning after each epoch
         self.log("val/acc_best", self.val_acc_best.compute(), sync_dist=True, prog_bar=True)
-        print(
+        self.print(
             f"Epoch {self.current_epoch}: "
             f"Val Loss: {self.val_loss.compute():.3f}, "
             f"Val Acc: {self.val_acc.compute():.3f}, "
@@ -223,7 +223,7 @@ class ModelModule(LightningModule):
 
     def on_test_epoch_end(self) -> None:
         """Lightning hook that is called when a test epoch ends."""
-        print(
+        self.print(
             f"Epoch {self.current_epoch}: "
             f"Test Loss: {self.test_loss.compute():.3f}, "
             f"Test Acc: {self.test_acc.compute():.3f}, "
