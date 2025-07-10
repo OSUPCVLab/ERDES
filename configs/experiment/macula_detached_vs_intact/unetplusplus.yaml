@@ -19,7 +19,7 @@ seed: 42
 
 trainer:
   min_epochs: 0
-  max_epochs: 1
+  max_epochs: 50
   gradient_clip_val: 0.5
 
 model:
@@ -29,9 +29,9 @@ model:
 
 data:
   batch_size: 48
-  train_csv: "data/splits/normal_vs_rd/train.csv"
-  val_csv: "data/splits/normal_vs_rd/val.csv"
-  test_csv: "data/splits/normal_vs_rd/test.csv"
+  train_csv: "data/splits/macula_detached_vs_intact/train.csv"
+  val_csv: "data/splits/macula_detached_vs_intact/val.csv"
+  test_csv: "data/splits/macula_detached_vs_intact/test.csv"
 
 logger:
   tensorboard:
@@ -59,4 +59,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/unetplusplus_normal_vs_rd/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/macula_detached_vs_intact/unetplusplus/${now:%Y-%m-%d_%H-%M-%S}

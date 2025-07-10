@@ -1,4 +1,4 @@
-_target_: src.models.resnet3d_module.ResNet3DLitModule
+_target_: src.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam

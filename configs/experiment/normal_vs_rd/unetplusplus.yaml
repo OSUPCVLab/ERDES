@@ -19,7 +19,7 @@ seed: 42
 
 trainer:
   min_epochs: 0
-  max_epochs: 1
+  max_epochs: 50
   gradient_clip_val: 0.5
 
 model:
@@ -59,4 +59,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/unetplusplus_normal_vs_rd/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/normal_vs_rd/unetplusplus/${now:%Y-%m-%d_%H-%M-%S}

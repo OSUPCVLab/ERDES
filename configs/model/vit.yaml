@@ -1,4 +1,4 @@
-_target_: src.models.vit_module.ViTLitModule
+_target_: src.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam

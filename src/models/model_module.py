@@ -4,7 +4,7 @@ import torch
 from lightning import LightningModule
 from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
-
+from torchmetrics.classification import Precision, Recall, Specificity
 
 class ModelModule(LightningModule):
     """Example of a `LightningModule` for MNIST classification.
@@ -76,6 +76,19 @@ class ModelModule(LightningModule):
         # for tracking best so far validation accuracy
         self.val_acc_best = MaxMetric()
 
+        # for precision, recall (sensitivity), specificity metric
+        self.train_precision = Precision(task="binary", threshold=0.5)
+        self.train_recall = Recall(task="binary", threshold=0.5)
+        self.train_specificity = Specificity(task="binary", threshold=0.5)
+
+        self.val_precision = Precision(task="binary", threshold=0.5)
+        self.val_recall = Recall(task="binary", threshold=0.5)
+        self.val_specificity = Specificity(task="binary", threshold=0.5)
+
+        self.test_precision = Precision(task="binary", threshold=0.5)
+        self.test_recall = Recall(task="binary", threshold=0.5)
+        self.test_specificity = Specificity(task="binary", threshold=0.5)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Perform a forward pass through the model `self.net`.
 
@@ -127,15 +140,28 @@ class ModelModule(LightningModule):
         # update and log metrics
         self.train_loss(loss)
         self.train_acc(preds, targets)
+        self.train_precision(preds, targets)
+        self.train_recall(preds, targets)
+        self.train_specificity(preds, targets)
         self.log("train/loss", self.train_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("train/acc", self.train_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/precision", self.train_precision, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/recall", self.train_recall, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train/specificity", self.train_specificity, on_step=False, on_epoch=True, prog_bar=True)
 
         # return loss or backpropagation will fail
         return loss
 
     def on_train_epoch_end(self) -> None:
         "Lightning hook that is called when a training epoch ends."
-        pass
+        print(
+            f"Epoch {self.current_epoch}: "
+            f"Train Loss: {self.train_loss.compute():.3f}, "
+            f"Train Acc: {self.train_acc.compute():.3f}, "
+            f"Train Precision: {self.train_precision.compute():.3f}, "
+            f"Train Recall: {self.train_recall.compute():.3f}, "
+            f"Train Specificity: {self.train_specificity.compute():.3f}, "
+        )
 
     def validation_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single validation step on a batch of data from the validation set.
@@ -149,8 +175,14 @@ class ModelModule(LightningModule):
         # update and log metrics
         self.val_loss(loss)
         self.val_acc(preds, targets)
+        self.val_precision(preds, targets)
+        self.val_recall(preds, targets)
+        self.val_specificity(preds, targets)
         self.log("val/loss", self.val_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("val/acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/precision", self.val_precision, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/recall", self.val_recall, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("val/specificity", self.val_specificity, on_step=False, on_epoch=True, prog_bar=True)
 
     def on_validation_epoch_end(self) -> None:
         "Lightning hook that is called when a validation epoch ends."
@@ -159,6 +191,14 @@ class ModelModule(LightningModule):
         # log `val_acc_best` as a value through `.compute()` method, instead of as a metric object
         # otherwise metric would be reset by lightning after each epoch
         self.log("val/acc_best", self.val_acc_best.compute(), sync_dist=True, prog_bar=True)
+        print(
+            f"Epoch {self.current_epoch}: "
+            f"Val Loss: {self.val_loss.compute():.3f}, "
+            f"Val Acc: {self.val_acc.compute():.3f}, "
+            f"Val Precision: {self.val_precision.compute():.3f}, "
+            f"Val Recall: {self.val_recall.compute():.3f}, "
+            f"Val Specificity: {self.val_specificity.compute():.3f}, "
+        )
 
     def test_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single test step on a batch of data from the test set.
@@ -172,12 +212,25 @@ class ModelModule(LightningModule):
         # update and log metrics
         self.test_loss(loss)
         self.test_acc(preds, targets)
+        self.test_precision(preds, targets)
+        self.test_recall(preds, targets)
+        self.test_specificity(preds, targets)
         self.log("test/loss", self.test_loss, on_step=False, on_epoch=True, prog_bar=True)
         self.log("test/acc", self.test_acc, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("test/precision", self.test_precision, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("test/recall", self.test_recall, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("test/specificity", self.test_specificity, on_step=False, on_epoch=True, prog_bar=True)
 
     def on_test_epoch_end(self) -> None:
         """Lightning hook that is called when a test epoch ends."""
-        pass
+        print(
+            f"Epoch {self.current_epoch}: "
+            f"Test Loss: {self.test_loss.compute():.3f}, "
+            f"Test Acc: {self.test_acc.compute():.3f}, "
+            f"Test Precision: {self.test_precision.compute():.3f}, "
+            f"Test Recall: {self.test_recall.compute():.3f}, "
+            f"Test Specificity: {self.test_specificity.compute():.3f}, "
+        )
 
     def setup(self, stage: str) -> None:
         """Lightning hook that is called at the beginning of fit (train + validate), validate,
