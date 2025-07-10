@@ -37,7 +37,7 @@ class VideoDataset(Dataset):
         video, _, _ = io.read_video(video_path, pts_unit='sec')
 
         # Convert to float tensor and permute to [C, D, H, W]
-        video = video.float() / 255.0  # [T, H, W, C]
+        video = video.float() # [T, H, W, C]
         video = video.permute(3, 0, 1, 2)  # [C, D, H, W]
 
         # If video has 3 channels, convert to grayscale by averaging
@@ -46,6 +46,9 @@ class VideoDataset(Dataset):
 
         # Apply transforms
         video = self.resize_tf(video)
+        
+        # Normalize
+        video = video / 255.0  
 
         label = torch.tensor(label, dtype=torch.float32)
 
