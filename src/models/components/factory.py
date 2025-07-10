@@ -26,6 +26,7 @@ class EfficientNet3DBuilder(ArchitectureBuilder):
         from monai.networks.nets import EfficientNetBN
         return EfficientNetBN(
             "efficientnet-b0",
+            pretrained=False,
             spatial_dims=3,
             in_channels=1,
             num_classes=self.num_classes,
@@ -48,7 +49,7 @@ class ResNet3DBuilder(ArchitectureBuilder):
 class SENet3DBuilder(ArchitectureBuilder):
     def build(self):
         from monai.networks.nets import SENet154
-        return SENet154(spatial_dims=3, in_channels=1, num_classes=self.num_classes)
+        return SENet154(pretrained=False, spatial_dims=3, in_channels=1, num_classes=self.num_classes)
 
 # Unet3D Builder
 class Unet3DBuilder(ArchitectureBuilder):
