@@ -175,6 +175,8 @@ if __name__ == "__main__":
     ).to("cuda:0")
 
     data = torch.randn(1, 1, 96, 128, 128).to("cuda:0")
+    out = model(data)
+    print(out.shape)
 
     trainable_params = sum([p.numel() for p in model.parameters() if p.requires_grad])
     print(f"number of trainable parameters: {trainable_params}")

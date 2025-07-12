@@ -2,7 +2,7 @@ _target_: src.data.erdes_datamodule.ERDESDataModule
 train_csv: "data/splits/normal_vs_rd/train.csv"
 val_csv: "data/splits/normal_vs_rd/val.csv"
 test_csv: "data/splits/normal_vs_rd/test.csv"
-size: [128, 128, 128]
+size: [96, 128, 128]
 batch_size: 4
 num_workers: 0
 pin_memory: True
