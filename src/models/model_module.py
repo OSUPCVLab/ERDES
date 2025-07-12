@@ -127,6 +127,14 @@ class ModelModule(LightningModule):
         probs = torch.sigmoid(logits)
         preds = (probs >= 0.5).int().view(-1)   # shape (B,)
         return loss, preds, y
+    
+    def on_train_epoch_start(self) -> None:
+        self.train_loss.reset()
+        self.train_acc.reset()
+        self.train_precision.reset()
+        self.train_sensitivity.reset()
+        self.train_specificity.reset()
+        self.train_f1.reset()
 
     def training_step(
         self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int
@@ -168,6 +176,15 @@ class ModelModule(LightningModule):
             f"Train Specificity: {self.train_specificity.compute():.3f}, "
             f"Train F1: {self.train_f1.compute():.3f}, "
         )
+    
+    def on_validation_epoch_start(self) -> None:
+        self.val_loss.reset()
+        self.val_acc.reset()
+        self.val_precision.reset()
+        self.val_sensitivity.reset()
+        self.val_specificity.reset()
+        self.val_f1.reset()
+
 
     def validation_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single validation step on a batch of data from the validation set.
@@ -208,6 +225,14 @@ class ModelModule(LightningModule):
             f"Val Specificity: {self.val_specificity.compute():.3f}, "
             f"Val F1: {self.val_f1.compute():.3f}, "
         )
+    
+    def on_test_epoch_start(self) -> None:
+        self.test_loss.reset()
+        self.test_acc.reset()
+        self.test_precision.reset()
+        self.test_sensitivity.reset()
+        self.test_specificity.reset()
+        self.test_f1.reset()
 
     def test_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single test step on a batch of data from the test set.
