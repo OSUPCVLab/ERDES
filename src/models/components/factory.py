@@ -92,7 +92,7 @@ class VNetBuilder(ArchitectureBuilder):
 class UnetrBuilder(ArchitectureBuilder):
     def build(self):
         from .cls_model import UnetrClassifier
-        img_size = (128, 128, 128)
+        img_size = (96, 128, 128)
         return UnetrClassifier(
             in_channels=1,
             num_classes=self.num_classes,
@@ -103,7 +103,7 @@ class UnetrBuilder(ArchitectureBuilder):
 class ViTBuilder(ArchitectureBuilder):
     def build(self):
         from .cls_model import ViTClassifier
-        img_size = (128, 128, 128)
+        img_size = (96, 128, 128)
         return ViTClassifier(
             in_channels=1,
             img_size=img_size,

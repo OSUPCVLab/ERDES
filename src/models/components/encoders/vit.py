@@ -110,3 +110,17 @@ class ViTEncoder(nn.Module):
             hidden_states_out.append(x)
         feat = self.norm(x)
         return feat
+
+if __name__ == "__main__":
+    model = ViTEncoder(
+        in_channels=1,
+        img_size=(96, 128, 128),
+        patch_size=7,
+    ).to("cuda:0")
+    data = torch.randn(1, 1, 96, 128, 128).to("cuda:0")
+    out = model(data)
+    print(out.shape)
+
+    trainable_params = sum([p.numel() for p in model.parameters() if p.requires_grad])
+    print(f"number of trainable parameters: {trainable_params}")
+    print(model(data).shape) # [1, 256, 6, 8, 8]
