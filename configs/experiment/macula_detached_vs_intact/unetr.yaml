@@ -19,12 +19,13 @@ seed: 42
 
 trainer:
   min_epochs: 0
-  max_epochs: 10
-  gradient_clip_val: 0.5
+  max_epochs: 50
+  gradient_clip_val: 0.0
 
 model:
   optimizer:
     lr: 1.5e-05
+  scheduler: null
   compile: false
 
 data:
@@ -51,9 +52,9 @@ callbacks:
     monitor: "val/acc"
     mode: "max"
     save_top_k: 1          # Save top 1 best models
-    save_last: True         # Always save last epoch
-    auto_insert_metric_name: False
-    verbose: True
+    save_last: true         # Always save last epoch
+    auto_insert_metric_name: false
+    verbose: true
   
   rich_progress_bar: null # Added this for tmux output printing
 

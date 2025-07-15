@@ -20,7 +20,7 @@ seed: 42
 trainer:
   min_epochs: 0
   max_epochs: 50
-  gradient_clip_val: 0.5
+  gradient_clip_val: 0.0
 
 model:
   optimizer:
@@ -28,7 +28,7 @@ model:
   compile: false
 
 data:
-  batch_size: 96
+  batch_size: 48
   train_csv: "data/splits/normal_vs_rd/train.csv"
   val_csv: "data/splits/normal_vs_rd/val.csv"
   test_csv: "data/splits/normal_vs_rd/test.csv"
@@ -38,12 +38,12 @@ logger:
     prefix: "efficientnet"
 
 callbacks:
-  early_stopping:
-    monitor: "val/acc"  # Monitor validation accuracy
-    patience: 10        # Stop after 10 epochs without improvement
-    mode: "max"         # Higher accuracy is better
-    verbose: True       # Print early stopping messages
-    min_delta: 0.001    # Minimum improvement threshold
+  #early_stopping:
+    #monitor: "val/acc"  # Monitor validation accuracy
+    #patience: 10        # Stop after 10 epochs without improvement
+    #mode: "max"         # Higher accuracy is better
+    #verbose: True       # Print early stopping messages
+    #min_delta: 0.001    # Minimum improvement threshold
   
   model_checkpoint:
     dirpath: ${paths.output_dir}/checkpoints/efficientnet

@@ -20,11 +20,12 @@ seed: 42
 trainer:
   min_epochs: 0
   max_epochs: 50
-  gradient_clip_val: 0.5
+  gradient_clip_val: 0.0
 
 model:
   optimizer:
     lr: 1.5e-05
+  scheduler: null
   compile: false
 
 data:
@@ -38,12 +39,12 @@ logger:
     prefix: "vit"
 
 callbacks:
-  early_stopping:
-    monitor: "val/acc"  # Monitor validation accuracy
-    patience: 10        # Stop after 10 epochs without improvement
-    mode: "max"         # Higher accuracy is better
-    verbose: True       # Print early stopping messages
-    min_delta: 0.001    # Minimum improvement threshold
+  #early_stopping:
+    #monitor: "val/acc"  # Monitor validation accuracy
+    #patience: 10        # Stop after 10 epochs without improvement
+    #mode: "max"         # Higher accuracy is better
+    #verbose: True       # Print early stopping messages
+    #min_delta: 0.001    # Minimum improvement threshold
   
   model_checkpoint:
     dirpath: ${paths.output_dir}/checkpoints/vit
@@ -51,9 +52,9 @@ callbacks:
     monitor: "val/acc"
     mode: "max"
     save_top_k: 1          # Save top 1 best models
-    save_last: True         # Always save last epoch
-    auto_insert_metric_name: False
-    verbose: True
+    save_last: true         # Always save last epoch
+    auto_insert_metric_name: false
+    verbose: true
   
   rich_progress_bar: null # Added this for tmux output printing
 
