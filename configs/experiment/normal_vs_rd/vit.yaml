@@ -24,7 +24,7 @@ trainer:
 
 model:
   optimizer:
-    lr: 0.002
+    lr: 1.5e-05
   compile: false
 
 data:
