@@ -189,12 +189,8 @@ class SwinUnetrEncoder(nn.Module):
         if not torch.jit.is_scripting():
             self._check_input_size(x_in.shape[2:])
         hidden_states_out = self.swinViT(x_in, self.normalize)
-        enc0 = self.encoder1(x_in)
-        enc1 = self.encoder2(hidden_states_out[0])
-        enc2 = self.encoder3(hidden_states_out[1])
-        enc3 = self.encoder4(hidden_states_out[2])
-        enc4 = self.encoder10(hidden_states_out[4])
-        return enc4
+        last_token_embedding = hidden_states_out[-1]
+        return last_token_embedding
 
 if __name__ == "__main__":
     model = SwinUnetrEncoder(

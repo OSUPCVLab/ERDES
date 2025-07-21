@@ -29,7 +29,7 @@ model:
   compile: false
 
 data:
-  batch_size: 4
+  batch_size: 12
   train_csv: "data/splits/macula_detached_vs_intact/train.csv"
   val_csv: "data/splits/macula_detached_vs_intact/val.csv"
   test_csv: "data/splits/macula_detached_vs_intact/test.csv"
