@@ -15,8 +15,7 @@ from collections.abc import Sequence
 
 import torch.nn as nn
 
-from monai.networks.blocks.dynunet_block import UnetOutBlock
-from monai.networks.blocks.unetr_block import UnetrBasicBlock, UnetrPrUpBlock, UnetrUpBlock
+from monai.networks.blocks.unetr_block import UnetrBasicBlock, UnetrPrUpBlock
 from monai.networks.nets.vit import ViT
 from monai.utils import ensure_tuple_rep
 
@@ -36,7 +35,7 @@ class UnetrEncoder(nn.Module):
         mlp_dim: int = 3072,
         num_heads: int = 12,
         proj_type: str = "conv",
-        norm_name: tuple | str = "instance",
+        norm_name: tuple | str = "batch",
         conv_block: bool = True,
         res_block: bool = True,
         dropout_rate: float = 0.0,
@@ -53,7 +52,7 @@ class UnetrEncoder(nn.Module):
             mlp_dim: dimension of feedforward layer. Defaults to 3072.
             num_heads: number of attention heads. Defaults to 12.
             proj_type: patch embedding layer type. Defaults to "conv".
-            norm_name: feature normalization type and arguments. Defaults to "instance".
+            norm_name: feature normalization type and arguments. Defaults to "batch".
             conv_block: if convolutional block is used. Defaults to True.
             res_block: if residual block is used. Defaults to True.
             dropout_rate: fraction of the input units to drop. Defaults to 0.0.
@@ -168,7 +167,7 @@ if __name__ == "__main__":
         mlp_dim = 3072,
         num_heads = 12,
         proj_type = "conv",
-        norm_name = "instance",
+        norm_name = "batch",
         conv_block = True,
         res_block = True,
         dropout_rate = 0.0,
