@@ -1,0 +1,63 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: erdes
+  - override /model: senet
+  - override /callbacks: default
+  - override /trainer: default
+  - override /logger: tensorboard
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["erdes", "senet"]
+
+seed: 42
+
+trainer:
+  min_epochs: 0
+  max_epochs: 50
+  gradient_clip_val: 0.0
+
+model:
+  optimizer:
+    lr: 1.5e-05
+  scheduler: null
+  compile: false
+
+data:
+  batch_size: 48
+  train_csv: "data/splits/normal_vs_rd/train.csv"
+  val_csv: "data/splits/normal_vs_rd/val.csv"
+  test_csv: "data/splits/normal_vs_rd/test.csv"
+
+logger:
+  tensorboard:
+    prefix: "senet"
+
+callbacks:
+  #early_stopping:
+    #monitor: "val/acc"  # Monitor validation accuracy
+    #patience: 10        # Stop after 10 epochs without improvement
+    #mode: "max"         # Higher accuracy is better
+    #verbose: True       # Print early stopping messages
+    #min_delta: 0.001    # Minimum improvement threshold
+  
+  model_checkpoint:
+    dirpath: ${paths.output_dir}/checkpoints/senet
+    filename: "senet_best_epoch_{epoch:03d}"
+    monitor: "val/acc"
+    mode: "max"
+    save_top_k: 1          # Save top 1 best models
+    save_last: true         # Always save last epoch
+    auto_insert_metric_name: false
+    verbose: true
+  
+  rich_progress_bar: null # Added this for tmux output printing
+
+hydra:
+  run:
+    dir: logs/train/runs/normal_vs_rd/senet/${now:%Y-%m-%d_%H-%M-%S}
