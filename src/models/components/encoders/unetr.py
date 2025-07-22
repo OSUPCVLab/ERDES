@@ -14,17 +14,18 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import torch.nn as nn
+
 from monai.networks.blocks.unetr_block import UnetrBasicBlock, UnetrPrUpBlock
 from monai.networks.nets.vit import ViT
 from monai.utils import ensure_tuple_rep
 
 
-# https://docs.monai.io/en/stable/networks.html#unetr
 class UnetrEncoder(nn.Module):
     """
     UNETR based on: "Hatamizadeh et al.,
     UNETR: Transformers for 3D Medical Image Segmentation <https://arxiv.org/abs/2103.10504>"
     """
+
     def __init__(
         self,
         in_channels: int,
@@ -33,7 +34,6 @@ class UnetrEncoder(nn.Module):
         hidden_size: int = 768,
         mlp_dim: int = 3072,
         num_heads: int = 12,
-        pos_embed: str = "conv",
         proj_type: str = "conv",
         norm_name: tuple | str = "batch",
         conv_block: bool = True,
@@ -52,7 +52,7 @@ class UnetrEncoder(nn.Module):
             mlp_dim: dimension of feedforward layer. Defaults to 3072.
             num_heads: number of attention heads. Defaults to 12.
             proj_type: patch embedding layer type. Defaults to "conv".
-            norm_name: feature normalization type and arguments. Defaults to "instance".
+            norm_name: feature normalization type and arguments. Defaults to "batch".
             conv_block: if convolutional block is used. Defaults to True.
             res_block: if residual block is used. Defaults to True.
             dropout_rate: fraction of the input units to drop. Defaults to 0.0.
@@ -135,11 +135,9 @@ class UnetrEncoder(nn.Module):
             conv_block=conv_block,
             res_block=res_block,
         )
-        self.bottle_neck_embed_dim = feature_size * 8
-
         self.proj_axes = (0, spatial_dims + 1) + tuple(d + 1 for d in range(spatial_dims))
         self.proj_view_shape = list(self.feat_size) + [self.hidden_size]
- 
+        self.bottle_neck_embed_dim = hidden_size
 
     def proj_feat(self, x):
         new_view = [x.size(0)] + self.proj_view_shape
@@ -149,10 +147,15 @@ class UnetrEncoder(nn.Module):
 
     def forward(self, x_in):
         x, hidden_states_out = self.vit(x_in)
+        enc1 = self.encoder1(x_in)
+        x2 = hidden_states_out[3]
+        enc2 = self.encoder2(self.proj_feat(x2))
+        x3 = hidden_states_out[6]
+        enc3 = self.encoder3(self.proj_feat(x3))
         x4 = hidden_states_out[9]
         enc4 = self.encoder4(self.proj_feat(x4))
-        return enc4
-
+        out = self.proj_feat(x)
+        return out
 
 if __name__ == "__main__":
     import torch 
@@ -163,9 +166,8 @@ if __name__ == "__main__":
         hidden_size = 768,
         mlp_dim = 3072,
         num_heads = 12,
-        pos_embed = "conv",
         proj_type = "conv",
-        norm_name = "instance",
+        norm_name = "batch",
         conv_block = True,
         res_block = True,
         dropout_rate = 0.0,
@@ -176,8 +178,7 @@ if __name__ == "__main__":
 
     data = torch.randn(1, 1, 96, 128, 128).to("cuda:0")
     out = model(data)
-    print(out.shape)
 
     trainable_params = sum([p.numel() for p in model.parameters() if p.requires_grad])
     print(f"number of trainable parameters: {trainable_params}")
-    print(model(data).shape) # [1, 128, 12, 16, 16]
+    print(model(data).shape) # [1, 768, 6, 8, 8]

@@ -20,11 +20,11 @@ seed: 42
 trainer:
   min_epochs: 0
   max_epochs: 50
-  gradient_clip_val: 0.5
+  gradient_clip_val: 0.0
 
 model:
   optimizer:
-    lr: 0.002
+    lr: 1.5e-05
   compile: false
 
 data:
@@ -38,12 +38,12 @@ logger:
     prefix: "unet3d"
 
 callbacks:
-  early_stopping:
-    monitor: "val/acc"  # Monitor validation accuracy
-    patience: 10        # Stop after 10 epochs without improvement
-    mode: "max"         # Higher accuracy is better
-    verbose: True       # Print early stopping messages
-    min_delta: 0.001    # Minimum improvement threshold
+  #early_stopping:
+    #monitor: "val/acc"  # Monitor validation accuracy
+    #patience: 10        # Stop after 10 epochs without improvement
+    #mode: "max"         # Higher accuracy is better
+    #verbose: True       # Print early stopping messages
+    #min_delta: 0.001    # Minimum improvement threshold
   
   model_checkpoint:
     dirpath: ${paths.output_dir}/checkpoints/unet3d

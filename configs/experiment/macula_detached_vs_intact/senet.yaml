@@ -5,7 +5,7 @@
 
 defaults:
   - override /data: erdes
-  - override /model: unetr
+  - override /model: senet
   - override /callbacks: default
   - override /trainer: default
   - override /logger: tensorboard
@@ -13,7 +13,7 @@ defaults:
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-tags: ["erdes", "unetr"]
+tags: ["erdes", "senet"]
 
 seed: 42
 
@@ -29,14 +29,14 @@ model:
   compile: false
 
 data:
-  batch_size: 96
+  batch_size: 48
   train_csv: "data/splits/macula_detached_vs_intact/train.csv"
   val_csv: "data/splits/macula_detached_vs_intact/val.csv"
   test_csv: "data/splits/macula_detached_vs_intact/test.csv"
 
 logger:
   tensorboard:
-    prefix: "unetr"
+    prefix: "senet"
 
 callbacks:
   #early_stopping:
@@ -47,8 +47,8 @@ callbacks:
     #min_delta: 0.001    # Minimum improvement threshold
   
   model_checkpoint:
-    dirpath: ${paths.output_dir}/checkpoints/unetr
-    filename: "unetr_best_epoch_{epoch:03d}"
+    dirpath: ${paths.output_dir}/checkpoints/senet
+    filename: "senet_best_epoch_{epoch:03d}"
     monitor: "val/acc"
     mode: "max"
     save_top_k: 1          # Save top 1 best models
@@ -60,4 +60,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/macula_detached_vs_intact/unetr/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/macula_detached_vs_intact/senet/${now:%Y-%m-%d_%H-%M-%S}
