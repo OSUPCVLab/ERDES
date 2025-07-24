@@ -137,7 +137,8 @@ class UnetrEncoder(nn.Module):
         )
         self.proj_axes = (0, spatial_dims + 1) + tuple(d + 1 for d in range(spatial_dims))
         self.proj_view_shape = list(self.feat_size) + [self.hidden_size]
-        self.bottle_neck_embed_dim = hidden_size
+
+        self.bottle_neck_embed_dim = (1 + 2 + 4 + 8) * feature_size
 
     def proj_feat(self, x):
         new_view = [x.size(0)] + self.proj_view_shape
@@ -145,16 +146,24 @@ class UnetrEncoder(nn.Module):
         x = x.permute(self.proj_axes).contiguous()
         return x
 
+
     def forward(self, x_in):
         x, hidden_states_out = self.vit(x_in)
         enc1 = self.encoder1(x_in)
+        enc1_out = torch.nn.functional.interpolate(enc1, scale_factor=1/8, mode='nearest')
+
         x2 = hidden_states_out[3]
         enc2 = self.encoder2(self.proj_feat(x2))
+        enc2_out = torch.nn.functional.interpolate(enc2, scale_factor=1/4, mode='nearest')
+
         x3 = hidden_states_out[6]
         enc3 = self.encoder3(self.proj_feat(x3))
+        enc3_out = torch.nn.functional.interpolate(enc3, scale_factor=1/2, mode='nearest')
+
         x4 = hidden_states_out[9]
         enc4 = self.encoder4(self.proj_feat(x4))
-        out = self.proj_feat(x)
+
+        out = torch.cat([enc1_out, enc2_out, enc3_out, enc4], dim=1)
         return out
 
 if __name__ == "__main__":
@@ -178,7 +187,6 @@ if __name__ == "__main__":
 
     data = torch.randn(1, 1, 96, 128, 128).to("cuda:0")
     out = model(data)
-
     trainable_params = sum([p.numel() for p in model.parameters() if p.requires_grad])
     print(f"number of trainable parameters: {trainable_params}")
-    print(model(data).shape) # [1, 768, 6, 8, 8]
+    print(model(data).shape) # [1, 214, 12, 16, 16]

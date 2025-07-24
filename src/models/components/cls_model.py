@@ -229,6 +229,7 @@ class UnetrClassifier(nn.Module):
             hidden_size = input_dim // 2,
             num_classes = num_classes,
         )
+        
     def forward(self, x):
         x = self.enc(x)
         x = self.cls(x)
