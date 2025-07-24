@@ -1,441 +1,0 @@
-[[36m2025-07-09 04:55:23,291[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Enforcing tags! <cfg.extras.enforce_tags=True>[0m
-[[36m2025-07-09 04:55:23,296[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Printing config tree with Rich! <cfg.extras.print_config=True>[0m
-CONFIG
-├── data
-│   └── _target_: src.data.erdes_datamodule.ERDESDataModule                                   
-│       train_csv: data/splits/macula_detached_vs_intact/train.csv                            
-│       val_csv: data/splits/macula_detached_vs_intact/val.csv                                
-│       test_csv: data/splits/macula_detached_vs_intact/test.csv                              
-│       size:                                                                                 
-│       - 128                                                                                 
-│       - 128                                                                                 
-│       - 128                                                                                 
-│       batch_size: 96                                                                        
-│       num_workers: 0                                                                        
-│       pin_memory: true                                                                      
-│                                                                                             
-├── model
-│   └── _target_: src.models.model_module.ModelModule                                         
-│       optimizer:                                                                            
-│         _target_: torch.optim.Adam                                                          
-│         _partial_: true                                                                     
-│         lr: 0.002                                                                           
-│         weight_decay: 0.0                                                                   
-│       scheduler:                                                                            
-│         _target_: torch.optim.lr_scheduler.ReduceLROnPlateau                                
-│         _partial_: true                                                                     
-│         mode: min                                                                           
-│         factor: 0.1                                                                         
-│         patience: 10                                                                        
-│       net:                                                                                  
-│         _target_: src.models.components.factory.build_3d_architecture                       
-│         model_name: vnet                                                                    
-│       compile: false                                                                        
-│                                                                                             
-├── callbacks
-│   └── model_checkpoint:                                                                     
-│         _target_: lightning.pytorch.callbacks.ModelCheckpoint                               
-│         dirpath: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_vs
-│         filename: vnet_best_epoch_{epoch:03d}                                               
-│         monitor: val/acc                                                                    
-│         verbose: true                                                                       
-│         save_last: true                                                                     
-│         save_top_k: 1                                                                       
-│         mode: max                                                                           
-│         auto_insert_metric_name: false                                                      
-│         save_weights_only: false                                                            
-│         every_n_train_steps: null                                                           
-│         train_time_interval: null                                                           
-│         every_n_epochs: null                                                                
-│         save_on_train_epoch_end: null                                                       
-│       early_stopping:                                                                       
-│         _target_: lightning.pytorch.callbacks.EarlyStopping                                 
-│         monitor: val/acc                                                                    
-│         min_delta: 0.001                                                                    
-│         patience: 10                                                                        
-│         verbose: true                                                                       
-│         mode: max                                                                           
-│         strict: true                                                                        
-│         check_finite: true                                                                  
-│         stopping_threshold: null                                                            
-│         divergence_threshold: null                                                          
-│         check_on_train_epoch_end: null                                                      
-│       model_summary:                                                                        
-│         _target_: lightning.pytorch.callbacks.RichModelSummary                              
-│         max_depth: -1                                                                       
-│       rich_progress_bar: null                                                               
-│                                                                                             
-├── logger
-│   └── tensorboard:                                                                          
-│         _target_: lightning.pytorch.loggers.tensorboard.TensorBoardLogger                   
-│         save_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_v
-│         name: null                                                                          
-│         log_graph: false                                                                    
-│         default_hp_metric: true                                                             
-│         prefix: vnet                                                                        
-│                                                                                             
-├── trainer
-│   └── _target_: lightning.pytorch.trainer.Trainer                                           
-│       default_root_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_deta
-│       min_epochs: 0                                                                         
-│       max_epochs: 50                                                                        
-│       accelerator: gpu                                                                      
-│       devices: 3                                                                            
-│       check_val_every_n_epoch: 1                                                            
-│       deterministic: false                                                                  
-│       strategy: ddp                                                                         
-│       num_nodes: 1                                                                          
-│       sync_batchnorm: true                                                                  
-│       gradient_clip_val: 0.5                                                                
-│                                                                                             
-├── paths
-│   └── root_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D                                    
-│       data_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D/data/                              
-│       log_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/                               
-│       output_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_v
-│       work_dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D                                    
-│                                                                                             
-├── extras
-│   └── ignore_warnings: false                                                                
-│       enforce_tags: true                                                                    
-│       print_config: true                                                                    
-│                                                                                             
-├── task_name
-│   └── train                                                                                 
-├── tags
-│   └── ['erdes', 'vnet']                                                                     
-├── train
-│   └── True                                                                                  
-├── test
-│   └── True                                                                                  
-├── ckpt_path
-│   └── None                                                                                  
-└── seed
-    └── 42                                                                                    
-Seed set to 42
-[[36m2025-07-09 04:55:23,350[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating datamodule <src.data.erdes_datamodule.ERDESDataModule>[0m
-[[36m2025-07-09 04:55:23,361[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating model <src.models.model_module.ModelModule>[0m
-/home/ozkut.1/.local/lib/python3.10/site-packages/lightning/pytorch/utilities/parsing.py:209: Attribute 'net' is an instance of `nn.Module` and is already saved during checkpointing. It is recommended to ignore them using `self.save_hyperparameters(ignore=['net'])`.
-[[36m2025-07-09 04:55:26,786[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating callbacks...[0m
-[[36m2025-07-09 04:55:26,788[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.ModelCheckpoint>[0m
-[[36m2025-07-09 04:55:26,803[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.EarlyStopping>[0m
-[[36m2025-07-09 04:55:26,805[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating callback <lightning.pytorch.callbacks.RichModelSummary>[0m
-[[36m2025-07-09 04:55:26,805[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating loggers...[0m
-[[36m2025-07-09 04:55:26,805[0m][[34msrc.utils.instantiators[0m][[32mINFO[0m] - [rank: 0] Instantiating logger <lightning.pytorch.loggers.tensorboard.TensorBoardLogger>[0m
-[[36m2025-07-09 04:55:26,810[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Instantiating trainer <lightning.pytorch.trainer.Trainer>[0m
-/home/ozkut.1/.local/lib/python3.10/site-packages/lightning/fabric/plugins/environments/slurm.py:204: The `srun` command is available on your system but is not used. HINT: If your intention is to run Lightning on SLURM, prepend your python command with `srun` like so: srun python3 src/train.py trainer=ddp trainer.devices=3 experime ...
-Trainer already configured with model summary callbacks: [<class 'lightning.pytorch.callbacks.rich_model_summary.RichModelSummary'>]. Skipping setting a default `ModelSummary` callback.
-GPU available: True (cuda), used: True
-TPU available: False, using: 0 TPU cores
-HPU available: False, using: 0 HPUs
-[[36m2025-07-09 04:55:26,932[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Logging hyperparameters![0m
-[[36m2025-07-09 04:55:26,963[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting training![0m
-You are using a CUDA device ('NVIDIA RTX A6000') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
-Initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/3
-[rank: 2] Seed set to 42
-[rank: 1] Seed set to 42
-Initializing distributed: GLOBAL_RANK: 2, MEMBER: 3/3
-Initializing distributed: GLOBAL_RANK: 1, MEMBER: 2/3
-----------------------------------------------------------------------------------------------------
-distributed_backend=nccl
-All distributed processes registered. Starting with 3 processes
-----------------------------------------------------------------------------------------------------
-
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1,2]
-LOCAL_RANK: 2 - CUDA_VISIBLE_DEVICES: [0,1,2]
-LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1,2]
-┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┓
-┃     ┃ Name                                      ┃ Type               ┃ Params ┃ Mode  ┃
-┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━┩
-│ 0   │ net                                       │ VNetClassifier     │ 24.1 M │ train │
-│ 1   │ net.enc                                   │ VNetEncoder        │ 24.0 M │ train │
-│ 2   │ net.enc.in_tr                             │ InputTransition    │  2.0 K │ train │
-│ 3   │ net.enc.in_tr.act_function                │ ELU                │      0 │ train │
-│ 4   │ net.enc.in_tr.conv_block                  │ Convolution        │  2.0 K │ train │
-│ 5   │ net.enc.in_tr.conv_block.conv             │ Conv3d             │  2.0 K │ train │
-│ 6   │ net.enc.in_tr.conv_block.adn              │ ADN                │     32 │ train │
-│ 7   │ net.enc.in_tr.conv_block.adn.N            │ SyncBatchNorm      │     32 │ train │
-│ 8   │ net.enc.down_tr32                         │ DownTransition     │  132 K │ train │
-│ 9   │ net.enc.down_tr32.down_conv               │ Conv3d             │  4.1 K │ train │
-│ 10  │ net.enc.down_tr32.bn1                     │ SyncBatchNorm      │     64 │ train │
-│ 11  │ net.enc.down_tr32.act_function1           │ ELU                │      0 │ train │
-│ 12  │ net.enc.down_tr32.act_function2           │ ELU                │      0 │ train │
-│ 13  │ net.enc.down_tr32.ops                     │ Sequential         │  128 K │ train │
-│ 14  │ net.enc.down_tr32.ops.0                   │ LUConv             │  128 K │ train │
-│ 15  │ net.enc.down_tr32.ops.0.act_function      │ ELU                │      0 │ train │
-│ 16  │ net.enc.down_tr32.ops.0.conv_block        │ Convolution        │  128 K │ train │
-│ 17  │ net.enc.down_tr32.ops.0.conv_block.conv   │ Conv3d             │  128 K │ train │
-│ 18  │ net.enc.down_tr32.ops.0.conv_block.adn    │ ADN                │     64 │ train │
-│ 19  │ net.enc.down_tr32.ops.0.conv_block.adn.N  │ SyncBatchNorm      │     64 │ train │
-│ 20  │ net.enc.down_tr64                         │ DownTransition     │  1.0 M │ train │
-│ 21  │ net.enc.down_tr64.down_conv               │ Conv3d             │ 16.4 K │ train │
-│ 22  │ net.enc.down_tr64.bn1                     │ SyncBatchNorm      │    128 │ train │
-│ 23  │ net.enc.down_tr64.act_function1           │ ELU                │      0 │ train │
-│ 24  │ net.enc.down_tr64.act_function2           │ ELU                │      0 │ train │
-│ 25  │ net.enc.down_tr64.ops                     │ Sequential         │  1.0 M │ train │
-│ 26  │ net.enc.down_tr64.ops.0                   │ LUConv             │  512 K │ train │
-│ 27  │ net.enc.down_tr64.ops.0.act_function      │ ELU                │      0 │ train │
-│ 28  │ net.enc.down_tr64.ops.0.conv_block        │ Convolution        │  512 K │ train │
-│ 29  │ net.enc.down_tr64.ops.0.conv_block.conv   │ Conv3d             │  512 K │ train │
-│ 30  │ net.enc.down_tr64.ops.0.conv_block.adn    │ ADN                │    128 │ train │
-│ 31  │ net.enc.down_tr64.ops.0.conv_block.adn.N  │ SyncBatchNorm      │    128 │ train │
-│ 32  │ net.enc.down_tr64.ops.1                   │ LUConv             │  512 K │ train │
-│ 33  │ net.enc.down_tr64.ops.1.act_function      │ ELU                │      0 │ train │
-│ 34  │ net.enc.down_tr64.ops.1.conv_block        │ Convolution        │  512 K │ train │
-│ 35  │ net.enc.down_tr64.ops.1.conv_block.conv   │ Conv3d             │  512 K │ train │
-│ 36  │ net.enc.down_tr64.ops.1.conv_block.adn    │ ADN                │    128 │ train │
-│ 37  │ net.enc.down_tr64.ops.1.conv_block.adn.N  │ SyncBatchNorm      │    128 │ train │
-│ 38  │ net.enc.down_tr128                        │ DownTransition     │  6.2 M │ train │
-│ 39  │ net.enc.down_tr128.down_conv              │ Conv3d             │ 65.5 K │ train │
-│ 40  │ net.enc.down_tr128.bn1                    │ SyncBatchNorm      │    256 │ train │
-│ 41  │ net.enc.down_tr128.act_function1          │ ELU                │      0 │ train │
-│ 42  │ net.enc.down_tr128.act_function2          │ ELU                │      0 │ train │
-│ 43  │ net.enc.down_tr128.ops                    │ Sequential         │  6.1 M │ train │
-│ 44  │ net.enc.down_tr128.ops.0                  │ LUConv             │  2.0 M │ train │
-│ 45  │ net.enc.down_tr128.ops.0.act_function     │ ELU                │      0 │ train │
-│ 46  │ net.enc.down_tr128.ops.0.conv_block       │ Convolution        │  2.0 M │ train │
-│ 47  │ net.enc.down_tr128.ops.0.conv_block.conv  │ Conv3d             │  2.0 M │ train │
-│ 48  │ net.enc.down_tr128.ops.0.conv_block.adn   │ ADN                │    256 │ train │
-│ 49  │ net.enc.down_tr128.ops.0.conv_block.adn.N │ SyncBatchNorm      │    256 │ train │
-│ 50  │ net.enc.down_tr128.ops.1                  │ LUConv             │  2.0 M │ train │
-│ 51  │ net.enc.down_tr128.ops.1.act_function     │ ELU                │      0 │ train │
-│ 52  │ net.enc.down_tr128.ops.1.conv_block       │ Convolution        │  2.0 M │ train │
-│ 53  │ net.enc.down_tr128.ops.1.conv_block.conv  │ Conv3d             │  2.0 M │ train │
-│ 54  │ net.enc.down_tr128.ops.1.conv_block.adn   │ ADN                │    256 │ train │
-│ 55  │ net.enc.down_tr128.ops.1.conv_block.adn.N │ SyncBatchNorm      │    256 │ train │
-│ 56  │ net.enc.down_tr128.ops.2                  │ LUConv             │  2.0 M │ train │
-│ 57  │ net.enc.down_tr128.ops.2.act_function     │ ELU                │      0 │ train │
-│ 58  │ net.enc.down_tr128.ops.2.conv_block       │ Convolution        │  2.0 M │ train │
-│ 59  │ net.enc.down_tr128.ops.2.conv_block.conv  │ Conv3d             │  2.0 M │ train │
-│ 60  │ net.enc.down_tr128.ops.2.conv_block.adn   │ ADN                │    256 │ train │
-│ 61  │ net.enc.down_tr128.ops.2.conv_block.adn.N │ SyncBatchNorm      │    256 │ train │
-│ 62  │ net.enc.down_tr128.dropout                │ Dropout3d          │      0 │ train │
-│ 63  │ net.enc.down_tr256                        │ DownTransition     │ 16.6 M │ train │
-│ 64  │ net.enc.down_tr256.down_conv              │ Conv3d             │  262 K │ train │
-│ 65  │ net.enc.down_tr256.bn1                    │ SyncBatchNorm      │    512 │ train │
-│ 66  │ net.enc.down_tr256.act_function1          │ ELU                │      0 │ train │
-│ 67  │ net.enc.down_tr256.act_function2          │ ELU                │      0 │ train │
-│ 68  │ net.enc.down_tr256.ops                    │ Sequential         │ 16.4 M │ train │
-│ 69  │ net.enc.down_tr256.ops.0                  │ LUConv             │  8.2 M │ train │
-│ 70  │ net.enc.down_tr256.ops.0.act_function     │ ELU                │      0 │ train │
-│ 71  │ net.enc.down_tr256.ops.0.conv_block       │ Convolution        │  8.2 M │ train │
-│ 72  │ net.enc.down_tr256.ops.0.conv_block.conv  │ Conv3d             │  8.2 M │ train │
-│ 73  │ net.enc.down_tr256.ops.0.conv_block.adn   │ ADN                │    512 │ train │
-│ 74  │ net.enc.down_tr256.ops.0.conv_block.adn.N │ SyncBatchNorm      │    512 │ train │
-│ 75  │ net.enc.down_tr256.ops.1                  │ LUConv             │  8.2 M │ train │
-│ 76  │ net.enc.down_tr256.ops.1.act_function     │ ELU                │      0 │ train │
-│ 77  │ net.enc.down_tr256.ops.1.conv_block       │ Convolution        │  8.2 M │ train │
-│ 78  │ net.enc.down_tr256.ops.1.conv_block.conv  │ Conv3d             │  8.2 M │ train │
-│ 79  │ net.enc.down_tr256.ops.1.conv_block.adn   │ ADN                │    512 │ train │
-│ 80  │ net.enc.down_tr256.ops.1.conv_block.adn.N │ SyncBatchNorm      │    512 │ train │
-│ 81  │ net.enc.down_tr256.dropout                │ Dropout3d          │      0 │ train │
-│ 82  │ net.cls                                   │ ClassificationHead │ 33.0 K │ train │
-│ 83  │ net.cls.ad_avg_pool                       │ AdaptiveAvgPool3d  │      0 │ train │
-│ 84  │ net.cls.fc1                               │ Linear             │ 32.9 K │ train │
-│ 85  │ net.cls.relu                              │ ReLU               │      0 │ train │
-│ 86  │ net.cls.fc2                               │ Linear             │    129 │ train │
-│ 87  │ criterion                                 │ BCEWithLogitsLoss  │      0 │ train │
-│ 88  │ train_acc                                 │ BinaryAccuracy     │      0 │ train │
-│ 89  │ val_acc                                   │ BinaryAccuracy     │      0 │ train │
-│ 90  │ test_acc                                  │ BinaryAccuracy     │      0 │ train │
-│ 91  │ train_loss                                │ MeanMetric         │      0 │ train │
-│ 92  │ val_loss                                  │ MeanMetric         │      0 │ train │
-│ 93  │ test_loss                                 │ MeanMetric         │      0 │ train │
-│ 94  │ val_acc_best                              │ MaxMetric          │      0 │ train │
-│ 95  │ train_precision                           │ BinaryPrecision    │      0 │ train │
-│ 96  │ train_recall                              │ BinaryRecall       │      0 │ train │
-│ 97  │ train_specificity                         │ BinarySpecificity  │      0 │ train │
-│ 98  │ val_precision                             │ BinaryPrecision    │      0 │ train │
-│ 99  │ val_recall                                │ BinaryRecall       │      0 │ train │
-│ 100 │ val_specificity                           │ BinarySpecificity  │      0 │ train │
-│ 101 │ test_precision                            │ BinaryPrecision    │      0 │ train │
-│ 102 │ test_recall                               │ BinaryRecall       │      0 │ train │
-│ 103 │ test_specificity                          │ BinarySpecificity  │      0 │ train │
-└─────┴───────────────────────────────────────────┴────────────────────┴────────┴───────┘
-Trainable params: 24.1 M                                                                      
-Non-trainable params: 0                                                                       
-Total params: 24.1 M                                                                          
-Total estimated model params size (MB): 96                                                    
-Modules in train mode: 104                                                                    
-Modules in eval mode: 0                                                                       
-Sanity Checking: |          | 0/? [00:00<?, ?it/s]/home/ozkut.1/.local/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:425: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=12` in the `DataLoader` to improve performance.
-/home/ozkut.1/.local/lib/python3.10/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
-  warnings.warn(  # warn only once
-/home/ozkut.1/.local/lib/python3.10/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
-  warnings.warn(  # warn only once
-/home/ozkut.1/.local/lib/python3.10/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
-  warnings.warn(  # warn only once
-/home/ozkut.1/.local/lib/python3.10/site-packages/torchvision/io/_video_deprecation_warning.py:5: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
-  warnings.warn(
-/home/ozkut.1/.local/lib/python3.10/site-packages/torchvision/io/_video_deprecation_warning.py:5: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
-  warnings.warn(
-/home/ozkut.1/.local/lib/python3.10/site-packages/torchvision/io/_video_deprecation_warning.py:5: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
-  warnings.warn(
-Sanity Checking:   0%|          | 0/1 [00:00<?, ?it/s]Sanity Checking DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s]Sanity Checking DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  2.96it/s]Epoch 0: Val Loss: 0.685, Val Acc: 0.619, Val Precision: 0.000, Val Recall: 0.000, Val Specificity: 1.000, 
-                                                                           /home/ozkut.1/.local/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:425: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=12` in the `DataLoader` to improve performance.
-/home/ozkut.1/.local/lib/python3.10/site-packages/lightning/pytorch/loops/fit_loop.py:310: The number of training batches (4) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
-Training: |          | 0/? [00:00<?, ?it/s]Training:   0%|          | 0/4 [00:00<?, ?it/s]Epoch 0:   0%|          | 0/4 [00:00<?, ?it/s] Epoch 0:  25%|██▌       | 1/4 [00:20<01:00,  0.05it/s]Epoch 0:  25%|██▌       | 1/4 [00:20<01:00,  0.05it/s, v_num=0]Epoch 0:  50%|█████     | 2/4 [00:34<00:34,  0.06it/s, v_num=0]Epoch 0:  50%|█████     | 2/4 [00:34<00:34,  0.06it/s, v_num=0]Epoch 0:  75%|███████▌  | 3/4 [00:50<00:16,  0.06it/s, v_num=0]Epoch 0:  75%|███████▌  | 3/4 [00:50<00:16,  0.06it/s, v_num=0]Epoch 0: 100%|██████████| 4/4 [01:03<00:00,  0.06it/s, v_num=0]Epoch 0: 100%|██████████| 4/4 [01:03<00:00,  0.06it/s, v_num=0]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.13it/s][AEpoch 0: Val Loss: 281.051, Val Acc: 0.619, Val Precision: 0.000, Val Recall: 0.000, Val Specificity: 1.000, 
-
-                                                                      [AEpoch 0: 100%|██████████| 4/4 [01:08<00:00,  0.06it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619]Epoch 0: 100%|██████████| 4/4 [01:08<00:00,  0.06it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719][rank: 2] Metric val/acc improved. New best score: 0.619
-[rank: 0] Metric val/acc improved. New best score: 0.619
-[rank: 1] Metric val/acc improved. New best score: 0.619
-Epoch 0, global step 4: 'val/acc' reached 0.61905 (best 0.61905), saving model to '/research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_vs_intact/vnet/2025-07-09_04-55-23/checkpoints/vnet/vnet_best_epoch_000.ckpt' as top 1
-Epoch 0: Train Loss: 0.708, Train Acc: 0.531, Train Precision: 0.365, Train Recall: 0.245, Train Specificity: 0.719, 
-Epoch 0:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]        Epoch 1:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1:  25%|██▌       | 1/4 [00:14<00:44,  0.07it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1:  25%|██▌       | 1/4 [00:14<00:44,  0.07it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1:  50%|█████     | 2/4 [00:31<00:31,  0.06it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1:  50%|█████     | 2/4 [00:31<00:31,  0.06it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1:  75%|███████▌  | 3/4 [00:47<00:15,  0.06it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1:  75%|███████▌  | 3/4 [00:47<00:15,  0.06it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1: 100%|██████████| 4/4 [00:57<00:00,  0.07it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1: 100%|██████████| 4/4 [00:57<00:00,  0.07it/s, v_num=0, val/loss=281.0, val/acc=0.619, val/precision=0.000, val/recall=0.000, val/specificity=1.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.13it/s][AEpoch 1: Val Loss: 38.904, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-
-                                                                      [AEpoch 1: 100%|██████████| 4/4 [01:03<00:00,  0.06it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.708, train/acc=0.531, train/precision=0.365, train/recall=0.245, train/specificity=0.719]Epoch 1: 100%|██████████| 4/4 [01:03<00:00,  0.06it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 1, global step 8: 'val/acc' was not in top 1
-Epoch 1: Train Loss: 0.659, Train Acc: 0.608, Train Precision: 0.508, Train Recall: 0.434, Train Specificity: 0.724, 
-Epoch 1:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]        Epoch 2:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2:  25%|██▌       | 1/4 [00:14<00:42,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2:  25%|██▌       | 1/4 [00:14<00:42,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2:  50%|█████     | 2/4 [00:28<00:28,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2:  50%|█████     | 2/4 [00:28<00:28,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2:  75%|███████▌  | 3/4 [00:44<00:14,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2:  75%|███████▌  | 3/4 [00:44<00:14,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2: 100%|██████████| 4/4 [01:00<00:00,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2: 100%|██████████| 4/4 [01:00<00:00,  0.07it/s, v_num=0, val/loss=38.90, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.12it/s][AEpoch 2: Val Loss: 0.756, Val Acc: 0.595, Val Precision: 0.429, Val Recall: 0.188, Val Specificity: 0.846, 
-
-                                                                      [AEpoch 2: 100%|██████████| 4/4 [01:06<00:00,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.659, train/acc=0.608, train/precision=0.508, train/recall=0.434, train/specificity=0.724]Epoch 2: 100%|██████████| 4/4 [01:06<00:00,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 2, global step 12: 'val/acc' was not in top 1
-Epoch 2: Train Loss: 0.613, Train Acc: 0.700, Train Precision: 0.692, Train Recall: 0.441, Train Specificity: 0.871, 
-Epoch 2:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]        Epoch 3:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3:  25%|██▌       | 1/4 [00:16<00:50,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3:  25%|██▌       | 1/4 [00:16<00:50,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3:  50%|█████     | 2/4 [00:33<00:33,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3:  50%|█████     | 2/4 [00:33<00:33,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3:  75%|███████▌  | 3/4 [00:48<00:16,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3:  75%|███████▌  | 3/4 [00:48<00:16,  0.06it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3: 100%|██████████| 4/4 [00:59<00:00,  0.07it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3: 100%|██████████| 4/4 [00:59<00:00,  0.07it/s, v_num=0, val/loss=0.756, val/acc=0.595, val/precision=0.429, val/recall=0.188, val/specificity=0.846, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.13it/s][AEpoch 3: Val Loss: 2.099, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-
-                                                                      [AEpoch 3: 100%|██████████| 4/4 [01:05<00:00,  0.06it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.613, train/acc=0.700, train/precision=0.692, train/recall=0.441, train/specificity=0.871]Epoch 3: 100%|██████████| 4/4 [01:05<00:00,  0.06it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 3, global step 16: 'val/acc' was not in top 1
-Epoch 3: Train Loss: 0.562, Train Acc: 0.725, Train Precision: 0.729, Train Recall: 0.490, Train Specificity: 0.880, 
-Epoch 3:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]        Epoch 4:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4:  25%|██▌       | 1/4 [00:15<00:45,  0.07it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4:  25%|██▌       | 1/4 [00:15<00:45,  0.07it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4:  50%|█████     | 2/4 [00:32<00:32,  0.06it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4:  50%|█████     | 2/4 [00:32<00:32,  0.06it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4:  75%|███████▌  | 3/4 [00:47<00:15,  0.06it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4:  75%|███████▌  | 3/4 [00:47<00:15,  0.06it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4: 100%|██████████| 4/4 [01:00<00:00,  0.07it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4: 100%|██████████| 4/4 [01:00<00:00,  0.07it/s, v_num=0, val/loss=2.100, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.15it/s][AEpoch 4: Val Loss: 5.335, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-
-                                                                      [AEpoch 4: 100%|██████████| 4/4 [01:05<00:00,  0.06it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.562, train/acc=0.725, train/precision=0.729, train/recall=0.490, train/specificity=0.880]Epoch 4: 100%|██████████| 4/4 [01:05<00:00,  0.06it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 4, global step 20: 'val/acc' was not in top 1
-Epoch 4: Train Loss: 0.507, Train Acc: 0.761, Train Precision: 0.761, Train Recall: 0.580, Train Specificity: 0.880, 
-Epoch 4:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]        Epoch 5:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5:  25%|██▌       | 1/4 [00:18<00:55,  0.05it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5:  25%|██▌       | 1/4 [00:18<00:55,  0.05it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5:  50%|█████     | 2/4 [00:34<00:34,  0.06it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5:  50%|█████     | 2/4 [00:34<00:34,  0.06it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5:  75%|███████▌  | 3/4 [00:48<00:16,  0.06it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5:  75%|███████▌  | 3/4 [00:48<00:16,  0.06it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5: 100%|██████████| 4/4 [01:00<00:00,  0.07it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5: 100%|██████████| 4/4 [01:00<00:00,  0.07it/s, v_num=0, val/loss=5.330, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.12it/s][AEpoch 5: Val Loss: 3.630, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-
-                                                                      [AEpoch 5: 100%|██████████| 4/4 [01:05<00:00,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.507, train/acc=0.761, train/precision=0.761, train/recall=0.580, train/specificity=0.880]Epoch 5: 100%|██████████| 4/4 [01:05<00:00,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 5, global step 24: 'val/acc' was not in top 1
-Epoch 5: Train Loss: 0.473, Train Acc: 0.783, Train Precision: 0.760, Train Recall: 0.664, Train Specificity: 0.862, 
-Epoch 5:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]        Epoch 6:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6:  25%|██▌       | 1/4 [00:14<00:42,  0.07it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6:  25%|██▌       | 1/4 [00:14<00:42,  0.07it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6:  50%|█████     | 2/4 [00:31<00:31,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6:  50%|█████     | 2/4 [00:31<00:31,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6:  75%|███████▌  | 3/4 [00:50<00:16,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6:  75%|███████▌  | 3/4 [00:50<00:16,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6: 100%|██████████| 4/4 [01:01<00:00,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6: 100%|██████████| 4/4 [01:01<00:00,  0.06it/s, v_num=0, val/loss=3.630, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.10it/s][AEpoch 6: Val Loss: 3.159, Val Acc: 0.381, Val Precision: 0.375, Val Recall: 0.938, Val Specificity: 0.038, 
-
-                                                                      [AEpoch 6: 100%|██████████| 4/4 [01:07<00:00,  0.06it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.473, train/acc=0.783, train/precision=0.760, train/recall=0.664, train/specificity=0.862]Epoch 6: 100%|██████████| 4/4 [01:07<00:00,  0.06it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 6, global step 28: 'val/acc' was not in top 1
-Epoch 6: Train Loss: 0.448, Train Acc: 0.803, Train Precision: 0.777, Train Recall: 0.706, Train Specificity: 0.866, 
-Epoch 6:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]        Epoch 7:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7:  25%|██▌       | 1/4 [00:19<00:59,  0.05it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7:  25%|██▌       | 1/4 [00:19<00:59,  0.05it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7:  50%|█████     | 2/4 [00:33<00:33,  0.06it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7:  50%|█████     | 2/4 [00:33<00:33,  0.06it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7:  75%|███████▌  | 3/4 [00:51<00:17,  0.06it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7:  75%|███████▌  | 3/4 [00:51<00:17,  0.06it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7: 100%|██████████| 4/4 [01:01<00:00,  0.07it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7: 100%|██████████| 4/4 [01:01<00:00,  0.07it/s, v_num=0, val/loss=3.160, val/acc=0.381, val/precision=0.375, val/recall=0.938, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.10it/s][AEpoch 7: Val Loss: 2.110, Val Acc: 0.405, Val Precision: 0.390, Val Recall: 1.000, Val Specificity: 0.038, 
-
-                                                                      [AEpoch 7: 100%|██████████| 4/4 [01:06<00:00,  0.06it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.448, train/acc=0.803, train/precision=0.777, train/recall=0.706, train/specificity=0.866]Epoch 7: 100%|██████████| 4/4 [01:06<00:00,  0.06it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 7, global step 32: 'val/acc' was not in top 1
-Epoch 7: Train Loss: 0.433, Train Acc: 0.786, Train Precision: 0.743, Train Recall: 0.706, Train Specificity: 0.839, 
-Epoch 7:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]        Epoch 8:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8:  25%|██▌       | 1/4 [00:12<00:38,  0.08it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8:  25%|██▌       | 1/4 [00:12<00:38,  0.08it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8:  50%|█████     | 2/4 [00:28<00:28,  0.07it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8:  50%|█████     | 2/4 [00:28<00:28,  0.07it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8:  75%|███████▌  | 3/4 [00:45<00:15,  0.07it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8:  75%|███████▌  | 3/4 [00:45<00:15,  0.07it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8: 100%|██████████| 4/4 [00:58<00:00,  0.07it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]Epoch 8: 100%|██████████| 4/4 [00:58<00:00,  0.07it/s, v_num=0, val/loss=2.110, val/acc=0.405, val/precision=0.390, val/recall=1.000, val/specificity=0.0385, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.12it/s][AEpoch 8: Val Loss: 2.706, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-
-                                                                      [AEpoch 8: 100%|██████████| 4/4 [01:04<00:00,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.433, train/acc=0.786, train/precision=0.743, train/recall=0.706, train/specificity=0.839] Epoch 8: 100%|██████████| 4/4 [01:04<00:00,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 8, global step 36: 'val/acc' was not in top 1
-Epoch 8: Train Loss: 0.414, Train Acc: 0.831, Train Precision: 0.825, Train Recall: 0.727, Train Specificity: 0.899, 
-Epoch 8:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]        Epoch 9:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9:  25%|██▌       | 1/4 [00:16<00:50,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9:  25%|██▌       | 1/4 [00:16<00:50,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9:  50%|█████     | 2/4 [00:31<00:31,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9:  50%|█████     | 2/4 [00:31<00:31,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9:  75%|███████▌  | 3/4 [00:46<00:15,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9:  75%|███████▌  | 3/4 [00:46<00:15,  0.06it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9: 100%|██████████| 4/4 [00:58<00:00,  0.07it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9: 100%|██████████| 4/4 [00:58<00:00,  0.07it/s, v_num=0, val/loss=2.710, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.13it/s][AEpoch 9: Val Loss: 2.488, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-
-                                                                      [AEpoch 9: 100%|██████████| 4/4 [01:04<00:00,  0.06it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.414, train/acc=0.831, train/precision=0.825, train/recall=0.727, train/specificity=0.899]Epoch 9: 100%|██████████| 4/4 [01:04<00:00,  0.06it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 9, global step 40: 'val/acc' was not in top 1
-Epoch 9: Train Loss: 0.389, Train Acc: 0.844, Train Precision: 0.827, Train Recall: 0.769, Train Specificity: 0.894, 
-Epoch 9:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]        Epoch 10:   0%|          | 0/4 [00:00<?, ?it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10:  25%|██▌       | 1/4 [00:13<00:40,  0.07it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10:  25%|██▌       | 1/4 [00:13<00:40,  0.07it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10:  50%|█████     | 2/4 [00:29<00:29,  0.07it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10:  50%|█████     | 2/4 [00:29<00:29,  0.07it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10:  75%|███████▌  | 3/4 [00:48<00:16,  0.06it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10:  75%|███████▌  | 3/4 [00:48<00:16,  0.06it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10: 100%|██████████| 4/4 [01:02<00:00,  0.06it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10: 100%|██████████| 4/4 [01:02<00:00,  0.06it/s, v_num=0, val/loss=2.490, val/acc=0.381, val/precision=0.381, val/recall=1.000, val/specificity=0.000, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]
-Validation: |          | 0/? [00:00<?, ?it/s][A
-Validation:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0:   0%|          | 0/1 [00:00<?, ?it/s][A
-Validation DataLoader 0: 100%|██████████| 1/1 [00:00<00:00,  7.13it/s][AEpoch 10: Val Loss: 2.262, Val Acc: 0.429, Val Precision: 0.400, Val Recall: 1.000, Val Specificity: 0.077, 
-
-                                                                      [AEpoch 10: 100%|██████████| 4/4 [01:07<00:00,  0.06it/s, v_num=0, val/loss=2.260, val/acc=0.429, val/precision=0.400, val/recall=1.000, val/specificity=0.0769, val/acc_best=0.619, train/loss=0.389, train/acc=0.844, train/precision=0.827, train/recall=0.769, train/specificity=0.894]Epoch 10: 100%|██████████| 4/4 [01:07<00:00,  0.06it/s, v_num=0, val/loss=2.260, val/acc=0.429, val/precision=0.400, val/recall=1.000, val/specificity=0.0769, val/acc_best=0.619, train/loss=0.411, train/acc=0.806, train/precision=0.783, train/recall=0.706, train/specificity=0.871][rank: 0] Monitored metric val/acc did not improve in the last 10 records. Best score: 0.619. Signaling Trainer to stop.
-[rank: 1] Monitored metric val/acc did not improve in the last 10 records. Best score: 0.619. Signaling Trainer to stop.
-[rank: 2] Monitored metric val/acc did not improve in the last 10 records. Best score: 0.619. Signaling Trainer to stop.
-Epoch 10, global step 44: 'val/acc' was not in top 1
-Epoch 10: Train Loss: 0.411, Train Acc: 0.806, Train Precision: 0.783, Train Recall: 0.706, Train Specificity: 0.871, 
-Epoch 10: 100%|██████████| 4/4 [01:10<00:00,  0.06it/s, v_num=0, val/loss=2.260, val/acc=0.429, val/precision=0.400, val/recall=1.000, val/specificity=0.0769, val/acc_best=0.619, train/loss=0.411, train/acc=0.806, train/precision=0.783, train/recall=0.706, train/specificity=0.871]
-[[36m2025-07-09 05:08:28,248[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Starting testing![0m
-Restoring states from the checkpoint path at /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_vs_intact/vnet/2025-07-09_04-55-23/checkpoints/vnet/vnet_best_epoch_000.ckpt
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1,2]
-LOCAL_RANK: 2 - CUDA_VISIBLE_DEVICES: [0,1,2]
-LOCAL_RANK: 1 - CUDA_VISIBLE_DEVICES: [0,1,2]
-Loaded model weights from the checkpoint at /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_vs_intact/vnet/2025-07-09_04-55-23/checkpoints/vnet/vnet_best_epoch_000.ckpt
-/home/ozkut.1/.local/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:216: Using `DistributedSampler` with the dataloaders. During `trainer.test()`, it is recommended to use `Trainer(devices=1, num_nodes=1)` to ensure each sample/batch gets evaluated exactly once. Otherwise, multi-device settings use `DistributedSampler` that replicates some samples to make sure all devices have same batch size in case of uneven inputs.
-/home/ozkut.1/.local/lib/python3.10/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:425: The 'test_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=12` in the `DataLoader` to improve performance.
-Testing: |          | 0/? [00:00<?, ?it/s]Testing:   0%|          | 0/2 [00:00<?, ?it/s]Testing DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]Testing DataLoader 0:  50%|█████     | 1/2 [00:00<00:00,  3.10it/s]Testing DataLoader 0: 100%|██████████| 2/2 [00:01<00:00,  1.10it/s]Epoch 11: Test Loss: 383.142, Test Acc: 0.608, Test Precision: 0.000, Test Recall: 0.000, Test Specificity: 1.000, 
-Testing DataLoader 0: 100%|██████████| 2/2 [00:01<00:00,  1.09it/s]
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃        Test metric        ┃       DataLoader 0        ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│         test/acc          │    0.6078431606292725     │
-│         test/loss         │     383.1424255371094     │
-│      test/precision       │            0.0            │
-│        test/recall        │            0.0            │
-│     test/specificity      │            1.0            │
-└───────────────────────────┴───────────────────────────┘
-Epoch 0: Val Loss: 0.685, Val Acc: 0.619, Val Precision: 0.000, Val Recall: 0.000, Val Specificity: 1.000, 
-Epoch 0: Val Loss: 281.051, Val Acc: 0.619, Val Precision: 0.000, Val Recall: 0.000, Val Specificity: 1.000, 
-Epoch 0: Train Loss: 0.708, Train Acc: 0.531, Train Precision: 0.365, Train Recall: 0.245, Train Specificity: 0.719, 
-Epoch 1: Val Loss: 38.904, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 1: Train Loss: 0.659, Train Acc: 0.608, Train Precision: 0.508, Train Recall: 0.434, Train Specificity: 0.724, 
-Epoch 2: Val Loss: 0.756, Val Acc: 0.595, Val Precision: 0.429, Val Recall: 0.188, Val Specificity: 0.846, 
-Epoch 2: Train Loss: 0.613, Train Acc: 0.700, Train Precision: 0.692, Train Recall: 0.441, Train Specificity: 0.871, 
-Epoch 3: Val Loss: 2.099, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 3: Train Loss: 0.562, Train Acc: 0.725, Train Precision: 0.729, Train Recall: 0.490, Train Specificity: 0.880, 
-Epoch 4: Val Loss: 5.335, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 4: Train Loss: 0.507, Train Acc: 0.761, Train Precision: 0.761, Train Recall: 0.580, Train Specificity: 0.880, 
-Epoch 5: Val Loss: 3.630, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 5: Train Loss: 0.473, Train Acc: 0.783, Train Precision: 0.760, Train Recall: 0.664, Train Specificity: 0.862, 
-Epoch 6: Val Loss: 3.159, Val Acc: 0.381, Val Precision: 0.375, Val Recall: 0.938, Val Specificity: 0.038, 
-Epoch 6: Train Loss: 0.448, Train Acc: 0.803, Train Precision: 0.777, Train Recall: 0.706, Train Specificity: 0.866, 
-Epoch 7: Val Loss: 2.110, Val Acc: 0.405, Val Precision: 0.390, Val Recall: 1.000, Val Specificity: 0.038, 
-Epoch 7: Train Loss: 0.433, Train Acc: 0.786, Train Precision: 0.743, Train Recall: 0.706, Train Specificity: 0.839, 
-Epoch 8: Val Loss: 2.706, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 8: Train Loss: 0.414, Train Acc: 0.831, Train Precision: 0.825, Train Recall: 0.727, Train Specificity: 0.899, 
-Epoch 9: Val Loss: 2.488, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 9: Train Loss: 0.389, Train Acc: 0.844, Train Precision: 0.827, Train Recall: 0.769, Train Specificity: 0.894, 
-Epoch 10: Val Loss: 2.262, Val Acc: 0.429, Val Precision: 0.400, Val Recall: 1.000, Val Specificity: 0.077, 
-Epoch 10: Train Loss: 0.411, Train Acc: 0.806, Train Precision: 0.783, Train Recall: 0.706, Train Specificity: 0.871, 
-Epoch 11: Test Loss: 383.142, Test Acc: 0.608, Test Precision: 0.000, Test Recall: 0.000, Test Specificity: 1.000, 
-Epoch 0: Val Loss: 0.685, Val Acc: 0.619, Val Precision: 0.000, Val Recall: 0.000, Val Specificity: 1.000, 
-Epoch 0: Val Loss: 281.051, Val Acc: 0.619, Val Precision: 0.000, Val Recall: 0.000, Val Specificity: 1.000, 
-Epoch 0: Train Loss: 0.708, Train Acc: 0.531, Train Precision: 0.365, Train Recall: 0.245, Train Specificity: 0.719, 
-Epoch 1: Val Loss: 38.904, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 1: Train Loss: 0.659, Train Acc: 0.608, Train Precision: 0.508, Train Recall: 0.434, Train Specificity: 0.724, 
-Epoch 2: Val Loss: 0.756, Val Acc: 0.595, Val Precision: 0.429, Val Recall: 0.188, Val Specificity: 0.846, 
-Epoch 2: Train Loss: 0.613, Train Acc: 0.700, Train Precision: 0.692, Train Recall: 0.441, Train Specificity: 0.871, 
-Epoch 3: Val Loss: 2.099, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 3: Train Loss: 0.562, Train Acc: 0.725, Train Precision: 0.729, Train Recall: 0.490, Train Specificity: 0.880, 
-Epoch 4: Val Loss: 5.335, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 4: Train Loss: 0.507, Train Acc: 0.761, Train Precision: 0.761, Train Recall: 0.580, Train Specificity: 0.880, 
-Epoch 5: Val Loss: 3.630, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 5: Train Loss: 0.473, Train Acc: 0.783, Train Precision: 0.760, Train Recall: 0.664, Train Specificity: 0.862, 
-Epoch 6: Val Loss: 3.159, Val Acc: 0.381, Val Precision: 0.375, Val Recall: 0.938, Val Specificity: 0.038, 
-Epoch 6: Train Loss: 0.448, Train Acc: 0.803, Train Precision: 0.777, Train Recall: 0.706, Train Specificity: 0.866, 
-Epoch 7: Val Loss: 2.110, Val Acc: 0.405, Val Precision: 0.390, Val Recall: 1.000, Val Specificity: 0.038, 
-Epoch 7: Train Loss: 0.433, Train Acc: 0.786, Train Precision: 0.743, Train Recall: 0.706, Train Specificity: 0.839, 
-Epoch 8: Val Loss: 2.706, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 8: Train Loss: 0.414, Train Acc: 0.831, Train Precision: 0.825, Train Recall: 0.727, Train Specificity: 0.899, 
-Epoch 9: Val Loss: 2.488, Val Acc: 0.381, Val Precision: 0.381, Val Recall: 1.000, Val Specificity: 0.000, 
-Epoch 9: Train Loss: 0.389, Train Acc: 0.844, Train Precision: 0.827, Train Recall: 0.769, Train Specificity: 0.894, 
-Epoch 10: Val Loss: 2.262, Val Acc: 0.429, Val Precision: 0.400, Val Recall: 1.000, Val Specificity: 0.077, 
-Epoch 10: Train Loss: 0.411, Train Acc: 0.806, Train Precision: 0.783, Train Recall: 0.706, Train Specificity: 0.871, 
-Epoch 11: Test Loss: 383.142, Test Acc: 0.608, Test Precision: 0.000, Test Recall: 0.000, Test Specificity: 1.000, 
-[[36m2025-07-09 05:08:48,414[0m][[34m__main__[0m][[32mINFO[0m] - [rank: 0] Best ckpt path: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_vs_intact/vnet/2025-07-09_04-55-23/checkpoints/vnet/vnet_best_epoch_000.ckpt[0m
-[[36m2025-07-09 05:08:48,415[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Output dir: /research/nfs_yilmaz_15/yasemin/ERDES-3D/logs/train/runs/macula_detached_vs_intact/vnet/2025-07-09_04-55-23[0m
-[[36m2025-07-09 05:08:48,415[0m][[34msrc.utils.utils[0m][[32mINFO[0m] - [rank: 0] Metric name is None! Skipping metric value retrieval...[0m
