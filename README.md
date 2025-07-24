@@ -10,6 +10,10 @@
 
 </div>
 
+Eye Retinal DEtachment UltraSound (ERDES) is a comprehensive, open-access video dataset designed to advance computer vision research in ocular ultrasonography. Ocular ultrasound is a fast, non-invasive imaging technique crucial for diagnosing retinal conditions, especially when media opacities like cataracts obscure direct visualization. ERDES includes 5,406 expertly annotated ultrasound video clips, labeled for retinal and macular detachment status (intact vs. detached), providing a valuable resource for training and evaluating AI models.
+
+Despite progress in medical image analysis, video-based machine learning in healthcare remains underexplored due to limited annotated datasets. ERDES fills this gap, supporting the development of robust, clinically relevant video models. We also provide baseline results using a 3D CNN, encouraging further research and collaboration in AI-powered retinal diagnostics.
+
 ## Project Structure
 
 The directory structure of new project looks like this:
