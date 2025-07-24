@@ -68,7 +68,7 @@ git clone https://github.com/OSUPCVLab/ERDES.git
 cd ERDES
 
 # [OPTIONAL] create conda environment
-conda create -n erdes python=3.11.7
+conda create -n erdes python=3.9
 conda activate erdes
 
 # install pytorch according to instructions
@@ -83,7 +83,7 @@ When running `python src/train.py` you should see something like this:
 
 <div align="center">
 
-![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
+![]()
 
 </div>
 
@@ -415,37 +415,32 @@ ValueError: Specify tags before launching a multirun!
 
 <br>
 
-## ❤️  Contributions
-
-This project exists thanks to all the people who contribute.
-
-![Contributors](https://readme-contributors.now.sh/ashleve/lightning-hydra-template?extension=jpg&width=400&aspectRatio=1)
-
-Have a question? Found a bug? Missing a specific feature? Feel free to file a new issue, discussion or PR with respective title and description.
-
-Before making an issue, please verify that:
-
-- The problem still exists on the current `main` branch.
-- Your python dependencies are updated to recent versions.
-
-Suggestions for improvements are always welcome!
-
-<br>
-
 ## How It Works
 
 All PyTorch Lightning modules are dynamically instantiated from module paths specified in config. Example model config:
 
 ```yaml
-_target_: src.models.erdes_model.erdesLitModule
-lr: 0.001
+_target_: src.models.model_module.ModelModule
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.00015
+  weight_decay: 0.0
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.1
+  patience: 10
+
 net:
-  _target_: src.models.components.simple_dense_net.SimpleDenseNet
-  input_size: 784
-  lin1_size: 256
-  lin2_size: 256
-  lin3_size: 256
-  output_size: 10
+  _target_: src.models.components.factory.build_3d_architecture
+  model_name: unetplusplus
+
+# compile model for faster training with pytorch 2.0
+compile: false
 ```
 
 Using this config we can instantiate the object with the following line:
@@ -480,7 +475,7 @@ It determines how config is composed when simply executing command `python train
 defaults:
   - _self_
   - data: erdes.yaml
-  - model: unetplusplus.yaml
+  - model: erdes.yaml
   - callbacks: default.yaml
   - logger: null # set logger here or use command line (e.g. `python train.py logger=csv`)
   - trainer: default.yaml
@@ -547,14 +542,14 @@ For example, you can use them to version control best hyperparameters for each c
 
 defaults:
   - override /data: erdes.yaml
-  - override /model: unetplusplus.yaml
+  - override /model: erdes.yaml
   - override /callbacks: default.yaml
   - override /trainer: default.yaml
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-tags: ["erdes", "unetplusplus"]
+tags: ["erdes", "simple_dense_net"]
 
 seed: 12345
 
@@ -588,7 +583,7 @@ logger:
 
 **Basic workflow**
 
-1. Write your PyTorch Lightning module (see [models/model_module.py](src/models/model_module.py) for example)
+1. Write your PyTorch Lightning module (see [models/erdes_module.py](src/models/erdes_module.py) for example)
 2. Write your PyTorch Lightning datamodule (see [data/erdes_datamodule.py](src/data/erdes_datamodule.py) for example)
 3. Write your experiment config, containing paths to model and datamodule
 4. Run training with chosen experiment config:
@@ -645,122 +640,6 @@ You can change this structure by modifying paths in [hydra configuration](config
 
 <br>
 
-## Experiment Tracking
-
-PyTorch Lightning supports many popular logging frameworks: [Weights&Biases](https://www.wandb.com/), [Neptune](https://neptune.ai/), [Comet](https://www.comet.ml/), [MLFlow](https://mlflow.org), [Tensorboard](https://www.tensorflow.org/tensorboard/).
-
-These tools help you keep track of hyperparameters and output metrics and allow you to compare and visualize results. To use one of them simply complete its configuration in [configs/logger](configs/logger) and run:
-
-```bash
-python train.py logger=logger_name
-```
-
-You can use many of them at once (see [configs/logger/many_loggers.yaml](configs/logger/many_loggers.yaml) for example).
-
-You can also write your own logger.
-
-Lightning provides convenient method for logging custom metrics from inside LightningModule. Read the [docs](https://pytorch-lightning.readthedocs.io/en/latest/extensions/logging.html#automatic-logging) or take a look at [erdes example](src/models/model_module.py).
-
-<br>
-
-## Tests
-
-Template comes with generic tests implemented with `pytest`.
-
-```bash
-# run all tests
-pytest
-
-# run tests from specific file
-pytest tests/test_train.py
-
-# run all tests except the ones marked as slow
-pytest -k "not slow"
-```
-
-Most of the implemented tests don't check for any specific output - they exist to simply verify that executing some commands doesn't end up in throwing exceptions. You can execute them once in a while to speed up the development.
-
-Currently, the tests cover cases like:
-
-- running 1 train, val and test step
-- running 1 epoch on 1% of data, saving ckpt and resuming for the second epoch
-- running 2 epochs on 1% of data, with DDP simulated on CPU
-
-And many others. You should be able to modify them easily for your use case.
-
-There is also `@RunIf` decorator implemented, that allows you to run tests only if certain conditions are met, e.g. GPU is available or system is not windows. See the [examples](tests/test_train.py).
-
-<br>
-
-## Hyperparameter Search
-
-You can define hyperparameter search by adding new config file to [configs/hparams_search](configs/hparams_search).
-
-<details>
-<summary><b>Show example hyperparameter search config</b></summary>
-
-```yaml
-# @package _global_
-
-defaults:
-  - override /hydra/sweeper: optuna
-
-# choose metric which will be optimized by Optuna
-# make sure this is the correct name of some metric logged in lightning module!
-optimized_metric: "val/acc_best"
-
-# here we define Optuna hyperparameter search
-# it optimizes for value returned from function with @hydra.main decorator
-hydra:
-  sweeper:
-    _target_: hydra_plugins.hydra_optuna_sweeper.optuna_sweeper.OptunaSweeper
-
-    # 'minimize' or 'maximize' the objective
-    direction: maximize
-
-    # total number of runs that will be executed
-    n_trials: 20
-
-    # choose Optuna hyperparameter sampler
-    # docs: https://optuna.readthedocs.io/en/stable/reference/samplers.html
-    sampler:
-      _target_: optuna.samplers.TPESampler
-      seed: 1234
-      n_startup_trials: 10 # number of random sampling runs before optimization starts
-
-    # define hyperparameter search space
-    params:
-      model.optimizer.lr: interval(0.0001, 0.1)
-      data.batch_size: choice(32, 64, 128, 256)
-      model.net.lin1_size: choice(64, 128, 256)
-      model.net.lin2_size: choice(64, 128, 256)
-      model.net.lin3_size: choice(32, 64, 128, 256)
-```
-
-</details>
-
-Next, execute it with: `python train.py -m hparams_search=erdes_optuna`
-
-Using this approach doesn't require adding any boilerplate to code, everything is defined in a single config file. The only necessary thing is to return the optimized metric value from the launch file.
-
-You can use different optimization frameworks integrated with Hydra, like [Optuna, Ax or Nevergrad](https://hydra.cc/docs/plugins/optuna_sweeper/).
-
-The `optimization_results.yaml` will be available under `logs/task_name/multirun` folder.
-
-This approach doesn't support resuming interrupted search and advanced techniques like prunning - for more sophisticated search and workflows, you should probably write a dedicated optimization task (without multirun feature).
-
-<br>
-
-## Continuous Integration
-
-Template comes with CI workflows implemented in Github Actions:
-
-- `.github/workflows/test.yaml`: running all tests with pytest
-- `.github/workflows/code-quality-main.yaml`: running pre-commits on main branch for all files
-- `.github/workflows/code-quality-pr.yaml`: running pre-commits on pull requests for modified files only
-
-<br>
-
 ## Distributed Training
 
 Lightning supports multiple ways of doing distributed training. The most common one is DDP, which spawns separate process for each GPU and averages gradients between them. To learn about other approaches read the [lightning docs](https://lightning.ai/docs/pytorch/latest/advanced/speed.html).
@@ -772,46 +651,6 @@ python train.py trainer=ddp
 ```
 
 > **Note**: When using DDP you have to be careful how you write your models - read the [docs](https://lightning.ai/docs/pytorch/latest/advanced/speed.html).
-
-<br>
-
-## Accessing Datamodule Attributes In Model
-
-The simplest way is to pass datamodule attribute directly to model on initialization:
-
-```python
-# ./src/train.py
-datamodule = hydra.utils.instantiate(config.data)
-model = hydra.utils.instantiate(config.model, some_param=datamodule.some_param)
-```
-
-> **Note**: Not a very robust solution, since it assumes all your datamodules have `some_param` attribute available.
-
-Similarly, you can pass a whole datamodule config as an init parameter:
-
-```python
-# ./src/train.py
-model = hydra.utils.instantiate(config.model, dm_conf=config.data, _recursive_=False)
-```
-
-You can also pass a datamodule config parameter to your model through variable interpolation:
-
-```yaml
-# ./configs/model/my_model.yaml
-_target_: src.models.my_module.MyLitModule
-lr: 0.01
-some_param: ${data.some_param}
-```
-
-Another approach is to access datamodule in LightningModule directly through Trainer:
-
-```python
-# ./src/models/erdes_module.py
-def on_train_start(self):
-  self.some_param = self.trainer.datamodule.some_param
-```
-
-> **Note**: This only works after the training starts since otherwise trainer won't be yet available in LightningModule.
 
 <br>
 
@@ -958,14 +797,14 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
 1. Be explicit in your init. Try to define all the relevant defaults so that the user doesn’t have to guess. Provide type hints. This way your module is reusable across projects!
 
    ```python
-   class ModelModule(LightningModule):
+   class LitModel(LightningModule):
        def __init__(self, layer_size: int = 256, lr: float = 0.001):
    ```
 
 2. Preserve the recommended method order.
 
    ```python
-   class ModelModule(LightningModule):
+   class LitModel(LightningModule):
 
        def __init__():
            ...
@@ -1102,6 +941,122 @@ This template was inspired by:
 Other useful repositories:
 
 - [jxpress/lightning-hydra-template-vertex-ai](https://github.com/jxpress/lightning-hydra-template-vertex-ai) - lightning-hydra-template integration with Vertex AI hyperparameter tuning and custom training job
+
+</details>
+
+<br>
+
+## License
+
+Lightning-Hydra-Template is licensed under the MIT License.
+
+```
+MIT License
+
+Copyright (c) 2021 ashleve
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+<br>
+<br>
+<br>
+<br>
+
+**DELETE EVERYTHING ABOVE FOR YOUR PROJECT**
+
+______________________________________________________________________
+
+<div align="center">
+
+# Your Project Name
+
+<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
+<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
+<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
+<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
+[![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
+[![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/paper/2020)
+
+</div>
+
+## Description
+
+What it does
+
+## Installation
+
+#### Pip
+
+```bash
+# clone project
+git clone https://github.com/YourGithubName/your-repo-name
+cd your-repo-name
+
+# [OPTIONAL] create conda environment
+conda create -n myenv python=3.9
+conda activate myenv
+
+# install pytorch according to instructions
+# https://pytorch.org/get-started/
+
+# install requirements
+pip install -r requirements.txt
+```
+
+#### Conda
+
+```bash
+# clone project
+git clone https://github.com/YourGithubName/your-repo-name
+cd your-repo-name
+
+# create conda environment and install dependencies
+conda env create -f environment.yaml -n myenv
+
+# activate conda environment
+conda activate myenv
+```
+
+## How to run
+
+Train model with default configuration
+
+```bash
+# train on CPU
+python src/train.py trainer=cpu
+
+# train on GPU
+python src/train.py trainer=gpu
+```
+
+Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
+
+```bash
+python src/train.py experiment=experiment_name.yaml
+```
+
+You can override any parameter from command line like this
+
+```bash
+python src/train.py trainer.max_epochs=20 data.batch_size=64
+```
 
 ## 🙏🏻 Acknowledgement
 
