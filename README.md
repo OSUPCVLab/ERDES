@@ -13,6 +13,27 @@
 Eye Retinal DEtachment UltraSound (ERDES) is a comprehensive, open-access video dataset designed to advance computer vision research in ocular ultrasonography. Ocular ultrasound is a fast, non-invasive imaging technique crucial for diagnosing retinal conditions, especially when media opacities like cataracts obscure direct visualization. ERDES includes 5,406 expertly annotated ultrasound video clips, labeled for retinal and macular detachment status (intact vs. detached), providing a valuable resource for training and evaluating AI models.
 
 Despite progress in medical image analysis, video-based machine learning in healthcare remains underexplored due to limited annotated datasets. ERDES fills this gap, supporting the development of robust, clinically relevant video models. We also provide baseline results over well-know CNN and ViT based architectures. 
+
+## 🚀 News
+* **(July 31, 2025):** Release of the dataset.
+
+
+## 📑 Table of Contents
+
+- [📁 Project Structure](#project-structure)  
+- [⚡ Quickstart](#-quickstart)  
+- [🛠️ Your Superpowers](#️-your-superpowers)  
+- [⚙️ How It Works](#how-it-works)  
+- [🧾 Main Config](#main-config)  
+- [🧪 Experiment Config](#experiment-config)  
+- [🔁 Workflow](#workflow)  
+- [📓 Logs](#logs)  
+- [🌐 Distributed Training](#distributed-training)  
+- [💡 Best Practices](#best-practices)  
+- [📚 Resources](#resources)  
+- [🙏🏻 Acknowledgement](#-acknowledgement)  
+- [📖 Citation](#-citation)
+
 ## Project Structure
 
 The directory structure of new project looks like this:
@@ -71,7 +92,7 @@ The directory structure of new project looks like this:
 
 <br>
 
-## 🚀  Quickstart
+## Quickstart
 
 ```bash
 # clone project
@@ -98,7 +119,7 @@ When running `python src/train.py` you should see something like this:
 
 </div>
 
-## ⚡  Your Superpowers
+## Your Superpowers
 
 <details>
 <summary><b>Override any config parameter from command line</b></summary>
@@ -957,11 +978,11 @@ Other useful repositories:
 
 <br>
 
-## 🙏🏻 Acknowledgement
+## Acknowledgement
 
 We would like to thank the developers of the [PyTorch Lightning + Hydra. A very user-friendly template for ML experimentation. ](https://github.com/ashleve/lightning-hydra-template/) for open-sourcing this template for the community.
 
-## 📖 Citation
+## Citation
 ```bibtex
 @inproceedings{navardocular,
   title={A Benchmark Dataset for Retinal Detachment Classification in Spatiotemporal Ocular Ultrasound},
