@@ -115,7 +115,7 @@ When running `python src/train.py` you should see something like this:
 
 <div align="center">
 
-![]()
+![](./docs/media/terminal.jpeg)
 
 </div>
 
