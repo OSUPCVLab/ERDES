@@ -3,8 +3,9 @@ from typing import Any, Dict, Tuple
 import torch
 from lightning import LightningModule
 from torchmetrics import MaxMetric, MeanMetric
+from torchmetrics.classification import F1Score, Precision, Recall, Specificity
 from torchmetrics.classification.accuracy import Accuracy
-from torchmetrics.classification import Precision, Recall, Specificity, F1Score
+
 
 class ModelModule(LightningModule):
     """Example of a `LightningModule` for MNIST classification.

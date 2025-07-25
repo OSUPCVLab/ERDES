@@ -14,7 +14,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import torch.nn as nn
-
 from monai.networks.blocks.unetr_block import UnetrBasicBlock, UnetrPrUpBlock
 from monai.networks.nets.vit import ViT
 from monai.utils import ensure_tuple_rep
@@ -150,15 +149,15 @@ class UnetrEncoder(nn.Module):
     def forward(self, x_in):
         x, hidden_states_out = self.vit(x_in)
         enc1 = self.encoder1(x_in)
-        enc1_out = torch.nn.functional.interpolate(enc1, scale_factor=1/8, mode='nearest')
+        enc1_out = nn.functional.interpolate(enc1, scale_factor=1/8, mode='nearest')
 
         x2 = hidden_states_out[3]
         enc2 = self.encoder2(self.proj_feat(x2))
-        enc2_out = torch.nn.functional.interpolate(enc2, scale_factor=1/4, mode='nearest')
+        enc2_out = nn.functional.interpolate(enc2, scale_factor=1/4, mode='nearest')
 
         x3 = hidden_states_out[6]
         enc3 = self.encoder3(self.proj_feat(x3))
-        enc3_out = torch.nn.functional.interpolate(enc3, scale_factor=1/2, mode='nearest')
+        enc3_out = nn.functional.interpolate(enc3, scale_factor=1/2, mode='nearest')
 
         x4 = hidden_states_out[9]
         enc4 = self.encoder4(self.proj_feat(x4))
@@ -167,7 +166,7 @@ class UnetrEncoder(nn.Module):
         return out
 
 if __name__ == "__main__":
-    import torch 
+    import torch
     model = UnetrEncoder(
         in_channels = 1,
         img_size = (96, 128, 128),
