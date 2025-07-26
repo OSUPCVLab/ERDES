@@ -986,8 +986,8 @@ We would like to thank the developers of the [PyTorch Lightning + Hydra. A very 
 ```bibtex
 @inproceedings{navardocular,
   title={A Benchmark Dataset for Retinal Detachment Classification in Spatiotemporal Ocular Ultrasound},
-  author={Navard, Pouyan and Ozkut, Yasemin and Adhikari, Srikar and Yilmaz, Alper},
-  booktitle={Nature Scientific Data},
+  author={Navard, Pouyan and Ozkut, Yasemin and Adhikari, Srikar and Situ-LaCasse, Elaine and Acuña, Josie and Yarnish, Adrienne A and Yilmaz, Alper},
+  booktitle={Nature Scientific Data (Review)},
   pages={4981--4988},
   year={2025}
 }
