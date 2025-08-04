@@ -46,12 +46,12 @@ results_df = pipeline.predict_batch(
 ### Command Line Interface
 ```bash
 # Single video analysis
-python src/diagnostic_pipeline.py \
+python -m pipe.diagnostic_pipeline \
     --model unet3d \
     --input path/to/video.mp4
 
 # Batch processing
-python src/diagnostic_pipeline.py \
+python -m pipe.diagnostic_pipeline \
     --model unet3d \
     --input path/to/videos.csv \
     --output results.csv
@@ -101,10 +101,10 @@ The pipeline supports all architectures implemented in the ERDES codebase:
 The pipeline expects checkpoints to be organized as:
 ```
 logs/
-├── non_rd_vs_rd/
+├── rd/
 │   └── {model_name}/
 │       └── checkpoints/
-└── macula_detached_vs_intact/
+└── md/
     └── {model_name}/
         └── checkpoints/
 ```

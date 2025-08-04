@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from building_blocks import DoubleConv, create_encoders
+from .building_blocks import DoubleConv, create_encoders
 
 # https://github.com/wolny/pytorch-3dunet/tree/master/pytorch3dunet/unet3d
 

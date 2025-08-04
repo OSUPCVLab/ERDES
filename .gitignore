@@ -72,6 +72,7 @@ multirun/
 # Data
 data/erdes/
 data/Dataset/
+data/real_test_1k_sample/
 *.mp4
 *.avi
 *.mov

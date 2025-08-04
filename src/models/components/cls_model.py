@@ -273,8 +273,8 @@ class ViTClassifier(nn.Module):
     def __init__(
         self,
         in_channels: int,
-        img_size: Sequence[int] | int,
-        patch_size: Sequence[int] | int,
+        img_size: Union[Sequence[int], int],
+        patch_size: Union[Sequence[int], int],
         num_classes: int,
         hidden_size: int = 768,
         mlp_dim: int = 3072,
