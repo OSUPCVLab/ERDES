@@ -60,4 +60,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/macula_detached_vs_intact/swinunetr/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/md/swinunetr/${now:%Y-%m-%d_%H-%M-%S}

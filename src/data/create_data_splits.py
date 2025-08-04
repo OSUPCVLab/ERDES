@@ -3,7 +3,7 @@ Create stratified train/val/test CSVs for any number of binary-classification
 tasks defined in TASKS.
 
     python data_split.py --root data/Dataset
-    python data_split.py --root data/Dataset --tasks normal_vs_rd
+    python data_split.py --root data/Dataset --tasks non_rd_vs_rd
 """
 from __future__ import print_function
 
@@ -18,8 +18,8 @@ from sklearn.model_selection import train_test_split
 # Configure tasks here:  {task_name: {int_label: [relative dirs]}}
 # ----------------------------------------------------------------------
 TASKS = {
-    "normal_vs_rd": {
-        0: ["Normal"],                       # Normal  → 0
+    "non_rd_vs_rd": {
+        0: ["Non_RD"],                       # Non_RD  → 0
         1: [                                 # RD      → 1
             "Macula_Detached/Bilateral",
             "Macula_Detached/TD",
@@ -72,7 +72,7 @@ def split_and_save(df, task_name):
     val.to_csv(os.path.join(out_dir, "val.csv"), index=False)
     test.to_csv(os.path.join(out_dir, "test.csv"), index=False)
 
-    print(f"[✓] {task_name:25s} → {len(train):4d} train / {len(val):4d} val / {len(test):4d} test (saved to ERDES-3D/data/splits/{task_name})")
+    print(f"[✓] {task_name:25s} → {len(train):4d} train / {len(val):4d} val / {len(test):4d} test (saved to ERDES/data/splits/{task_name})")
 
 def main():
     parser = argparse.ArgumentParser()

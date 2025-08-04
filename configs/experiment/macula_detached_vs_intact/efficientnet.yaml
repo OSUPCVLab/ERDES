@@ -60,4 +60,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/macula_detached_vs_intact/efficientnet/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/md/efficientnet/${now:%Y-%m-%d_%H-%M-%S}

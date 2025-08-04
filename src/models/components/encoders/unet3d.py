@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from .building_blocks import DoubleConv, create_encoders
+from building_blocks import DoubleConv, create_encoders
 
 # https://github.com/wolny/pytorch-3dunet/tree/master/pytorch3dunet/unet3d
 
@@ -53,9 +53,9 @@ if __name__ == "__main__":
         pool_kernel_size = 2,
     ).to("cuda:0")
 
+    print(model)
     data = torch.randn(1, 1, 96, 128, 128).to("cuda:0")
     out = model(data)
-    print(out.shape)
 
     trainable_params = sum([p.numel() for p in model.parameters() if p.requires_grad])
     print(f"number of trainable parameters: {trainable_params}")

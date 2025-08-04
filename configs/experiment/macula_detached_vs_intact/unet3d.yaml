@@ -60,4 +60,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/macula_detached_vs_intact/unet3d/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/md/unet3d/${now:%Y-%m-%d_%H-%M-%S}

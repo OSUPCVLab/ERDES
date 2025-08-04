@@ -5,7 +5,7 @@
 
 defaults:
   - override /data: erdes
-  - override /model: vnet
+  - override /model: unet3d
   - override /callbacks: default
   - override /trainer: default
   - override /logger: tensorboard
@@ -13,7 +13,7 @@ defaults:
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-tags: ["erdes", "vnet"]
+tags: ["erdes", "unet3d"]
 
 seed: 42
 
@@ -25,18 +25,17 @@ trainer:
 model:
   optimizer:
     lr: 1.5e-05
-  scheduler: null
   compile: false
 
 data:
-  batch_size: 96
-  train_csv: "data/splits/normal_vs_rd/train.csv"
-  val_csv: "data/splits/normal_vs_rd/val.csv"
-  test_csv: "data/splits/normal_vs_rd/test.csv"
+  batch_size: 24
+  train_csv: "data/splits/non_rd_vs_rd/train.csv"
+  val_csv: "data/splits/non_rd_vs_rd/val.csv"
+  test_csv: "data/splits/non_rd_vs_rd/test.csv"
 
 logger:
   tensorboard:
-    prefix: "vnet"
+    prefix: "unet3d"
 
 callbacks:
   #early_stopping:
@@ -47,8 +46,8 @@ callbacks:
     #min_delta: 0.001    # Minimum improvement threshold
   
   model_checkpoint:
-    dirpath: ${paths.output_dir}/checkpoints/vnet
-    filename: "vnet_best_epoch_{epoch:03d}"
+    dirpath: ${paths.output_dir}/checkpoints/unet3d
+    filename: "unet3d_best_epoch_{epoch:03d}"
     monitor: "val/acc"
     mode: "max"
     save_top_k: 1          # Save top 1 best models
@@ -60,4 +59,4 @@ callbacks:
 
 hydra:
   run:
-    dir: logs/train/runs/normal_vs_rd/vnet/${now:%Y-%m-%d_%H-%M-%S}
+    dir: logs/train/runs/rd/unet3d/${now:%Y-%m-%d_%H-%M-%S}

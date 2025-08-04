@@ -8,7 +8,7 @@ from torchmetrics.classification.accuracy import Accuracy
 
 
 class ModelModule(LightningModule):
-    """Example of a `LightningModule` for MNIST classification.
+    """Example of a `LightningModule` for Ocular Ultrasound classification.
 
     A `LightningModule` implements 8 key methods:
 
