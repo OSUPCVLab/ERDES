@@ -54,7 +54,7 @@ python -m pipe.diagnostic_pipeline \
 python -m pipe.diagnostic_pipeline \
     --model unet3d \
     --input path/to/videos.csv \
-    --output results.csv
+    --output pipe/results.csv
 ```
 
 ## Input Formats
@@ -92,10 +92,10 @@ The pipeline supports all architectures implemented in the ERDES codebase:
 - swinunetr
 - unetplusplus
 - vnet
+- unetr
 - resnet3d
 - senet
 - vit
-- efficientnet
 
 ## Directory Structure
 The pipeline expects checkpoints to be organized as:

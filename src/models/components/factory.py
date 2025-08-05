@@ -20,18 +20,6 @@ class ArchitectureBuilder(ABC):
     def build(self):
         pass
 
-# EfficientNet3D Builder
-class EfficientNet3DBuilder(ArchitectureBuilder):
-    def build(self):
-        from monai.networks.nets import EfficientNetBN
-        return EfficientNetBN(
-            "efficientnet-b0",
-            pretrained=False,
-            spatial_dims=3,
-            in_channels=1,
-            num_classes=self.num_classes,
-        )
-
 # ResNet3D Builder
 class ResNet3DBuilder(ArchitectureBuilder):
     def build(self):
