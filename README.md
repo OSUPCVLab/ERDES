@@ -39,7 +39,6 @@ Despite progress in medical image analysis, video-based machine learning in heal
 
 | Model         | Retinal Detachment Classifier           | Macular Detachment Classifier           |
 |:--------------|:---------------------------------------:|:---------------------------------------:|
-| Efficientnet      | [Download]()      | [Download]()      |
 | ResNet3d     | [Download]()     | [Download]()     |
 | Senet | [Download]() | [Download]() |
 | SwinUnetR | [Download]() | [Download]() |
