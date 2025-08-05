@@ -16,10 +16,11 @@ Despite progress in medical image analysis, video-based machine learning in heal
 
 ## 🚀 News
 * **(July 31, 2025):** Release of the dataset.
+* **(August 4, 2025):** Release of model checkpoints.
 
 
 ## 📑 Table of Contents
-
+- [🧠 Model Card](#model_card)
 - [📁 Project Structure](#project-structure)  
 - [⚡ Quickstart](#-quickstart)  
 - [🛠️ Your Superpowers](#️-your-superpowers)  
@@ -33,6 +34,20 @@ Despite progress in medical image analysis, video-based machine learning in heal
 - [📚 Resources](#resources)  
 - [🙏🏻 Acknowledgement](#-acknowledgement)  
 - [📖 Citation](#-citation)
+
+## 🧠 Model Card
+
+| Model         | Retinal Detachment Classifier           | Macular Detachment Classifier           |
+|:--------------|:---------------------------------------:|:---------------------------------------:|
+| Efficientnet      | [Download]()      | [Download]()      |
+| ResNet3d     | [Download]()     | [Download]()     |
+| Senet | [Download]() | [Download]() |
+| SwinUnetR | [Download]() | [Download]() |
+| Unet3d   | [Download]()   | [Download]()   |
+| Unet++   | [Download]()   | [Download]()   |
+| UnetR   | [Download]()   | [Download]()   |
+| ViT         | [Download]()         | [Download]()         |
+| Vnet        | [Download]()         | [Download]()         |
 
 ## Project Structure
 
