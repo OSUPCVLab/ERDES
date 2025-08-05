@@ -2,8 +2,8 @@
 Create stratified train/val/test CSVs for any number of binary-classification
 tasks defined in TASKS.
 
-    python data_split.py --root data/Dataset
-    python data_split.py --root data/Dataset --tasks non_rd_vs_rd
+    python data_split.py --root data/erdes
+    python data_split.py --root data/erdes --tasks non_rd_vs_rd
 """
 from __future__ import print_function
 
@@ -76,7 +76,7 @@ def split_and_save(df, task_name):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", default="data/Dataset",
+    parser.add_argument("--root", default="data/erdes",
                         help="Dataset root directory")
     parser.add_argument("--tasks", nargs="+", choices=list(TASKS.keys()),
                         default=list(TASKS.keys()),
