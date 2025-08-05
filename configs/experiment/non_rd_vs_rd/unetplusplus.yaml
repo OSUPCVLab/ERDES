@@ -47,7 +47,7 @@ callbacks:
   
   model_checkpoint:
     dirpath: ${paths.output_dir}/checkpoints/unetplusplus
-    filename: "unet++_best_epoch_{epoch:03d}"
+    filename: "unetplusplus_best_epoch_{epoch:03d}"
     monitor: "val/acc"
     mode: "max"
     save_top_k: 1          # Save top 1 best models

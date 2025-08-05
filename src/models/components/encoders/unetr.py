@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
+import torch
 import torch.nn as nn
 from monai.networks.blocks.unetr_block import UnetrBasicBlock, UnetrPrUpBlock
 from monai.networks.nets.vit import ViT

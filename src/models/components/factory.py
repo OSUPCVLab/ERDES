@@ -101,7 +101,6 @@ class ViTBuilder(ArchitectureBuilder):
 
 # Registry of builders
 ARCHITECTURE_BUILDERS = {
-    "efficentnet_b0": EfficientNet3DBuilder,
     "resnet3d": ResNet3DBuilder,
     "senet": SENet3DBuilder,
     "unet3d": Unet3DBuilder,

@@ -9,7 +9,7 @@ conda activate erdes
 
 # Uncomment the model you wish to run
 # python3 src/train.py trainer=ddp trainer.devices=3 experiment=non_rd_vs_rd/resnet3d 
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=non_rd_vs_rd/swinunetr
+# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=non_rd_vs_rd/swinunetr
 # python3 src/train.py trainer=ddp trainer.devices=3 experiment=non_rd_vs_rd/unet3d
 # python3 src/train.py trainer=ddp trainer.devices=3 experiment=non_rd_vs_rd/unetplusplus
 # python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=non_rd_vs_rd/unetr
