@@ -39,14 +39,14 @@ Despite progress in medical image analysis, video-based machine learning in heal
 
 | Model         | Retinal Detachment Classifier           | Macular Detachment Classifier           |
 |:--------------|:---------------------------------------:|:---------------------------------------:|
-| ResNet3d     | [Download](https://drive.google.com/file/d/1kwBtr_UHAz00lpb2oAddrTarc_n5Q7oK/view?usp=drive_link)     | [Download](https://drive.google.com/file/d/1RKDHHSMAxsaf5Po5hBldotDmi-MsdRXy/view?usp=drive_link)     |
-| Senet | [Download](https://drive.google.com/file/d/1Qyw1ZDirHJ4_f5SL86ahx1AFYkzWq3Tw/view?usp=drive_link) | [Download](https://drive.google.com/file/d/1v5jBmj9qHbEtSAB_X4e5C4d8P5r6AyGE/view?usp=drive_link) |
-| SwinUnetR | [Download](https://drive.google.com/file/d/17m42AHwF1spMWaQ4XR0hrwgpTMJv7nDH/view?usp=drive_link) | [Download](https://drive.google.com/file/d/1kbJkyPWtigt4Rzpy56f6oWPCyQl8Zumo/view?usp=drive_link) |
-| Unet3d   | [Download](https://drive.google.com/file/d/1LpKn4d33wkhCORdL6d9iP1OTwhYF8p3T/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1sw0PUqqRO0rakTsPdUO8Ynqlo69UrlzF/view?usp=drive_link)   |
-| Unet++   | [Download](https://drive.google.com/file/d/1zjQUNLERZCrBHniuoaoodEWvWxj2bZT-/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1rD6K01PTFPea1fB6tcmFB7WqV4xXk23Q/view?usp=drive_link)   |
-| UnetR   | [Download](https://drive.google.com/file/d/1zMBfdaDTx3dhsKBdq6Xw8dc1YRGWQ3ij/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1WcyS2SIyITRTy_rCjQFx8halw5bRSnoM/view?usp=drive_link)   |
-| ViT         | [Download](https://drive.google.com/file/d/1WXQenOMwGP8fCFzHKAL6uduJBEc_c3aZ/view?usp=drive_link)         | [Download](https://drive.google.com/file/d/1_H1TfhZjVFvDuzZKxwXGYueccqzHMC6j/view?usp=drive_link)         |
-| Vnet        | [Download](https://drive.google.com/file/d/1F1RHlOFOBO0DajY_n-hFeh24s-pr1yrU/view?usp=drive_link)         | [Download](https://drive.google.com/file/d/1zTnFLWdmMdzOfqIGmnRuRDWWoDm0bYiZ/view?usp=drive_link)         |
+| ResNet3d     | [Download](https://drive.google.com/file/d/1A12X-Ck3VUH7zd1PwD85cxYinveLdJdi/view?usp=drive_link)     | [Download](https://drive.google.com/file/d/1EaB4WQyYnikX8Fh1bQR_8vJLb0pB19rV/view?usp=drive_link)     |
+| Senet | [Download](https://drive.google.com/file/d/1KLhBHPta5PzT6x0f5yRn3rAjcR3r6hlq/view?usp=drive_link) | [Download](https://drive.google.com/file/d/1bqth8jzSMO9aa6QCrlWzlNroip3s3A3D/view?usp=drive_link) |
+| SwinUnetR | [Download](https://drive.google.com/file/d/1QbqFPcv4_jbhdNrypT9lV4F2Z9bTh4OI/view?usp=drive_link) | [Download](https://drive.google.com/file/d/1UR3U-W43XQjlWaCkold6KNALLYG1RLnh/view?usp=drive_link) |
+| Unet3d   | [Download](https://drive.google.com/file/d/18yXSfczGSyWLZc9UtPTyWkOFAE9Y3DX6/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/15zOwwi-HhWaE1f-0b72ME7mThgVTKRv7/view?usp=drive_link)   |
+| Unet++   | [Download](https://drive.google.com/file/d/1d6zZ3WMpob3Do0WsvvaALRw7leYlXqZM/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1rTIl6EIqcD84-o3M-Ye1YmLgFIoj6ZtL/view?usp=drive_link)   |
+| UnetR   | [Download](https://drive.google.com/file/d/1HpHd6pfsWVdOfUD6uK6ECZ9Rf53IjpmH/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1PTMCMjpz05GH-PPqU7qZsgyUgffstsrw/view?usp=drive_link)   |
+| ViT         | [Download](https://drive.google.com/file/d/16PaJm-kHdKdpBKEveJVCrZ8-YAgbD_T7/view?usp=drive_link)         | [Download](https://drive.google.com/file/d/1fEVptUpBY8QZzGMDYywd9USgE6KZRhAO/view?usp=drive_link)         |
+| Vnet        | [Download](https://drive.google.com/file/d/1e6IYopmjpLT0SLFzla-QfD5Y0f-X3fvT/view?usp=drive_link)         | [Download](https://drive.google.com/file/d/1EdQkYAYFBCwre3-p-1KR7keYD7QVWS7s/view?usp=drive_link)         |
 
 ## Project Structure
 
