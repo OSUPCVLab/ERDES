@@ -14,6 +14,8 @@ Eye Retinal DEtachment UltraSound (ERDES) is a comprehensive, open-access video 
 
 Despite progress in medical image analysis, video-based machine learning in healthcare remains underexplored due to limited annotated datasets. ERDES fills this gap, supporting the development of robust, clinically relevant video models. We also provide baseline results over well-know CNN and ViT based architectures. 
 
+🔗 Note:  You can access and download the data by visiting our [website](https://osupcvlab.github.io/ERDES/index.html#access_dataset).
+
 ## 🚀 News
 * **(July 31, 2025):** Release of the dataset.
 * **(August 4, 2025):** Release of model checkpoints.
