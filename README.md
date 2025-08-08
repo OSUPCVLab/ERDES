@@ -19,6 +19,7 @@ Despite progress in medical image analysis, video-based machine learning in heal
 ## 🚀 News
 * **(July 31, 2025):** Release of the dataset.
 * **(August 4, 2025):** Release of model checkpoints.
+* **(Agust 8, 2025):** Release of our dataset on HuggingFace ([ERDES](https://huggingface.co/datasets/pnavard/erdes))🤗
 
 
 ## 📑 Table of Contents
