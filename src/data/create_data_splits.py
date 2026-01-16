@@ -18,23 +18,35 @@ from sklearn.model_selection import train_test_split
 # Configure tasks here:  {task_name: {int_label: [relative dirs]}}
 # ----------------------------------------------------------------------
 TASKS = {
+    "normal_vs_rd": {
+        0: ["Non_Retinal_Detachment/Normal"],
+        1: [
+            "Retinal_Detachment/Macula_Detached/Bilateral",
+            "Retinal_Detachment/Macula_Detached/TD",
+            "Retinal_Detachment/Macula_Intact/ND",
+            "Retinal_Detachment/Macula_Intact/TD",
+        ],
+    },
     "non_rd_vs_rd": {
-        0: ["Non_RD"],                       # Non_RD  → 0
-        1: [                                 # RD      → 1
-            "Macula_Detached/Bilateral",
-            "Macula_Detached/TD",
-            "Macula_Intact/ND",
-            "Macula_Intact/TD",
+        0: [
+            "Non_Retinal_Detachment/Normal",
+            "Non_Retinal_Detachment/Posterior_Vitreous_Detachment",
+        ],
+        1: [
+            "Retinal_Detachment/Macula_Detached/Bilateral",
+            "Retinal_Detachment/Macula_Detached/TD",
+            "Retinal_Detachment/Macula_Intact/ND",
+            "Retinal_Detachment/Macula_Intact/TD",
         ],
     },
     "macula_detached_vs_intact": {
-        0: [                                 # Macula Detached → 0
-            "Macula_Detached/Bilateral",
-            "Macula_Detached/TD",
+        0: [
+            "Retinal_Detachment/Macula_Detached/Bilateral",
+            "Retinal_Detachment/Macula_Detached/TD",
         ],
-        1: [                                 # Macula Intact   → 1
-            "Macula_Intact/ND",
-            "Macula_Intact/TD",
+        1: [
+            "Retinal_Detachment/Macula_Intact/ND",
+            "Retinal_Detachment/Macula_Intact/TD",
         ],
     },
 }

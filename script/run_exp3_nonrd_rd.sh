@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SESSION="Retinal Status Experiments"
+SESSION="Retinal Status Experiments -- Non RD vd"
 echo "$SESSION"
 
 # Activate the correct conda environment
