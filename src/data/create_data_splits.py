@@ -39,6 +39,17 @@ TASKS = {
             "Retinal_Detachment/Macula_Intact/TD",
         ],
     },
+    "pvd_vs_rd": {
+        0: [
+            "Non_Retinal_Detachment/Posterior_Vitreous_Detachment",
+        ],
+        1: [
+            "Retinal_Detachment/Macula_Detached/Bilateral",
+            "Retinal_Detachment/Macula_Detached/TD",
+            "Retinal_Detachment/Macula_Intact/ND",
+            "Retinal_Detachment/Macula_Intact/TD",
+        ],
+    },
     "macula_detached_vs_intact": {
         0: [
             "Retinal_Detachment/Macula_Detached/Bilateral",
