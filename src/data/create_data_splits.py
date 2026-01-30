@@ -60,6 +60,10 @@ TASKS = {
             "Retinal_Detachment/Macula_Intact/TD",
         ],
     },
+    "normal_vs_pvd": {
+        0: ["Non_Retinal_Detachment/Normal"],
+        1: ["Non_Retinal_Detachment/Posterior_Vitreous_Detachment"],
+    },
 }
 
 def collect_files(root, rel_dirs, label):
