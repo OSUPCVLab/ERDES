@@ -1,0 +1,55 @@
+# @package _global_
+
+# UNet3D with TOP-K pooling for Normal vs PVD
+# Top-k pooling: "Average the top-k most informative frames"
+
+defaults:
+  - override /data: erdes
+  - override /model: unet3d
+  - override /callbacks: default
+  - override /trainer: default
+  - override /logger: tensorboard
+
+tags: ["erdes", "unet3d", "topk_pooling"]
+
+seed: 42
+
+trainer:
+  min_epochs: 0
+  max_epochs: 50
+  gradient_clip_val: 0.0
+
+model:
+  optimizer:
+    lr: 1.5e-05
+  compile: false
+  net:
+    pooling: topk
+    topk_ratio: 0.7
+
+data:
+  batch_size: 24
+  train_csv: "data/splits/normal_vs_pvd/train.csv"
+  val_csv: "data/splits/normal_vs_pvd/val.csv"
+  test_csv: "data/splits/normal_vs_pvd/test.csv"
+
+logger:
+  tensorboard:
+    prefix: "unet3d"
+
+callbacks:
+  model_checkpoint:
+    dirpath: ${paths.output_dir}/checkpoints/unet3d
+    filename: "unet3d_best_epoch_{epoch:03d}"
+    monitor: "val/acc"
+    mode: "max"
+    save_top_k: 1
+    save_last: True
+    auto_insert_metric_name: False
+    verbose: True
+
+  rich_progress_bar: null
+
+hydra:
+  run:
+    dir: logs/train/runs/normal_vs_pvd_topk_70_ceil/unet3d/${now:%Y-%m-%d_%H-%M-%S}
