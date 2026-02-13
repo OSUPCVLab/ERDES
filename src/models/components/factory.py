@@ -13,8 +13,10 @@ import torchvision
 
 # Base class for all architecture builders
 class ArchitectureBuilder(ABC):
-    def __init__(self, num_classes: int = 1):
+    def __init__(self, num_classes: int = 1, pooling: str = "avg", topk_ratio: float = 0.5):
         self.num_classes = num_classes
+        self.pooling = pooling
+        self.topk_ratio = topk_ratio
 
     @abstractmethod
     def build(self):
@@ -23,21 +25,30 @@ class ArchitectureBuilder(ABC):
 # ResNet3D Builder
 class ResNet3DBuilder(ArchitectureBuilder):
     def build(self):
-        from monai.networks.nets import ResNet
-        return ResNet(
+        from .cls_model import ResNet3DClassifier
+        return ResNet3DClassifier(
             block="basic",
             layers=[4, 4, 4, 4],
             block_inplanes=[64, 128, 256, 512],
             spatial_dims=3,
-            n_input_channels=1,
+            in_channels=1,
             num_classes=self.num_classes,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
         )
 
 # SENet3D Builder
 class SENet3DBuilder(ArchitectureBuilder):
     def build(self):
-        from monai.networks.nets import SENet154
-        return SENet154(pretrained=False, spatial_dims=3, in_channels=1, num_classes=self.num_classes)
+        from .cls_model import SENet3DClassifier
+        return SENet3DClassifier(
+            pretrained=False,
+            spatial_dims=3,
+            in_channels=1,
+            num_classes=self.num_classes,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
+        )
 
 # Unet3D Builder
 class Unet3DBuilder(ArchitectureBuilder):
@@ -46,6 +57,8 @@ class Unet3DBuilder(ArchitectureBuilder):
         return Unet3DClassifier(
             in_channels=1,
             num_classes=self.num_classes,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
         )
 
 # SwinUnetr Builder
@@ -56,6 +69,8 @@ class SwinUnetrBuilder(ArchitectureBuilder):
             img_size=(96, 128, 128),
             in_channels=1,
             num_classes=self.num_classes,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
         )
 
 # UNetPlusPlus Builder
@@ -65,6 +80,8 @@ class UNetPlusPlusBuilder(ArchitectureBuilder):
         return UNetPlusPlusClassifier(
             in_channels=1,
             num_classes=self.num_classes,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
         )
 
 # VNet Builder
@@ -74,6 +91,8 @@ class VNetBuilder(ArchitectureBuilder):
         return VNetClassifier(
             in_channels=1,
             num_classes=self.num_classes,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
         )
 
 # Unetr Builder
@@ -85,6 +104,8 @@ class UnetrBuilder(ArchitectureBuilder):
             in_channels=1,
             num_classes=self.num_classes,
             img_size=img_size,
+            pooling=self.pooling,
+            topk_ratio=self.topk_ratio,
         )
 
 # ViT Builder
@@ -97,6 +118,7 @@ class ViTBuilder(ArchitectureBuilder):
             img_size=img_size,
             patch_size=7,
             num_classes=self.num_classes,
+            # Note: ViT uses its own classification head, pooling not applied
         )
 
 # Registry of builders
@@ -111,11 +133,11 @@ ARCHITECTURE_BUILDERS = {
     "vit": ViTBuilder,
 }
 
-def build_3d_architecture(model_name: str, num_classes: int = 1):
+def build_3d_architecture(model_name: str, num_classes: int = 1, pooling: str = "avg", topk_ratio: float = 0.5):
     builder_cls = ARCHITECTURE_BUILDERS.get(model_name)
     if builder_cls is None:
         raise ValueError(
             f"specified model '{model_name}' not supported, edit build_architecture.py file"
         )
-    builder = builder_cls(num_classes=num_classes)
+    builder = builder_cls(num_classes=num_classes, pooling=pooling, topk_ratio=topk_ratio)
     return builder.build()
