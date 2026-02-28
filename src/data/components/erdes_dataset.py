@@ -14,6 +14,7 @@ class VideoDataset(Dataset):
         self,
         csv_path: str,
         size: Union[int, Tuple[int, int, int]],  # Desired (D, H, W)
+        data_root: str = "",
         video_column: str = "path",
         label_column: str = "label",
     ):
@@ -22,12 +23,15 @@ class VideoDataset(Dataset):
         self.labels = self.df[label_column].tolist()
         self.resize_tf = resize(size)
         self.size = size
+        self.data_root = data_root
 
     def __len__(self):
         return len(self.video_paths)
 
     def __getitem__(self, idx):
         video_path = self.video_paths[idx]
+        if self.data_root:
+            video_path = os.path.join(self.data_root, video_path)
         label = self.labels[idx]
 
         if not os.path.isfile(video_path):

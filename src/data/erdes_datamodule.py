@@ -16,6 +16,7 @@ class ERDESDataModule(LightningDataModule):
         val_csv: str,
         test_csv: str,
         size: Tuple[int, int, int],
+        data_root: str = "",
         batch_size: int = 4,
         num_workers: int = 4,
         pin_memory: bool = True,
@@ -24,6 +25,7 @@ class ERDESDataModule(LightningDataModule):
         self.save_hyperparameters(logger=False)
 
         self.size = size
+        self.data_root = data_root
         self.train_csv = train_csv
         self.val_csv = val_csv
         self.test_csv = test_csv
@@ -46,13 +48,13 @@ class ERDESDataModule(LightningDataModule):
             self.batch_size_per_device = self.hparams.batch_size // self.trainer.world_size
 
         if not self.data_train:
-            self.data_train = VideoDataset(csv_path=self.train_csv, size=self.size)
+            self.data_train = VideoDataset(csv_path=self.train_csv, size=self.size, data_root=self.data_root)
 
         if not self.data_val:
-            self.data_val = VideoDataset(csv_path=self.val_csv, size=self.size)
+            self.data_val = VideoDataset(csv_path=self.val_csv, size=self.size, data_root=self.data_root)
 
         if not self.data_test:
-            self.data_test = VideoDataset(csv_path=self.test_csv, size=self.size)
+            self.data_test = VideoDataset(csv_path=self.test_csv, size=self.size, data_root=self.data_root)
 
     def train_dataloader(self) -> DataLoader[Any]:
         return DataLoader(
