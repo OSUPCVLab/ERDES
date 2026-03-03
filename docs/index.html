@@ -69,8 +69,9 @@
                            <li id="nav-4"><a href="index.html#dataset">Dataset</a></li>
                            <li id="nav-5"><a href="index.html#access_dataset">Access Dataset</a></li>
                            <li id="nav-6"><a href="index.html#code">Code</a></li>
-                           <li id="nav-7"><a href="index.html#paper">Paper</a></li>
-                           <li id="nav-8"><a href="index.html#citation">Citation</a></li>
+                           <li id="nav-7"><a href="index.html#benchmarks">Benchmarks</a></li>
+                           <li id="nav-8"><a href="index.html#paper">Paper</a></li>
+                           <li id="nav-9"><a href="index.html#citation">Citation</a></li>
                         </ul>
                      </div>
                   </div>
@@ -82,12 +83,9 @@
       <div id="intro" class="container" role="introduction" tabindex="0">
          <h2>Introduction</h2>
          <p>
-            Ocular ultrasonography is a fast, accessible, and non-invasive imaging tool widely utilized to assess the posterior segment of the eye, especially in the presence of media opacities like cataracts or vitreous hemorrhage.
-            It plays a pivotal role in diagnosing and guiding the treatment of various retinal conditions, including retinal and macular detachment. To enable further exploration and development of computer vision techniques in this critical domain,
-            we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment Ultra<strong>S</strong>ound, <em>ERDES</em>, a comprehensive video dataset of ocular ultrasound scans. ERDES includes 5381 labeled ultrasound video clips,
-            each annotated by human experts for the presence of retinal detachments (macula intact vs. detached), providing a rich resource for robust analysis of detachment patterns and classification tasks.
+            Retinal detachment (RD) is a vision-threatening condition that requires prompt intervention to preserve sight. A critical factor in treatment urgency and visual prognosis is macular involvement—whether the macula is intact or detached. Point-of-care ultrasound (POCUS) is a fast, non-invasive, and cost-effective imaging tool commonly used to detect RD in various clinical settings. However, its diagnostic utility is limited by the need for expert interpretation, especially in resource-limited environments. To address this gap, we introduce <strong>E</strong>ye <strong>R</strong>etinal <strong>DE</strong>tachment ultra<strong>S</strong>ound (<em>ERDES</em>), the first open-access dataset of ocular ultrasound clips labeled for (i) presence of RD and (ii) macula-detached vs. macula-intact status. ERDES includes 5,381 labeled ultrasound video clips enabling machine learning development for RD detection and macular status classification. We also provide baseline benchmarks using 40 models across eight spatiotemporal architectures.
          </p>
-         <video class="center" width="480" height="480" autoplay loop muted>
+         <video width="600" autoplay loop muted style="margin: 25px auto; display: block;">
             <source src="media/output.mp4" type="video/mp4">
          </video>
          <h2 id="motivation">Motivation</h2>
@@ -95,91 +93,221 @@
             Despite significant advances in machine learning for medical images, video-based analysis in the biomedical domain remains under-explored due to the limited availability of well-annotated medical video datasets.
             Medical videos, such as ocular ultrasound scans, are an integral part of clinical practice, yet their potential for AI-driven diagnostics and classification remains largely untapped.
             Open-access datasets have been instrumental in advancing computer vision for images; extending this collaborative environment to videos promises to accelerate progress and create robust, clinically relevant models.
-            ERDES addresses this gap by offering an openly available, expertly annotated dataset of ocular ultrasound videos. We also provide baseline performance benchmarks using a 3D convolutional neural network architecture
-            to detect and classify retinal and macular detachment, setting the stage for further development and collaboration in this field.
+            To date, no publicly available dataset supports macular-based retinal detachment classification using ultrasound video. ERDES addresses this gap by offering an openly available, expertly annotated dataset of ocular ultrasound videos. We also provide comprehensive baseline benchmarks by training 40 models in eight spatiotemporal 
+            architectures, including 3D convolutional networks and transformer-based models, for five binary classification tasks, along with a two-stage diagnostic pipeline that mirrors clinical decision-making for retinal detachment triage.
          </p>
 		 <br>
 		 <br>
          <h2 id="dataset">Dataset</h2>
          <p><img class="center" loading="lazy" width="640" src="media/labeling_rd.png"></p>
-         <p><b>Ocular Videos:</b> The ERDES dataset comprises 5381 ocular B-scan ultrasound videos, each providing dynamic cross-sectional views of the eye's posterior segment. These videos were acquired during routine clinical care at University of Arizona between June 2010 and March 2022. 
-		  To ensure patient privacy and data standardization, all videos were meticulously processed to remove any patient identifiers.
-  		  Capturing both normal and pathological findings, the dataset covers a wide range of imaging scenarios, thereby offering a comprehensive resource that reflects clinical variability and supports robust analysis of retinal detachments.
+         <p><b>Ocular Videos:</b> The ERDES dataset comprises 5,381 ocular B-scan ultrasound video clips, totaling approximately 5 hours and 10 minutes of video data. Clip durations range from 0.12 to 25.52 seconds (median 3.1s). These videos were acquired during routine clinical care in the Emergency Department at the University of Arizona between June 2010 and March 2022, using high-frequency linear transducers (5-12 MHz) across multiple ultrasound devices (Mindray/Zonare, Philips, GE, Sonosite). To ensure patient privacy and data standardization, all videos were meticulously processed to remove any patient identifiers. Capturing both normal and pathological findings, the dataset covers a wide range of imaging scenarios, reflecting clinical variability.
          </p>
-         <p><img class="center" loading="lazy" width="400" src="media/MetaDataVariables.PNG"></p>
-         <p><b>Annotations:</b> Each video clip is accompanied by expert-labeled annotations indicating the presence or absence of retinal detachment along with macular involvement.
-            These labels were determined by experienced sonologists following a standardized protocol. Annotations serve as a foundation for supervised learning and enable benchmarking of new computer vision approaches for video-based classification in ophthalmology.
+		 <p><img class="center" loading="lazy" width="840" src="media/data_stats.png"></p>
+         <p><b>Annotations:</b> Labels were generated using an adjudication-based workflow. Three clinical experts independently reviewed each ocular ultrasound clip and classified it into diagnostic categories. A fourth expert reviewed all labeled clips to verify accuracy and consistency, serving as a quality control step. Labeling was performed at the clip level, meaning each video clip was assigned a single overall label rather than annotating individual frames. This approach reflects how ocular ultrasound is interpreted clinically.
+		</p>
+
 		<p>
-		  The ocular ultrasound video clips are categorized into three principal groups: 
-		  <strong>Normal</strong>, 
-		  <strong>Retinal Detachment (RD)</strong>, 
-		  and <strong>Posterior Vitreous Detachment (PVD)</strong>. 
-		  Within the <strong>Retinal Detachment</strong> category, the clips are further subdivided based on the status of the macula—specifically, whether the macula is detached or remains intact.
+		  The ocular ultrasound video clips are categorized into two primary categories:
+		  <strong>Non-Retinal Detachment (Non-RD)</strong> and <strong>Retinal Detachment (RD)</strong>.
 		</p>
 
 		<ul>
 		  <li>
-			In the <strong>macula-detached</strong> subset, two types of detachments are identified:
+			<strong>Non-RD</strong> cases are subdivided into:
 			<ul>
-			  <li><strong>Bilateral detachment</strong>, where both the nasal and temporal regions are involved.</li>
-			  <li><strong>Temporal detachment (TD)</strong>, where the retinal detachment predominantly affects the temporal region of the retina.</li>
+			  <li><strong>Normal</strong>, where the retina appears as a smooth, thin echogenic line closely opposed to the posterior globe.</li>
+			  <li><strong>Posterior Vitreous Detachment (PVD)</strong>, a thin, mobile echogenic membrane within the vitreous that is not tethered to the optic nerve.</li>
 			</ul>
 		  </li>
 		  <li>
-			In the <strong>macula-intact</strong> subset, the retinal detachment does not involve the macula, and the detachments are further divided into:
+			<strong>RD</strong> cases are subdivided by macular status:
 			<ul>
-			  <li><strong>Nasal detachment (ND)</strong>, where the detachment involves the nasal region of the retina.</li>
-			  <li><strong>Temporal detachment (TD)</strong>, where the detachment is located in the temporal region.</li>
+			  <li>
+				<strong>Macula-Intact</strong>: the detachment does not involve the macula. Further divided into:
+				<ul>
+				  <li><strong>Nasal detachment (ND)</strong>, where the detachment involves the nasal region of the retina.</li>
+				  <li><strong>Temporal detachment (TD)</strong>, where the detachment is located in the temporal region.</li>
+				</ul>
+			  </li>
+			  <li>
+				<strong>Macula-Detached</strong>: the detachment extends into the macular region. Further divided into:
+				<ul>
+				  <li><strong>Bilateral detachment</strong>, where both the nasal and temporal regions are involved.</li>
+				  <li><strong>Temporal detachment (TD)</strong>, where the retinal detachment predominantly affects the temporal region of the retina.</li>
+				</ul>
+			  </li>
 			</ul>
 		  </li>
 		</ul>
 
+		<p>The total number of clips per diagnostic category and subclass is reported in the table below:</p>
+		<table class="table table-bordered" style="width: auto; margin: 20px auto;">
+			<thead>
+				<tr>
+					<th>Class / Subclass</th>
+					<th>Number of Clips</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><strong>Non-Retinal Detachment (Non-RD)</strong></td>
+					<td><strong>4,879</strong></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;Normal</td>
+					<td>4,233</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;Posterior Vitreous Detachment (PVD)</td>
+					<td>646</td>
+				</tr>
+				<tr>
+					<td><strong>Retinal Detachment (RD)</strong></td>
+					<td><strong>502</strong></td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;<em>Macula Intact</em></td>
+					<td>199</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nasal Detachment (ND)</td>
+					<td>88</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temporal Detachment (TD)</td>
+					<td>111</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;<em>Macula Detached</em></td>
+					<td>303</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temporal Detachment (TD)</td>
+					<td>151</td>
+				</tr>
+				<tr>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bilateral Detachment</td>
+					<td>152</td>
+				</tr>
+				<tr>
+					<td><strong>Total</strong></td>
+					<td><strong>5,381</strong></td>
+				</tr>
+			</tbody>
+		</table>
+
 		<p>
 		  This structured classification helps in systematically analyzing and interpreting the retinal pathologies present in the ultrasound data. You can see the structure of dataset folders in the below figure which reflect the labeling protocol.
-		  <p><img class="center" loading="lazy" width="200" src="media/folder_structure.PNG"></p>
+		  <p><img class="center" loading="lazy" width="200" src="media/folder_structure.png"></p>
 		</p>
+
+		<p><b>Metadata:</b> The dataset includes a structured metadata file (<code>metadata.csv</code>) with the following fields:</p>
+		<table class="table table-bordered" style="width: auto; margin: 20px auto;">
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>clip_id</code></td>
+					<td>Unique identifier for each clip</td>
+				</tr>
+				<tr>
+					<td><code>file_path</code></td>
+					<td>Relative path to the video file</td>
+				</tr>
+				<tr>
+					<td><code>diagnostic_class</code></td>
+					<td>Primary diagnosis: <code>rd</code> or <code>non_rd</code></td>
+				</tr>
+				<tr>
+					<td><code>subtype</code></td>
+					<td>Specific condition: <code>normal</code>, <code>pvd</code>, <code>macula_intact</code>, or <code>macula_detached</code></td>
+				</tr>
+				<tr>
+					<td><code>anatomical_subclass</code></td>
+					<td>Location of detachment for RD cases: <code>TD</code>, <code>ND</code>, or <code>Bilateral</code></td>
+				</tr>
+				<tr>
+					<td><code>fps</code></td>
+					<td>Frames per second</td>
+				</tr>
+				<tr>
+					<td><code>frame_count</code></td>
+					<td>Total number of frames in the clip</td>
+				</tr>
+				<tr>
+					<td><code>width</code></td>
+					<td>Frame width in pixels</td>
+				</tr>
+				<tr>
+					<td><code>height</code></td>
+					<td>Frame height in pixels</td>
+				</tr>
+				<tr>
+					<td><code>duration_seconds</code></td>
+					<td>Clip duration in seconds</td>
+				</tr>
+			</tbody>
+		</table>
 		 <br>
 		 <br>
-		  <p><b>Data Preprocessing:</b> We meticulously removed all protected health information and extraneous annotations present on the lateral sides of the ocular ultrasound clips. To achieve this, we employed a YOLO (You Only Look Once) object detection model trained specifically to identify and localize the globe of the eye within each video frame. 
-		  The model was trained using a small set of manually annotated example frames, where the bounding boxes encompassed only the globe region, excluding peripheral areas that do not contribute to the diagnosis of retinal detachment. By leveraging YOLO’s fast and accurate detection capabilities, we ensured that the region of interest (ROI) — the globe — was consistently identified throughout the entire clip. 
+		  <p><b>Data Preprocessing:</b> We meticulously removed all protected health information and extraneous annotations present on the lateral sides of the ocular ultrasound clips. To achieve this, we employed a YOLOv8 object detection model trained specifically to identify and localize the globe of the eye within each video frame.
+		  The model was trained on 115 manually annotated example frames and validated on 51 frames, achieving a precision of 0.998 and recall of 1.000. The bounding boxes encompassed only the globe region, excluding peripheral areas that do not contribute to the diagnosis of retinal detachment. By leveraging YOLOv8's fast and accurate detection capabilities, we ensured that the region of interest (ROI) — the globe — was consistently identified throughout the entire clip.
 		  Subsequently, each frame in the video was cropped according to the detected bounding box, resulting in a refined dataset comprising only the relevant anatomical features for analysis.
 		  All video clips in the dataset are in mp4 format, optimized for further diagnostic tasks.
          </p>
-		 <p><img class="center" loading="lazy" width="840" src="media/data_stats.png"></p>
 		 <br>
 		 <br>
          <h2 id="access_dataset">Access Dataset</h2>
-         <p>You can download the dataset using our HugginFace🤗 Dataset Card</p>
+         <p>You can download the dataset using our HuggingFace🤗 Dataset Card or Zenodo:</p>
          <div class="well" id="access" tabindex="0">
-            <a href="https://huggingface.co/datasets/pnavard/erdes", target="_blank">Access the ERDES dataset through this link.</a><br>
+            <a href="https://huggingface.co/datasets/pcvlab/erdes" target="_blank">HuggingFace: Access the ERDES dataset through this link.</a><br>
+            <a href="https://zenodo.org/records/18644370" target="_blank">Zenodo: Access the ERDES dataset through this link.</a><br>
          </div>
+		 <p>The ERDES dataset is released under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY 4.0</a> license.</p>
 		 <br>
 		 <br>
          <h2 id="code">Code</h2>
-         <p>Our code is made publically available under PCVLab's github repository <a href="https://github.com/OSUPCVLab/ERDES" target="_blank">here</a>. Please consider starring the repo.</p> 
+         <p>Our code is made publicly available under PCVLab's GitHub repository <a href="https://github.com/OSUPCVLab/ERDES" target="_blank">here</a>. Pre-trained model checkpoints are available on <a href="https://zenodo.org/records/18821031" target="_blank">Zenodo</a>. Please consider starring the repo.</p>
+		 <br>
+		 <br>
+         <h2 id="benchmarks">Benchmark Results</h2>
+         <p>We provide baseline performance benchmarks using various spatiotemporal architectures for binary classification tasks on the ERDES dataset.</p>
+         <p><b>Table 1:</b> Performance of models on three retinal detachment (RD) classification tasks: Normal vs. RD, PVD vs. RD, and Non-RD vs. RD. Metrics include sensitivity (Sens), specificity (Spec), precision (Prec), F1-score (F1), and accuracy (Acc). Models are sorted in ascending order based on sensitivity for the Normal vs. RD task. The best-performing model based on sensitivity for each task is shown in bold blue, and the second-best is highlighted in orange.</p>
+         <p><img class="center" loading="lazy" style="max-width: 100%; height: auto;" src="media/table1.png"></p>
+		 <br>
+		 <br>
+         <p><b>Table 2:</b> Performance of models on macular status classification (macula-detached vs. -intact). Metrics include sensitivity (Sens), specificity (Spec), precision (Prec), F1-score (F1), and accuracy (Acc). The best-performing model based on sensitivity is shown in bold blue, and the second-best is highlighted in orange. Models follow the same ordering as in Table 1 to facilitate cross-task comparison.</p>
+         <p><img class="center" loading="lazy" style="max-width: 100%; height: auto;" src="media/table2.png"></p>
+		 <br>
+		 <br>
+         <p><b>Table 3:</b> Comparison of temporal pooling strategies for Normal vs. PVD classification. All input clips consist of 96 frames, which are grouped into D temporal segments prior to classification. Selective pooling selects the top k* = [D * r] segments, where r is the selection ratio. For each backbone, the best-performing pooling strategy (by sensitivity) is shown in bold. Within each pooling strategy, the best-performing backbone is highlighted in blue and the second-best in orange, both determined by sensitivity. Dashes (--) indicate configurations where [D * r] = D, meaning all segments are retained and no selection occurs.</p>
+         <p><img class="center" loading="lazy" style="max-width: 100%; height: auto;" src="media/table3.png"></p>
 		 <br>
 		 <br>
 		 <h2 id="paper">Paper</h2>
          <p><a href="https://arxiv.org/abs/2508.04735" target="_blank">ERDES: A Benchmark Video Dataset for Retinal Detachment and Macular Status Classification in Ocular Ultrasound</a><br>
-            Corresponding Authord: Pouyan Navard. <b>Nature Scientific Data (Under Review)</b> (2025)
+            Corresponding Author: Yasemin Ozkut. <b>Nature Scientific Data (Under Review)</b> (2025)
          </p>
 		 <br>
 		 <br>
          <h2 id="citation">Citation</h2>
          <p>Note: If you intend to use ERDES dataset in your research please cite our work using this bibliography</p>
          <pre style="background-color: #f5f5f5; border: 1px solid #ccc; padding: 10px; font-family: monospace;">
-@inproceedings{navardocular,
-  title={A Benchmark Dataset for Retinal Detachment Classification in Spatiotemporal Ocular Ultrasound},
-  author={Navard, Pouyan and Ozkut, Yasemin and Adhikari, Srikar and Situ-LaCasse, Elaine and Acuña, Josie and Yarnish, Adrienne A and Yilmaz, Alper},
-  booktitle={Nature Scientific Data (Review)},
-  pages={4981--4988},
+@article{ozkuterdes,
+  title={ERDES: A Benchmark Video Dataset for Retinal Detachment and Macular Status Classification in Ocular Ultrasound},
+  author={Ozkut, Yasemin, Navard, Pouyan, and Adhikari, Srikar and Situ-LaCasse, Elaine and Acuña, Josie and Yarnish, Adrienne A and Yilmaz, Alper},
+  journal={arXiv preprint arXiv:2508.04735},
   year={2025}
 }
     </pre>
 		 <br>
 		 <br>
 		<p style="text-align:center;font-size:small;">
-		  For inquiries, contact us at <a href="mailto:boreshnavard [dot] 1 [at] osu [dot] edu" target="_blank">boreshnavard [dot] 1 [at] osu [dot] edu</a>.<br>
+		  For inquiries, contact us at <a href="mailto:ozkut [dot] 1 [at] osu [dot] edu" target="_blank">ozkut [dot] 1 [at] osu [dot] edu</a>.<br>
 		  Design and source code of this website was taken <a href="https://osupcvlab.github.io/ERDES/" target="_bl">from here</a>.
 		</p>
          
