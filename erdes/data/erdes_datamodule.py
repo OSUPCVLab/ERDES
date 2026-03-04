@@ -5,8 +5,8 @@ from lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
 
 #from torchvision.transforms import transforms
-#from src.data.components.utils import resize
-from src.data.components.erdes_dataset import VideoDataset
+#from erdes.data.components.utils import resize
+from erdes.data.components.erdes_dataset import VideoDataset
 
 
 class ERDESDataModule(LightningDataModule):

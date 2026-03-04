@@ -22,7 +22,7 @@ pandas
 
 ### As a Python Module
 ```python
-from src.diagnostic_pipeline import create_pipeline
+from pipe.diagnostic_pipeline import create_pipeline
 
 # Initialize pipeline with your chosen model architecture
 pipeline = create_pipeline(

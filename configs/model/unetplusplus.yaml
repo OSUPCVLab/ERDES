@@ -1,4 +1,4 @@
-_target_: src.models.model_module.ModelModule
+_target_: erdes.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam
@@ -14,7 +14,7 @@ scheduler:
   patience: 10
 
 net:
-  _target_: src.models.components.factory.build_3d_architecture
+  _target_: erdes.models.components.factory.build_3d_architecture
   model_name: unetplusplus
   pooling: avg  # Options: avg, topk
   topk_ratio: 0.5  # percentage of temporal regions to keep (0.5 = 50%)

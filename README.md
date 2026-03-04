@@ -446,8 +446,8 @@ If no tags are provided, you will be asked to input them from command line:
 
 ```bash
 >>> python train.py tags=[]
-[2022-07-11 15:40:09,358][src.utils.utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
-[2022-07-11 15:40:09,359][src.utils.rich_utils][WARNING] - No tags provided in config. Prompting user to input tags...
+[2022-07-11 15:40:09,358][erdes.utils.utils][INFO] - Enforcing tags! <cfg.extras.enforce_tags=True>
+[2022-07-11 15:40:09,359][erdes.utils.rich_utils][WARNING] - No tags provided in config. Prompting user to input tags...
 Enter a list of comma separated tags (dev):
 ```
 
@@ -469,7 +469,7 @@ ValueError: Specify tags before launching a multirun!
 All PyTorch Lightning modules are dynamically instantiated from module paths specified in config. Example model config:
 
 ```yaml
-_target_: src.models.model_module.ModelModule
+_target_: erdes.models.model_module.ModelModule
 
 optimizer:
   _target_: torch.optim.Adam
@@ -485,7 +485,7 @@ scheduler:
   patience: 10
 
 net:
-  _target_: src.models.components.factory.build_3d_architecture
+  _target_: erdes.models.components.factory.build_3d_architecture
   model_name: unetplusplus
 
 # compile model for faster training with pytorch 2.0

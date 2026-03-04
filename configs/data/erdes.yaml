@@ -1,4 +1,4 @@
-_target_: src.data.erdes_datamodule.ERDESDataModule
+_target_: erdes.data.erdes_datamodule.ERDESDataModule
 data_root: "data/erdes"
 train_csv: "data/splits/non_rd_vs_rd/train.csv"
 val_csv: "data/splits/non_rd_vs_rd/val.csv"

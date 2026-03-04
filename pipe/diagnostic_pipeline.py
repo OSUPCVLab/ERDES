@@ -14,8 +14,8 @@ import torchvision.io as io
 from pathlib import Path
 from tqdm import tqdm
 
-from src.models.components.factory import build_3d_architecture
-from src.data.components.utils import resize
+from erdes.models.components.factory import build_3d_architecture
+from erdes.data.components.utils import resize
 
 # Set up logging
 logging.basicConfig(
