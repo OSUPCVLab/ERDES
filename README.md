@@ -16,7 +16,9 @@ Despite progress in medical image analysis, video-based machine learning in heal
 
 🔗 **Access the Dataset:**
 - [Official Website](https://osupcvlab.github.io/ERDES/)
-- [HuggingFace](https://huggingface.co/datasets/pcvlab/erdes)
+- [HuggingFace - Dataset](https://huggingface.co/datasets/pcvlab/erdes)
+- [HuggingFace - Model Checkpoints](https://huggingface.co/collections/pcvlab/erdes-ocular-ultrasound-classification-all-tasks)
+- [HuggingFace - YOLOv8 Globe Detection](https://huggingface.co/pcvlab/yolov8_ocular_ultrasound_globe_detection)
 - [Zenodo - Dataset](https://zenodo.org/records/18644370)
 - [Zenodo - Model Checkpoints](https://zenodo.org/records/18821031)
 
