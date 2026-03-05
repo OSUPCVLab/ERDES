@@ -9,7 +9,7 @@ setup(
     author="PCVLab",
     maintainer="Yasemin Ozkut",
     maintainer_email="ozkutyasemin@gmail.com",
-    url="https://github.com/pcvlab/erdes",
+    url="https://github.com/OSUPCVLab/ERDES",
     install_requires=[
         "torch>=2.0.0",
         "torchvision>=0.15.0",
