@@ -5,21 +5,29 @@
 <a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
 <a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
 <a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
-[![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://arxiv.org/abs/2508.04735)
-[![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)]()
+[![arXiv](https://img.shields.io/badge/arXiv-2508.04735-b31b1b.svg)](https://arxiv.org/abs/2508.04735)
+[![Journal](https://img.shields.io/badge/Nature-Scientific%20Data-blue.svg)]()
 
 </div>
 
-Eye Retinal DEtachment UltraSound (ERDES) is a comprehensive, open-access video dataset designed to advance computer vision research in ocular ultrasonography. Ocular ultrasound is a fast, non-invasive imaging technique crucial for diagnosing retinal conditions, especially when media opacities like cataracts obscure direct visualization. ERDES includes 5,406 expertly annotated ultrasound video clips, labeled for retinal and macular detachment status (intact vs. detached), providing a valuable resource for training and evaluating AI models.
+Eye Retinal DEtachment UltraSound (ERDES) is a comprehensive, open-access video dataset designed to advance computer vision research in ocular ultrasonography. Ocular ultrasound is a fast, non-invasive imaging technique crucial for diagnosing retinal conditions, especially when media opacities like cataracts obscure direct visualization. ERDES includes 5,381 expertly annotated ultrasound video clips, labeled for retinal and macular detachment status (intact vs. detached), providing a valuable resource for training and evaluating AI models.
 
-Despite progress in medical image analysis, video-based machine learning in healthcare remains underexplored due to limited annotated datasets. ERDES fills this gap, supporting the development of robust, clinically relevant video models. We also provide baseline results over well-know CNN and ViT based architectures. 
+Despite progress in medical image analysis, video-based machine learning in healthcare remains underexplored due to limited annotated datasets. ERDES fills this gap, supporting the development of robust, clinically relevant video models. We also provide baseline results over well-known CNN and ViT based architectures.
 
-🔗 Note:  You can access and download the data by visiting our [website](https://osupcvlab.github.io/ERDES/index.html#access_dataset).
+🔗 **Access the Dataset:**
+- [Official Website](https://osupcvlab.github.io/ERDES/)
+- [HuggingFace](https://huggingface.co/datasets/pcvlab/erdes)
+- [Zenodo - Dataset](https://zenodo.org/records/18644370)
+- [Zenodo - Model Checkpoints](https://zenodo.org/records/18821031)
 
 ## 🚀 News
 * **(July 31, 2025):** Release of the dataset.
 * **(August 4, 2025):** Release of model checkpoints.
-* **(Agust 8, 2025):** Release of our dataset on HuggingFace ([ERDES](https://huggingface.co/datasets/pnavard/erdes))🤗
+* **(August 8, 2025):** Release of our dataset on HuggingFace ([ERDES](https://huggingface.co/datasets/pnavard/erdes))🤗
+* **(February 23, 2026):** Release of our dataset on Zenodo ([ERDES](https://huggingface.co/datasets/pnavard/erdes))
+* **(March 3, 2026):** Release of our model checkpoints on Zenodo ([ERDES Benchmark Model Checkpoints](https://huggingface.co/datasets/pnavard/erdes))
+* **(March 4, 2026):** Release of our model checkpoints on HuggingFace ([ERDES Classification Models](https://huggingface.co/collections/pcvlab/erdes-ocular-ultrasound-classification-all-tasks))🤗
+* **(March 4, 2026):** Release of YOLOv8 ocular ultrasound globe detection model ([YOLOv8 Globe Detection](https://huggingface.co/pcvlab/yolov8_ocular_ultrasound_globe_detection))🤗
 
 
 ## 📑 Table of Contents
@@ -40,16 +48,73 @@ Despite progress in medical image analysis, video-based machine learning in heal
 
 ## 🧠 Model Card
 
-| Model         | Retinal Detachment Classifier           | Macular Detachment Classifier           |
-|:--------------|:---------------------------------------:|:---------------------------------------:|
-| ResNet3d     | [Download](https://drive.google.com/file/d/1A12X-Ck3VUH7zd1PwD85cxYinveLdJdi/view?usp=drive_link)     | [Download](https://drive.google.com/file/d/1EaB4WQyYnikX8Fh1bQR_8vJLb0pB19rV/view?usp=drive_link)     |
-| Senet | [Download](https://drive.google.com/file/d/1KLhBHPta5PzT6x0f5yRn3rAjcR3r6hlq/view?usp=drive_link) | [Download](https://drive.google.com/file/d/1bqth8jzSMO9aa6QCrlWzlNroip3s3A3D/view?usp=drive_link) |
-| SwinUnetR | [Download](https://drive.google.com/file/d/1QbqFPcv4_jbhdNrypT9lV4F2Z9bTh4OI/view?usp=drive_link) | [Download](https://drive.google.com/file/d/1UR3U-W43XQjlWaCkold6KNALLYG1RLnh/view?usp=drive_link) |
-| Unet3d   | [Download](https://drive.google.com/file/d/18yXSfczGSyWLZc9UtPTyWkOFAE9Y3DX6/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/15zOwwi-HhWaE1f-0b72ME7mThgVTKRv7/view?usp=drive_link)   |
-| Unet++   | [Download](https://drive.google.com/file/d/1d6zZ3WMpob3Do0WsvvaALRw7leYlXqZM/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1rTIl6EIqcD84-o3M-Ye1YmLgFIoj6ZtL/view?usp=drive_link)   |
-| UnetR   | [Download](https://drive.google.com/file/d/1HpHd6pfsWVdOfUD6uK6ECZ9Rf53IjpmH/view?usp=drive_link)   | [Download](https://drive.google.com/file/d/1PTMCMjpz05GH-PPqU7qZsgyUgffstsrw/view?usp=drive_link)   |
-| ViT         | [Download](https://drive.google.com/file/d/16PaJm-kHdKdpBKEveJVCrZ8-YAgbD_T7/view?usp=drive_link)         | [Download](https://drive.google.com/file/d/1fEVptUpBY8QZzGMDYywd9USgE6KZRhAO/view?usp=drive_link)         |
-| Vnet        | [Download](https://drive.google.com/file/d/1e6IYopmjpLT0SLFzla-QfD5Y0f-X3fvT/view?usp=drive_link)         | [Download](https://drive.google.com/file/d/1EdQkYAYFBCwre3-p-1KR7keYD7QVWS7s/view?usp=drive_link)         |
+We provide pre-trained checkpoints for 8 spatiotemporal architectures across 5 binary classification tasks, plus selective temporal pooling variants for the Normal vs PVD task.
+
+### Download Options
+
+| Source | Format | Description |
+|:-------|:-------|:------------|
+| [HuggingFace](https://huggingface.co/collections/pcvlab/erdes-ocular-ultrasound-classification-all-tasks) | SafeTensors | Ready for direct use with the HuggingFace ecosystem |
+| [Zenodo](https://zenodo.org/records/18821031) | PyTorch (.ckpt) | Archival version with DOI for reproducibility |
+
+**Naming Convention:**
+- **Zenodo:** `<architecture>_<task>.ckpt` (e.g., `resnet3d_nonrd_vs_rd.ckpt`)
+- **HuggingFace:** `pcvlab/<architecture>_<task>` (e.g., `pcvlab/resnet3d_nonrd_vs_rd`)
+
+### Top Performing Models
+
+| Task | Best Model | Sensitivity | Specificity | Accuracy |
+|:-----|:-----------|:-----------:|:-----------:|:--------:|
+| Non-RD vs RD | 3D ResNet (`resnet3d_non_rd_vs_rd`) | 0.939 | 0.978 | 0.974 |
+| Macula-Detached vs Intact | 3D U-Net (`unet3d_macula_detached_vs_intact`) | 0.899 | 0.870 | 0.882 |
+| Normal vs RD | 3D U-Net (`unet3d_normal_vs_rd`) | 0.950 | 0.996 | 0.991 |
+| PVD vs RD | UNet++ (`unetplusplus_pvd_vs_rd`) | 0.921 | 0.860 | 0.887 |
+| Normal vs PVD | 3D U-Net (`unet3d_normal_vs_pvd_selective_pooling_30`) | 0.807 | 0.977 | 0.955 |
+
+### Usage
+
+**HuggingFace (SafeTensors):**
+```python
+# Models can be loaded directly from HuggingFace
+from huggingface_hub import hf_hub_download
+
+model_path = hf_hub_download(repo_id="pcvlab/erdes", filename="path/to/model.safetensors")
+```
+
+**Zenodo (PyTorch Checkpoints):**
+```bash
+# Clone the repository first
+git clone https://github.com/OSUPCVLab/ERDES.git
+cd ERDES
+
+# Download checkpoints from Zenodo and place in the checkpoints directory
+# Then load using PyTorch Lightning
+```
+
+```python
+from erdes.models.model_module import ModelModule
+
+model = ModelModule.load_from_checkpoint("path/to/checkpoint.ckpt")
+```
+
+### Available Architectures
+
+- **3D ResNet** - 3D convolutional ResNet
+- **3D U-Net** - Encoder-decoder with skip connections
+- **V-Net** - Volumetric medical image segmentation network
+- **UNet++** - Nested U-Net with dense skip pathways
+- **SENet154** - Squeeze-and-Excitation network
+- **Swin-UNETR** - Swin Transformer-based encoder
+- **UNETR** - Vision Transformer encoder with U-Net decoder
+- **ViT** - Vision Transformer
+
+### Classification Tasks
+
+1. **Non-RD vs RD** - Distinguishing non-retinal detachment from retinal detachment
+2. **Normal vs RD** - Normal eyes vs retinal detachment
+3. **PVD vs RD** - Posterior vitreous detachment vs retinal detachment
+4. **Macula-Detached vs Intact** - Macular detachment status
+5. **Normal vs PVD** - Normal eyes vs posterior vitreous detachment (includes selective temporal pooling variants)
 
 ## Project Structure
 
@@ -85,7 +150,7 @@ The directory structure of new project looks like this:
 │
 ├── scripts                <- Shell scripts
 │
-├── src                    <- Source code
+├── erdes                  <- Source code
 │   ├── data                     <- Data scripts
 │   ├── models                   <- Model scripts
 │   ├── utils                    <- Utility scripts
@@ -128,7 +193,7 @@ pip install -r requirements.txt
 ```
 
 Template contains example with erdes classification.<br>
-When running `python src/train.py` you should see something like this:
+When running `python erdes/train.py` you should see something like this:
 
 <div align="center">
 
@@ -506,7 +571,7 @@ Switch between models and datamodules with command line arguments:
 python train.py model=erdes
 ```
 
-Example pipeline managing the instantiation logic: [src/train.py](src/train.py).
+Example pipeline managing the instantiation logic: [erdes/train.py](erdes/train.py).
 
 <br>
 
@@ -632,12 +697,12 @@ logger:
 
 **Basic workflow**
 
-1. Write your PyTorch Lightning module (see [models/erdes_module.py](src/models/erdes_module.py) for example)
-2. Write your PyTorch Lightning datamodule (see [data/erdes_datamodule.py](src/data/erdes_datamodule.py) for example)
+1. Write your PyTorch Lightning module (see [models/erdes_module.py](erdes/models/erdes_module.py) for example)
+2. Write your PyTorch Lightning datamodule (see [data/erdes_datamodule.py](erdes/data/erdes_datamodule.py) for example)
 3. Write your experiment config, containing paths to model and datamodule
 4. Run training with chosen experiment config:
    ```bash
-   python src/train.py experiment=experiment_name.yaml
+   python erdes/train.py experiment=experiment_name.yaml
    ```
 
 **Experiment design**
@@ -926,7 +991,7 @@ git commit -m "Add raw data"
 <summary><b>Support installing project as a package</b></summary>
 
 It allows other people to easily use your modules in their own projects.
-Change name of the `src` folder to your project name and complete the `setup.py` file.
+The source code is in the `erdes` folder. If you want to create your own project, rename the `erdes` folder to your project name and update the imports accordingly.
 
 Now your project can be installed from local files:
 
@@ -1001,11 +1066,10 @@ We would like to thank the developers of the [PyTorch Lightning + Hydra. A very 
 
 ## Citation
 ```bibtex
-@inproceedings{navardocular,
-  title={A Benchmark Dataset for Retinal Detachment Classification in Spatiotemporal Ocular Ultrasound},
-  author={Navard, Pouyan and Ozkut, Yasemin and Adhikari, Srikar and Situ-LaCasse, Elaine and Acuña, Josie and Yarnish, Adrienne A and Yilmaz, Alper},
-  booktitle={Nature Scientific Data (Review)},
-  pages={4981--4988},
+@article{ozkuterdes,
+  title={ERDES: A Benchmark Video Dataset for Retinal Detachment and Macular Status Classification in Ocular Ultrasound},
+  author={Ozkut, Yasemin and Navard, Pouyan and Adhikari, Srikar and Situ-LaCasse, Elaine and Acuña, Josie and Yarnish, Adrienne A and Yilmaz, Alper},
+  journal={arXiv preprint arXiv:2508.04735},
   year={2025}
 }
 ```
