@@ -26,7 +26,8 @@ logging.basicConfig(
 class DiagnosticPipeline:
     def __init__(
         self,
-        model_name: str,
+        rd_model_name: str,
+        macula_model_name: str,
         rd_checkpoint_path: str,
         macula_checkpoint_path: str,
         device: str = "cuda" if torch.cuda.is_available() else "cpu",
@@ -43,16 +44,16 @@ class DiagnosticPipeline:
                 for k, v in state_dict.items()
             }
 
-        logging.info("Loading RD model checkpoint...")
-        self.rd_model = build_3d_architecture(model_name, num_classes=1)
+        logging.info(f"Loading RD model checkpoint ({rd_model_name})...")
+        self.rd_model = build_3d_architecture(rd_model_name, num_classes=1)
         rd_state = torch.load(rd_checkpoint_path, map_location=device)
         stripped_rd_state = strip_net_prefix(rd_state['state_dict'])
         self.rd_model.load_state_dict(stripped_rd_state, strict=True)
         self.rd_model = self.rd_model.to(device)
         self.rd_model.eval()
 
-        logging.info("Loading Macula model checkpoint...")
-        self.macula_model = build_3d_architecture(model_name, num_classes=1)
+        logging.info(f"Loading Macula model checkpoint ({macula_model_name})...")
+        self.macula_model = build_3d_architecture(macula_model_name, num_classes=1)
         macula_state = torch.load(macula_checkpoint_path, map_location=device)
         stripped_macula_state = strip_net_prefix(macula_state['state_dict'])
         self.macula_model.load_state_dict(stripped_macula_state, strict=True)
@@ -121,14 +122,18 @@ class DiagnosticPipeline:
         return df
 
 def create_pipeline(
-    model_name: str,
+    rd_model_name: str,
+    macula_model_name: Optional[str] = None,
     experiment_root: str = "logs",
     video_size: Tuple[int, int, int] = (96, 128, 128),
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
 ) -> DiagnosticPipeline:
+    if macula_model_name is None:
+        macula_model_name = rd_model_name
+
     logging.info("Creating pipeline and locating best checkpoints...")
-    rd_exp_path = os.path.join(experiment_root, "train/run/", "rd", model_name)
-    macula_exp_path = os.path.join(experiment_root, "train/run/", "md", model_name)
+    rd_exp_path = os.path.join(experiment_root, "train/run/", "rd", rd_model_name)
+    macula_exp_path = os.path.join(experiment_root, "train/run/", "md", macula_model_name)
 
     def find_best_checkpoint(exp_path: str) -> str:
         checkpoints = list(Path(exp_path).rglob("*.ckpt"))
@@ -142,7 +147,8 @@ def create_pipeline(
 
     logging.info("Checkpoints located. Initializing pipeline...")
     return DiagnosticPipeline(
-        model_name=model_name,
+        rd_model_name=rd_model_name,
+        macula_model_name=macula_model_name,
         rd_checkpoint_path=rd_ckpt,
         macula_checkpoint_path=macula_ckpt,
         video_size=video_size,
@@ -153,16 +159,19 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Run retinal diagnostic pipeline on video data")
-    parser.add_argument("--model", type=str, default="unet3d", help="Model architecture to use")
-    parser.add_argument("--input", type=str, required=True, 
+    parser.add_argument("--rd-model", type=str, default="unet3d",
+                        help="Model architecture for RD classification")
+    parser.add_argument("--macula-model", type=str, default=None,
+                        help="Model architecture for macula classification (defaults to --rd-model)")
+    parser.add_argument("--input", type=str, required=True,
                         help="Path to input video file or CSV containing video paths")
     parser.add_argument("--video-column", type=str, default="path",
                         help="Name of column containing video paths in CSV")
     parser.add_argument("--output", type=str, help="Path to save CSV results (for batch mode)")
-    
+
     args = parser.parse_args()
 
-    pipeline = create_pipeline(args.model)
+    pipeline = create_pipeline(args.rd_model, args.macula_model)
 
     if args.input.endswith('.csv'):
         results = pipeline.predict_batch(args.input, args.video_column)
