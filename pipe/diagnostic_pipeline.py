@@ -132,8 +132,8 @@ def create_pipeline(
         macula_model_name = rd_model_name
 
     logging.info("Creating pipeline and locating best checkpoints...")
-    rd_exp_path = os.path.join(experiment_root, "train/run/", "rd", rd_model_name)
-    macula_exp_path = os.path.join(experiment_root, "train/run/", "md", macula_model_name)
+    rd_exp_path = os.path.join(experiment_root, "train/run/", "non_rd_vs_rd", rd_model_name)
+    macula_exp_path = os.path.join(experiment_root, "train/run/", "macula_detached_vs_intact", macula_model_name)
 
     def find_best_checkpoint(exp_path: str) -> str:
         checkpoints = list(Path(exp_path).rglob("*.ckpt"))
