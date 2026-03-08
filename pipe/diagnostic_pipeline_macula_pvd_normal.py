@@ -1,9 +1,10 @@
 """
-Diagnostic pipeline for ocular ultrasound classification.
+Experimental diagnostic pipeline for ocular ultrasound classification.
 
-This pipeline uses two pretrained models:
+This pipeline uses three pretrained models:
 1. RD Classifier: Predicts whether a patient has retinal detachment (RD)
 2. Macula Classifier: If RD is detected, predicts whether the macula is detached or intact
+3. PVD Classifier: If no RD is detected, predicts whether the eye is normal or has PVD
 
 Pipeline flow:
     Input Video
@@ -13,7 +14,7 @@ Pipeline flow:
         │
         ├── RD Positive → Macula Classifier → Detached / Intact
         │
-        └── RD Negative → Done
+        └── RD Negative → PVD Classifier → Normal / PVD
 """
 
 import os
@@ -37,17 +38,20 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-class DiagnosticPipeline:
+
+class ExperimentalPipeline:
     def __init__(
         self,
         rd_model_name: str,
         macula_model_name: str,
+        pvd_model_name: str,
         rd_checkpoint_path: str,
         macula_checkpoint_path: str,
+        pvd_checkpoint_path: str,
         device: str = "cuda" if torch.cuda.is_available() else "cpu",
         video_size: Tuple[int, int, int] = (96, 128, 128),
     ):
-        logging.info("Initializing diagnostic pipeline...")
+        logging.info("Initializing experimental pipeline...")
         self.device = device
         self.video_size = video_size
         self.resize_tf = resize(video_size)
@@ -90,6 +94,7 @@ class DiagnosticPipeline:
 
             return adapted
 
+        # Load RD model
         logging.info(f"Loading RD model checkpoint ({rd_model_name})...")
         self.rd_model = build_3d_architecture(rd_model_name, num_classes=1)
         rd_state = torch.load(rd_checkpoint_path, map_location=device, weights_only=False)
@@ -98,6 +103,7 @@ class DiagnosticPipeline:
         self.rd_model = self.rd_model.to(device)
         self.rd_model.eval()
 
+        # Load Macula model
         logging.info(f"Loading Macula model checkpoint ({macula_model_name})...")
         self.macula_model = build_3d_architecture(macula_model_name, num_classes=1)
         macula_state = torch.load(macula_checkpoint_path, map_location=device, weights_only=False)
@@ -105,6 +111,15 @@ class DiagnosticPipeline:
         self.macula_model.load_state_dict(adapted_macula_state, strict=True)
         self.macula_model = self.macula_model.to(device)
         self.macula_model.eval()
+
+        # Load PVD model
+        logging.info(f"Loading PVD model checkpoint ({pvd_model_name})...")
+        self.pvd_model = build_3d_architecture(pvd_model_name, num_classes=1)
+        pvd_state = torch.load(pvd_checkpoint_path, map_location=device, weights_only=False)
+        adapted_pvd_state = adapt_state_dict(pvd_state['state_dict'], self.pvd_model)
+        self.pvd_model.load_state_dict(adapted_pvd_state, strict=True)
+        self.pvd_model = self.pvd_model.to(device)
+        self.pvd_model.eval()
 
         logging.info("Pipeline initialization complete.")
 
@@ -126,22 +141,30 @@ class DiagnosticPipeline:
 
         return video
 
-    def predict_single(self, video_path: str) -> Dict[str, Union[bool, Optional[str]]]:
+    def predict_single(self, video_path: str) -> Dict[str, Union[bool, str]]:
         logging.info(f"Running prediction on video: {video_path}")
         video = self.preprocess_video(video_path)
         video = video.to(self.device)
 
         with torch.no_grad():
+            # Stage 1: RD classification
             rd_pred = torch.sigmoid(self.rd_model(video))
             has_rd = bool(rd_pred.item() > 0.5)
             logging.info(f"RD prediction: {'Positive' if has_rd else 'Negative'}")
 
             diagnosis = None
+
             if has_rd:
+                # Stage 2a: Macula classification (for RD positive cases)
                 # Class 0 = Detached, Class 1 = Intact
                 macula_pred = torch.sigmoid(self.macula_model(video))
                 diagnosis = "Macula Detached" if macula_pred.item() <= 0.5 else "Macula Intact"
-                logging.info(f"Macula prediction: {diagnosis}")
+                logging.info(f"Diagnosis: {diagnosis}")
+            else:
+                # Stage 2b: PVD classification (for RD negative cases)
+                pvd_pred = torch.sigmoid(self.pvd_model(video))
+                diagnosis = "PVD" if pvd_pred.item() > 0.5 else "Normal"
+                logging.info(f"Diagnosis: {diagnosis}")
 
         return {
             "has_rd": has_rd,
@@ -168,32 +191,39 @@ class DiagnosticPipeline:
         logging.info("Batch prediction complete.")
         return df
 
+
 def create_pipeline(
     rd_model_name: str = "unet3d",
     macula_model_name: Optional[str] = None,
+    pvd_model_name: Optional[str] = None,
     rd_checkpoint_path: Optional[str] = None,
     macula_checkpoint_path: Optional[str] = None,
+    pvd_checkpoint_path: Optional[str] = None,
     weights_dir: Optional[str] = None,
     video_size: Tuple[int, int, int] = (96, 128, 128),
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
-) -> DiagnosticPipeline:
+) -> ExperimentalPipeline:
     """
-    Create a diagnostic pipeline.
+    Create an experimental diagnostic pipeline.
 
     Args:
         rd_model_name: Model architecture for RD classifier (default: unet3d)
         macula_model_name: Model architecture for macula classifier (default: same as rd_model_name)
+        pvd_model_name: Model architecture for PVD classifier (default: same as rd_model_name)
         rd_checkpoint_path: Path to RD model checkpoint (default: weights/non_rd_vs_rd.ckpt)
         macula_checkpoint_path: Path to macula model checkpoint (default: weights/macula_detached_vs_intact.ckpt)
+        pvd_checkpoint_path: Path to PVD model checkpoint (default: weights/normal_vs_pvd.ckpt)
         weights_dir: Directory containing model weights (default: ERDES/weights/)
         video_size: Input video dimensions (T, H, W)
         device: Device to run inference on
 
     Returns:
-        DiagnosticPipeline instance
+        ExperimentalPipeline instance
     """
     if macula_model_name is None:
         macula_model_name = rd_model_name
+    if pvd_model_name is None:
+        pvd_model_name = rd_model_name
 
     # Use default weights directory if not specified
     if weights_dir is None:
@@ -206,39 +236,49 @@ def create_pipeline(
         rd_checkpoint_path = weights_dir / "non_rd_vs_rd.ckpt"
     if macula_checkpoint_path is None:
         macula_checkpoint_path = weights_dir / "macula_detached_vs_intact.ckpt"
+    if pvd_checkpoint_path is None:
+        pvd_checkpoint_path = weights_dir / "normal_vs_pvd.ckpt"
 
     # Validate checkpoint paths exist
     if not Path(rd_checkpoint_path).exists():
         raise FileNotFoundError(f"RD checkpoint not found: {rd_checkpoint_path}")
     if not Path(macula_checkpoint_path).exists():
         raise FileNotFoundError(f"Macula checkpoint not found: {macula_checkpoint_path}")
+    if not Path(pvd_checkpoint_path).exists():
+        raise FileNotFoundError(f"PVD checkpoint not found: {pvd_checkpoint_path}")
 
-    logging.info("Creating pipeline...")
-    return DiagnosticPipeline(
+    logging.info("Creating experimental pipeline...")
+    return ExperimentalPipeline(
         rd_model_name=rd_model_name,
         macula_model_name=macula_model_name,
+        pvd_model_name=pvd_model_name,
         rd_checkpoint_path=str(rd_checkpoint_path),
         macula_checkpoint_path=str(macula_checkpoint_path),
+        pvd_checkpoint_path=str(pvd_checkpoint_path),
         video_size=video_size,
         device=device
     )
+
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Run retinal diagnostic pipeline on video data",
+        description="Run experimental diagnostic pipeline on video data",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # Run on a single video (uses default weights from weights/ folder)
-  python diagnostic_pipeline.py --input video.mp4
+  python experimental_pipeline.py --input video.mp4
 
   # Run on a CSV of videos
-  python diagnostic_pipeline.py --input videos.csv --output results.csv
+  python experimental_pipeline.py --input videos.csv --output results.csv
 
   # Use custom checkpoint paths
-  python diagnostic_pipeline.py --input video.mp4 --rd-ckpt /path/to/rd.ckpt --macula-ckpt /path/to/macula.ckpt
+  python experimental_pipeline.py --input video.mp4 \\
+      --rd-ckpt /path/to/rd.ckpt \\
+      --macula-ckpt /path/to/macula.ckpt \\
+      --pvd-ckpt /path/to/pvd.ckpt
         """
     )
     parser.add_argument("--input", type=str, required=True,
@@ -253,18 +293,24 @@ Examples:
                         help="Path to RD classifier checkpoint (overrides --weights-dir)")
     parser.add_argument("--macula-ckpt", type=str, default=None,
                         help="Path to macula classifier checkpoint (overrides --weights-dir)")
+    parser.add_argument("--pvd-ckpt", type=str, default=None,
+                        help="Path to PVD classifier checkpoint (overrides --weights-dir)")
     parser.add_argument("--rd-model", type=str, default="unet3d",
                         help="Model architecture for RD classifier (default: unet3d)")
     parser.add_argument("--macula-model", type=str, default=None,
                         help="Model architecture for macula classifier (default: same as --rd-model)")
+    parser.add_argument("--pvd-model", type=str, default=None,
+                        help="Model architecture for PVD classifier (default: same as --rd-model)")
 
     args = parser.parse_args()
 
     pipeline = create_pipeline(
         rd_model_name=args.rd_model,
         macula_model_name=args.macula_model,
+        pvd_model_name=args.pvd_model,
         rd_checkpoint_path=args.rd_ckpt,
         macula_checkpoint_path=args.macula_ckpt,
+        pvd_checkpoint_path=args.pvd_ckpt,
         weights_dir=args.weights_dir
     )
 
@@ -278,5 +324,4 @@ Examples:
         result = pipeline.predict_single(args.input)
         print(f"\nResults for {args.input}:")
         print(f"  Retinal Detachment: {'Yes' if result['has_rd'] else 'No'}")
-        if result['diagnosis']:
-            print(f"  Diagnosis: {result['diagnosis']}")
+        print(f"  Diagnosis: {result['diagnosis']}")
