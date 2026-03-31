@@ -149,7 +149,7 @@ class ExperimentalPipeline:
         with torch.no_grad():
             # Stage 1: RD classification
             rd_pred = torch.sigmoid(self.rd_model(video))
-            has_rd = bool(rd_pred.item() > 0.5)
+            has_rd = bool(rd_pred.item() >= 0.5)
             logging.info(f"RD prediction: {'Positive' if has_rd else 'Negative'}")
 
             diagnosis = None
@@ -158,12 +158,12 @@ class ExperimentalPipeline:
                 # Stage 2a: Macula classification (for RD positive cases)
                 # Class 0 = Detached, Class 1 = Intact
                 macula_pred = torch.sigmoid(self.macula_model(video))
-                diagnosis = "Macula Detached" if macula_pred.item() <= 0.5 else "Macula Intact"
+                diagnosis = "Macula Intact" if macula_pred.item() >= 0.5 else "Macula Detached"
                 logging.info(f"Diagnosis: {diagnosis}")
             else:
                 # Stage 2b: PVD classification (for RD negative cases)
                 pvd_pred = torch.sigmoid(self.pvd_model(video))
-                diagnosis = "PVD" if pvd_pred.item() > 0.5 else "Normal"
+                diagnosis = "PVD" if pvd_pred.item() >= 0.5 else "Normal"
                 logging.info(f"Diagnosis: {diagnosis}")
 
         return {

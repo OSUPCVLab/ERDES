@@ -133,14 +133,14 @@ class DiagnosticPipeline:
 
         with torch.no_grad():
             rd_pred = torch.sigmoid(self.rd_model(video))
-            has_rd = bool(rd_pred.item() > 0.5)
+            has_rd = bool(rd_pred.item() >= 0.5)
             logging.info(f"RD prediction: {'Positive' if has_rd else 'Negative'}")
 
             diagnosis = None
             if has_rd:
                 # Class 0 = Detached, Class 1 = Intact
                 macula_pred = torch.sigmoid(self.macula_model(video))
-                diagnosis = "Macula Detached" if macula_pred.item() <= 0.5 else "Macula Intact"
+                diagnosis = "Macula Intact" if macula_pred.item() >= 0.5 else "Macula Detached"
                 logging.info(f"Macula prediction: {diagnosis}")
 
         return {
