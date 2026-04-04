@@ -8,11 +8,11 @@ echo "$SESSION"
 conda activate erdes
 
 # Uncomment the model you wish to run
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/resnet3d
-# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd/swinunetr
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/unetplusplus
-# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd/unetr
-# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd/vit
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/vnet
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/senet
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/resnet3d
+# python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd/swinunetr
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/unetplusplus
+# python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd/unetr
+# python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd/vit
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/vnet
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd/senet
 

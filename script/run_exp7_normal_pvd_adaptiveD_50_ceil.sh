@@ -8,10 +8,10 @@ echo "$SESSION"
 conda activate erdes
 
 # All models - topk 50
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_adaptive_topk/unet3d
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_adaptive_topk/resnet3d
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_adaptive_topk/unetplusplus
-# python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/vnet
-# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/senet
-# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/swinunetr
-# python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/unetr
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_adaptive_topk/unet3d
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_adaptive_topk/resnet3d
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_adaptive_topk/unetplusplus
+# python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/vnet
+# python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/senet
+# python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/swinunetr
+# python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_50_ceil/unetr

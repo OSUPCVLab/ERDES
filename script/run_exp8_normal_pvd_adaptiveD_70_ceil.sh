@@ -8,8 +8,8 @@ echo "$SESSION"
 conda activate erdes
 
 # All models - topk 70
-#python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/unet3d
-#python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/resnet3d
-#python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/unetplusplus
-#python3 src/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/vnet
-#python3 src/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/unetr
+#python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/unet3d
+#python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/resnet3d
+#python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/unetplusplus
+#python3 erdes/train.py trainer=ddp trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/vnet
+#python3 erdes/train.py trainer=ddp trainer.strategy=ddp_find_unused_parameters_true trainer.devices=3 experiment=normal_vs_pvd_topk_70_ceil/unetr
